@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ScatterAnalyzer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ScatterAnalyzer_jar</output-path>
+    <root id="archive" name="ScatterAnalyzer.jar">
+      <element id="module-output" name="ScatterAnalyzer" />
+    </root>
+  </artifact>
+</component>
