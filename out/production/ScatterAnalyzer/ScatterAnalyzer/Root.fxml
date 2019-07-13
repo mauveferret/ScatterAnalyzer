@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="339.0" prefHeight="469.0" prefWidth="629.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ScatterAnalyzer.RootFxmlController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="339.0" prefHeight="490.0" prefWidth="629.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ScatterAnalyzer.RootFxmlController">
    <children>
       <ImageView fitHeight="299.0" fitWidth="299.0" layoutX="327.0" layoutY="186.0" onMouseClicked="#secretLaunch" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -18,7 +18,7 @@
          <items>
             <TabPane prefHeight="180.0" prefWidth="583.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="N(E)">
+                <Tab text="dN/dE(E)">
                      <content>
                         <AnchorPane prefHeight="150.0" prefWidth="583.0">
                            <children>
@@ -59,6 +59,7 @@
                               <Label fx:id="call1" layoutX="513.0" layoutY="10.0" text="dφ" />
                               <Label layoutX="442.0" layoutY="10.0" text="φ" />
                               <Label layoutX="22.0" layoutY="100.0" prefHeight="27.0" prefWidth="557.0" text="Здесь θ считается от нормали к поверхности, φ от оси абсцисс (см. справку)!" />
+                              <Label layoutX="22.0" layoutY="125.0" prefHeight="27.0" prefWidth="557.0" text="В случае TRIM начальная энергия определяется автоматически" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -97,13 +98,13 @@
                      <content>
                         <AnchorPane prefHeight="150.0" prefWidth="583.0">
                            <children>
-                              <TextField fx:id="NdThetaPhi" alignment="CENTER" layoutX="132.0" layoutY="34.0" onKeyReleased="#ResChanged" prefHeight="51.0" prefWidth="101.0" text="5">
+                              <TextField fx:id="NdThetaPhi" alignment="CENTER" layoutX="132.0" layoutY="34.0" onKeyReleased="#ResChanged" prefHeight="51.0" prefWidth="101.0" text="1">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </TextField>
                               <Label layoutX="161.0" layoutY="10.0" text="delta θ" />
-                              <TextField fx:id="NThetadPhi" alignment="CENTER" layoutX="22.0" layoutY="34.0" onKeyReleased="#EChanged" prefHeight="51.0" prefWidth="101.0" text="5">
+                              <TextField fx:id="NThetadPhi" alignment="CENTER" layoutX="22.0" layoutY="34.0" onKeyReleased="#EChanged" prefHeight="51.0" prefWidth="101.0" text="1">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -150,9 +151,9 @@
                                  </font>
                               </TextField>
                               <Label layoutX="453.0" layoutY="84.0" text="рассеяние энергии" />
-                              <Label layoutX="14.0" layoutY="100.0" prefHeight="17.0" prefWidth="368.0" text="нет распылённых =&gt; поставьте галочку в SCATTER logSputter" />
-                              <Label layoutX="14.0" layoutY="125.0" prefHeight="17.0" prefWidth="376.0" text="&quot;Рассеяние энергии&quot; требует задания начальной энергии (в N(E))" />
-                              <Label layoutX="14.0" layoutY="146.0" prefHeight="17.0" prefWidth="376.0" text="&quot;Общее число&quot; - число строк в SC****.dat" />
+                              <Label layoutX="14.0" layoutY="84.0" prefHeight="17.0" prefWidth="368.0" text="нет распылённых =&gt; поставьте галочку в SCATTER logSputter " />
+                              <Label layoutX="14.0" layoutY="108.0" prefHeight="27.0" prefWidth="439.0" text="&quot;Рассеяние энергии&quot; требует задания начальной энергии (в dN/dE(E))" />
+                              <Label layoutX="10.0" layoutY="134.0" prefHeight="27.0" prefWidth="502.0" text="&quot;Общее число&quot; - число строк в SC****.dat (в *.txt для TRIM)" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -167,12 +168,12 @@
                                  <font>
                                     <Font size="20.0" />
                                  </font></Button>
-                              <Label layoutX="14.0" layoutY="40.0" prefHeight="27.0" prefWidth="434.0" text="&quot;StringCount&quot; влияет на скорость вычисления, подбирается индивидуально" />
-                              <Label layoutX="14.0" layoutY="61.0" prefHeight="27.0" prefWidth="434.0" text="&quot;get *.txt&quot; переводит результаты работы SCATTER  в читаемый вид" />
-                              <Label layoutX="14.0" layoutY="82.0" prefHeight="27.0" prefWidth="524.0" text="N(θ) показываает рисует (и/или распыление) при  0&lt;θ&lt;180 и внедрение при 180&lt;θ&lt;360" />
+                              <Label layoutX="14.0" layoutY="61.0" prefHeight="27.0" prefWidth="563.0" text="&quot;get *.txt&quot; переводит результаты работы SCATTER  в читаемый вид (для TRIM не работает)" />
+                              <Label layoutX="14.0" layoutY="82.0" prefHeight="27.0" prefWidth="524.0" text="N(θ) показываает рассеяние (и/или распыление) при  0&lt;θ&lt;180 и внедрение при 180&lt;θ&lt;360" />
                               <Label layoutX="14.0" layoutY="102.0" prefHeight="27.0" prefWidth="524.0" text="Полные угловые распределения получаются при указании больших dφ, dθ " />
                               <Label layoutX="14.0" layoutY="125.0" prefHeight="27.0" prefWidth="524.0" text="delta E, delta φ, delta θ - шаг, а не разброс " />
-                              <Label layoutX="13.0" layoutY="142.0" prefHeight="27.0" prefWidth="467.0" text="Да пребудет с вами сила!" />
+                              <Label layoutX="13.0" layoutY="142.0" prefHeight="27.0" prefWidth="570.0" text="Если оставить число запущенных частиц равным 10, программа попытается оценить значение сама" />
+                              <Button layoutX="383.0" layoutY="14.0" mnemonicParsing="false" onAction="#readme" text="Справка" />
                            </children></AnchorPane>
                      </content>
                   </Tab>
@@ -180,7 +181,7 @@
             </TabPane>
          </items>
       </SplitPane>
-      <SplitPane layoutX="22.0" layoutY="229.0" prefHeight="229.0" prefWidth="305.0">
+      <SplitPane layoutX="22.0" layoutY="237.0" prefHeight="229.0" prefWidth="305.0">
          <items>
             <Pane prefHeight="221.0" prefWidth="299.0">
                <children>
@@ -222,7 +223,7 @@
                   </TextField>
                   <CheckBox fx:id="NThetaPhiY" layoutX="263.0" layoutY="151.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="21.0" />
                   <TextField fx:id="numberOfParticlesInScatter" alignment="TOP_CENTER" layoutX="21.0" layoutY="195.0" text="10" />
-                  <Label layoutX="27.0" layoutY="178.0" text="число запущенныхчастиц" />
+                  <Label layoutX="27.0" layoutY="178.0" text="число запущенных частиц" />
                   <CheckBox fx:id="getTXT" layoutX="247.0" layoutY="194.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="21.0" />
                   <Label layoutX="193.0" layoutY="199.0" text="get *.txt" />
                   <Separator layoutX="182.0" layoutY="186.0" prefHeight="0.0" prefWidth="119.0" />
@@ -230,6 +231,9 @@
             </Pane>
          </items>
       </SplitPane>
-      <Label fx:id="secret" layoutX="354.0" layoutY="419.0" prefHeight="17.0" prefWidth="168.0" textOverrun="WORD_ELLIPSIS" />
+      <Label fx:id="secret" layoutX="350.0" layoutY="418.0" prefHeight="17.0" prefWidth="168.0" textOverrun="WORD_ELLIPSIS" />
+      <Slider fx:id="FileType" layoutX="414.0" layoutY="456.0" />
+      <Label layoutX="350.0" layoutY="453.0" text="Scatter" />
+      <Label layoutX="565.0" layoutY="453.0" text="TRIM" />
    </children>
 </Pane>

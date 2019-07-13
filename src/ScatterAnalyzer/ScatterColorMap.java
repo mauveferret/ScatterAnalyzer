@@ -1,0 +1,125 @@
+package ScatterAnalyzer;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.PaintScale;
+import org.jfree.chart.renderer.xy.XYBlockRenderer;
+import org.jfree.chart.title.PaintScaleLegend;
+import org.jfree.data.xy.DefaultXYZDataset;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYZDataset;
+
+import javax.swing.*;
+import java.awt.*;
+
+
+public class ScatterColorMap {
+
+
+    private static int maxParticlesCount = 5;
+
+    int[][] array;
+   static double dPhi, dTheta;
+
+    public ScatterColorMap(String title, int[][] array, double dPhi, double dTheta) {
+        this.array = array;
+        this.dPhi = dPhi;
+        this.dTheta = dTheta;
+        JFrame f = new JFrame(title);
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("CrocoLogo.png")));
+        ChartPanel chartPanel = new ChartPanel(createChart(createDataset())) {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(640, 640);
+            }
+        };
+        chartPanel.setMouseZoomable(true, false);
+        f.add(chartPanel);
+        f.pack();
+        f.setLocationRelativeTo(null);
+        f.setVisible(true);
+        //return low value for the next plots
+        maxParticlesCount=5;
+    }
+
+    private static JFreeChart createChart(XYDataset dataset) {
+        NumberAxis xAxis = new NumberAxis("polar angle, degrees");
+        NumberAxis yAxis = new NumberAxis("polar angle, degrees");
+        XYPlot plot = new XYPlot(dataset, xAxis, yAxis, null);
+
+        XYBlockRenderer renderer = new XYBlockRenderer();
+        SpectrumPaintScale ps = new SpectrumPaintScale(0, maxParticlesCount);
+        renderer.setPaintScale(ps);
+        //colored dot's sizes
+        renderer.setBlockHeight(dTheta);
+        renderer.setBlockWidth(dTheta);
+        plot.setRenderer(renderer);
+        JFreeChart chart = new JFreeChart("Карта рассеяния частиц",
+                JFreeChart.DEFAULT_TITLE_FONT, plot, false);
+        NumberAxis scaleAxis = new NumberAxis("Число вылетевших частиц");
+        PaintScaleLegend legend = new PaintScaleLegend(ps, scaleAxis);
+        legend.setSubdivisionCount(126);
+        legend.setMargin(10, 10, 10, 10);
+
+
+        legend.setStripWidth(40);
+
+        legend.setBackgroundPaint(Color.WHITE);
+        chart.addSubtitle(legend);
+        chart.setBackgroundPaint(Color.WHITE);
+        return chart;
+    }
+
+    private  XYZDataset createDataset() {
+        DefaultXYZDataset dataset = new DefaultXYZDataset();
+        for (int i = 0; i < (int) (360/dPhi)+1; i++) {  //azimuth angle
+            double[][] data = new double[3][1000];
+            for (int j = 0; j < (int) (90/dTheta); j++) {    //polar angle
+                data[0][j] = j*dTheta * Math.cos(i*dPhi*2*3.14/360);
+                data[1][j] = j*dTheta * Math.sin(i*dPhi*2*3.14/360);
+                data[2][j] = array[i][j];
+
+                //finding optimal ColorScale
+                if (array[i][j]>maxParticlesCount) maxParticlesCount = array[i][j];
+
+            }
+            dataset.addSeries("series" + i, data);
+        }
+            return dataset;
+    }
+
+
+        private static class SpectrumPaintScale implements PaintScale {
+
+            //colors range
+            private static final float H1 = 0.9f;
+            private static final float H2 = 0f;
+            private final double lowerBound;
+            private final double upperBound;
+
+            public SpectrumPaintScale(double lowerBound, double upperBound) {
+                this.lowerBound = lowerBound;
+                this.upperBound = upperBound;
+            }
+
+            @Override
+            public double getLowerBound() {
+                return lowerBound;
+            }
+
+            @Override
+            public double getUpperBound() {
+                return upperBound;
+            }
+
+            @Override
+            public Paint getPaint(double value) {
+                float scaledValue = (float) (value / (getUpperBound() - getLowerBound()));
+                float scaledH = H1 + scaledValue * (H2 - H1);
+                return Color.getHSBColor(scaledH, 1f, 1f);
+            }
+        }
+    }

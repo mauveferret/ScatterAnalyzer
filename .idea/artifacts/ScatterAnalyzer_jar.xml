@@ -3,6 +3,8 @@
     <output-path>$PROJECT_DIR$/out/artifacts/ScatterAnalyzer_jar</output-path>
     <root id="archive" name="ScatterAnalyzer.jar">
       <element id="module-output" name="ScatterAnalyzer" />
+      <element id="extracted-dir" path="C:/Program Files/Java/jfreechart-1.5.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/Program Files/Java/jcommon-1.0.23.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

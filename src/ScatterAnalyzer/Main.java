@@ -17,18 +17,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
-import java.awt.*;
-import java.io.File;
 import java.io.InputStream;
 
 
-public class ScatterAnalyser extends Application {
+public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("Root.fxml"));
         primaryStage.setTitle("Scatter Analyzer");
-        primaryStage.getIcons().add(new Image( ScatterAnalyser.class.getResourceAsStream( "CrocoLogo.png" )));
+        primaryStage.getIcons().add(new Image( Main.class.getResourceAsStream( "CrocoLogo.png" )));
         primaryStage.setScene(new Scene(root, 640, 480));
         primaryStage.show();
     }
@@ -42,7 +40,7 @@ public class ScatterAnalyser extends Application {
     {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("SCATTER ONE LOVE");
-        dialogStage.getIcons().add(new Image( ScatterAnalyser.class.getResourceAsStream( "CrocoLogo.png" )));
+        dialogStage.getIcons().add(new Image( Main.class.getResourceAsStream( "CrocoLogo.png" )));
         dialogStage.initModality(Modality.NONE);
         NumberAxis x = new NumberAxis();
         NumberAxis y = new NumberAxis();
@@ -66,7 +64,7 @@ public class ScatterAnalyser extends Application {
     {
         Class<?> clazz = this.getClass();
         Stage HelpStage = new Stage();
-        HelpStage.getIcons().add(new Image( ScatterAnalyser.class.getResourceAsStream( "CrocoLogo.png" )));
+        HelpStage.getIcons().add(new Image( Main.class.getResourceAsStream( "CrocoLogo.png" )));
         HelpStage.setTitle("You do what you gotta do!");
         HelpStage.initModality(Modality.NONE);
         InputStream input2 = clazz.getResourceAsStream("yougottado.png");
@@ -83,15 +81,15 @@ public class ScatterAnalyser extends Application {
         HelpStage.setScene(scene2);
         HelpStage.show();
     }
-    public void showHelpPage()
+    public void showHelpPage(String pictureName)
     {
         Class<?> clazz = this.getClass();
         Stage HelpStage = new Stage();
-        HelpStage.getIcons().add(new Image( ScatterAnalyser.class.getResourceAsStream( "CrocoLogo.png" )));
+        HelpStage.getIcons().add(new Image( Main.class.getResourceAsStream( "CrocoLogo.png" )));
         HelpStage.setTitle("Справка");
         HelpStage.initModality(Modality.NONE);
-        InputStream input2 = clazz.getResourceAsStream("axes.png");
-        Image image2 = new Image(input2, 800, 659, false, true);
+        InputStream input2 = clazz.getResourceAsStream(pictureName);
+        Image image2 = new Image(input2, 850, 600, false, true);
         ImageView imageView2 = new ImageView(image2);
         FlowPane root = new FlowPane();
         //root.setPadding(new Insets(20));
@@ -100,14 +98,14 @@ public class ScatterAnalyser extends Application {
         //notification.setText("Установите угол  в пределах 0<t<90");
         StackPane root1 = new StackPane();
         //root.getChildren().add(notification);
-        Scene scene2 = new Scene(root,800,650);
+        Scene scene2 = new Scene(root,850,600);
         HelpStage.setScene(scene2);
         HelpStage.show();
     }
     public void showNotification(String notificationText )
     {
         Stage NotificationStage = new Stage();
-        NotificationStage.getIcons().add(new Image( ScatterAnalyser.class.getResourceAsStream( "CrocoLogo.png" )));
+        NotificationStage.getIcons().add(new Image( Main.class.getResourceAsStream( "CrocoLogo.png" )));
         NotificationStage.setTitle("Предупреждение");
         NotificationStage.initModality(Modality.NONE);
         Label notification = new Label();
@@ -122,7 +120,7 @@ public class ScatterAnalyser extends Application {
     public void showNotificationAboutFile()
     {
         Stage NotificationStage = new Stage();
-        NotificationStage.getIcons().add(new Image( ScatterAnalyser.class.getResourceAsStream( "CrocoLogo.png" )));
+        NotificationStage.getIcons().add(new Image( Main.class.getResourceAsStream( "CrocoLogo.png" )));
         NotificationStage.setTitle("Предупреждение");
         NotificationStage.initModality(Modality.NONE);
         Label notification = new Label();
@@ -136,7 +134,7 @@ public class ScatterAnalyser extends Application {
     public void showNotificationAboutFileType()
     {
         Stage NotificationStage = new Stage();
-        NotificationStage.getIcons().add(new Image( ScatterAnalyser.class.getResourceAsStream( "CrocoLogo.png" )));
+        NotificationStage.getIcons().add(new Image( Main.class.getResourceAsStream( "CrocoLogo.png" )));
         NotificationStage.setTitle("Предупреждение");
         NotificationStage.initModality(Modality.NONE);
         Label notification = new Label();

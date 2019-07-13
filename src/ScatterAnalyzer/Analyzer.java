@@ -2,6 +2,7 @@ package ScatterAnalyzer;
 
 import javafx.application.Platform;
 
+import java.awt.*;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -10,7 +11,7 @@ import java.util.Stack;
 
 public class Analyzer  {
 
-    private int threadCount=6;
+    private int  threadCount=6;
     private Stack<Thread> threadStack = new Stack<>();
     private Stack<Integer> filesPartsStack = new Stack<>();
     private long countLines, scatteredEnergy=0;
@@ -19,6 +20,7 @@ public class Analyzer  {
     private double dThetaNTheta,phiNTheta,dPhiNTheta; //for polar spectrum
     private double NdThetaPhi=5, NThetadPhi=5; //for surface distribution
     private  boolean NER, NEY, NThetaR, NThetaY, NThetaPhiR, NThetaPhiY, getTXT; // buttons for calculating spectrum
+    private boolean isScatter;
     private int energySpectrum[] = new int[50000];  //forms energyspectra
     private int polarAngleSpectrum[] = new int[50000]; // forms polar spectra
     private int SurfaceDistribution[][] = new int[1000][1000]; //forms surface spectra i - phi, j - theta
@@ -29,7 +31,7 @@ public class Analyzer  {
 
     public double[] calculateSpectra(String file, int E0, int dE,  double thetaNE1, double dThetaNE1, double phiNE1, double dPhiNE1, int threadCount,
                                      double dThetaNTheta, double phiNTheta1, double dPhiNTheta1, boolean NER, boolean NEY,
-                                     boolean NThetaR, boolean NThetaY, int StringCount, boolean NThetaPhiR, boolean NThetaPhiY, double NThetadPhi, double NdThetaPhi, boolean getTXT)
+                                     boolean NThetaR, boolean NThetaY, int StringCount, boolean NThetaPhiR, boolean NThetaPhiY, double NThetadPhi, double NdThetaPhi, boolean getTXT, boolean isScatter)
     {
         //start counting time
         long t=System.currentTimeMillis();
@@ -54,7 +56,7 @@ public class Analyzer  {
             this.NThetadPhi=NThetadPhi;
             this.getTXT=getTXT;
             countLines = this.CountLines(file);
-
+            this.isScatter=isScatter;
             //create several threads for parallel file reading
             //it doesn't actually work, so thread is set to 1.
             for (int i=0;i<threadCount;i++) {
@@ -64,8 +66,8 @@ public class Analyzer  {
                     @Override
                     public void run() {
                         if (getTXT) Analyzer.this.CreateTXT(file);
-                         Analyzer.this.ScatterLogStringsAnalyzer(file);
-
+                         if (isScatter) Analyzer.this.ScatterLogStringsAnalyzer(file);
+                         else Analyzer.this.TRIMLogStringsAnalyzer(file);
                     }
                 });
                 threadStack.push(thread);
@@ -83,7 +85,7 @@ public class Analyzer  {
                 if (NER) type="R";
                 if (NEY) type="Y";
                 if (NER&&NEY) type="RY";
-                pathToOutputFileForEnergySpectrum = pathToOutputFileForEnergySpectrum + "ENERGY_E0_type_"+type+"_" + E0 + "_angle_" + thetaNE1 + "_resolution_" + dE + "_delta_" + dThetaNE1 + ".txt";
+                pathToOutputFileForEnergySpectrum = pathToOutputFileForEnergySpectrum + "_ENERGY_E0_type_"+type+"_" + E0 + "_angle_" + thetaNE1 + "_resolution_" + dE + "_delta_" + dThetaNE1 + ".txt";
                 FileOutputStream energyWriter = new FileOutputStream(pathToOutputFileForEnergySpectrum);
 
                 for (int i = 0; i <= (int) Math.round(E0 / dE); i++) {   //log spectrum
@@ -98,7 +100,7 @@ public class Analyzer  {
             {
                 String pathToOutputFileForEnergySpectrum = file.substring(0, file.length() - 4);
 
-                pathToOutputFileForEnergySpectrum = pathToOutputFileForEnergySpectrum + "SURFACE_" + "_dTheta_" + NdThetaPhi + "_dPhi_" + NThetadPhi +".txt";
+                pathToOutputFileForEnergySpectrum = pathToOutputFileForEnergySpectrum + "_SURFACE_" + "_dTheta_" + NdThetaPhi + "_dPhi_" + NThetadPhi +".txt";
                 FileOutputStream surfaceWriter = new FileOutputStream(pathToOutputFileForEnergySpectrum);
                 String stroka="Phi";
                 for (int i = 0; i <=(int) Math.round(90 / NdThetaPhi); i++)
@@ -118,6 +120,12 @@ public class Analyzer  {
                     stroka = "";
                 }
                 surfaceWriter.close();
+                EventQueue.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        new ScatterColorMap("ScatterAnalyzer", SurfaceDistribution, NThetadPhi, NdThetaPhi);
+                    }
+                });
             }
             //logging polar angle spectrum
 
@@ -128,7 +136,7 @@ public class Analyzer  {
                 if (NThetaR&&NThetaY) type="RY";
                 //File for logging polarAngle spectrum
                 String pathToOutputFileForPolarSpectrum = file.substring(0, file.length() - 4);
-                pathToOutputFileForPolarSpectrum = pathToOutputFileForPolarSpectrum + "POLARANGLE_type_"+type+" " + "_phi_" + phiNTheta1 + "_deltaPhi_ "+dPhiNTheta1+ "_deltaTheta_" + dThetaNTheta + ".txt";
+                pathToOutputFileForPolarSpectrum = pathToOutputFileForPolarSpectrum + "_POLARANGLE_type_"+type+" " + "_phi_" + phiNTheta1 + "_deltaPhi_ "+dPhiNTheta1+ "_deltaTheta_" + dThetaNTheta + ".txt";
                 FileOutputStream polarWriter = new FileOutputStream(pathToOutputFileForPolarSpectrum);
 
                 for (int i = 0; i <= (int) Math.round(360 / dThetaNTheta); i++) {   //log spectrum
@@ -145,8 +153,8 @@ public class Analyzer  {
                 @Override
                 public void run() {
 
-                    if (NER||NEY) new ScatterAnalyser().showGraph(energySpectrum, E0, dE, "Энергетический спектр, phi = "+phiNE1+" theta = "+thetaNE1);
-                    if (NThetaR||NThetaY) new ScatterAnalyser().showGraph(polarAngleSpectrum,360, dThetaNTheta, "угловой спектр, phi = "+phiNTheta1);
+                    if (NER||NEY) new Main().showGraph(energySpectrum, E0, dE, "Энергетический спектр, phi = "+phiNE1+" theta = "+thetaNE1);
+                    if (NThetaR||NThetaY) new Main().showGraph(polarAngleSpectrum,360, dThetaNTheta, "угловой спектр, phi = "+phiNTheta1);
                 }
             });
 
@@ -274,6 +282,69 @@ public class Analyzer  {
 
             }
         }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+
+        }
+    }
+
+    private void  TRIMLogStringsAnalyzer(String path) {
+        try {
+
+            float sort = -1, en = 0, cosx, cosy, cosz;
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            //rubbish lines
+            String line=br.readLine();
+            while (!line.contains("TRIM Calc.")) line=br.readLine();
+            //two rubbish lines must be excluded
+            br.readLine();
+            br.readLine();
+            //now lets sort
+
+            while (br.ready()) {
+                line = br.readLine();
+                if (line.startsWith("B")) sort = -1;
+                else if (line.startsWith("S")) sort = 0;
+                else if (line.startsWith("T")) sort = 1;
+                line=line.substring(line.indexOf(","));
+                en=Float.parseFloat(line.substring(0,line.indexOf(" ")).replace(",","0."));
+                //find "cosz" column
+                if (line.endsWith(" ")) line = line.substring(0, line.length() - 1);
+                cosy = Float.parseFloat(line.substring(line.lastIndexOf(" ") + 1).replace(",", "0."));
+                //find "cosy" column
+                line = line.substring(0, line.lastIndexOf(" "));
+                if (line.endsWith(" ")) line = line.substring(0, line.length() - 1);
+                cosx = Float.parseFloat(line.substring(line.lastIndexOf(" ") + 1).replace(",", "0."));
+                //find "cosx" column
+                line = line.substring(0, line.lastIndexOf(" "));
+                if (line.endsWith(" ")) line = line.substring(0, line.length() - 1);
+                cosz = -1* Float.parseFloat(line.substring(line.lastIndexOf(" ") + 1).replace(",", "0."));
+
+                //отвергаем "оборванную" строку
+                if (cosx > 1 || cosy > 1 || cosz > 1) {
+                    cosx = 0;
+                    cosy = 0;
+                    cosz = 0;  //одна битая точка никому не повредит)
+                }
+
+                //Here is several spectra calculators
+                if (NER || NEY) DoesTheParticleMatchToEnergySpectrum(en, sort, cosx, cosy, cosz);
+                if (NThetaY || NThetaR) DoesTheParticleMatchToPolarAngleSpectrum(en, sort, cosx, cosy, cosz);
+                if (NThetaPhiR || NThetaPhiY) DoesTheParticleMatchToSurfaceSpectrum(sort, cosx, cosy, cosz);
+                //calculate some scattering constants
+                count++;
+                if ((sort < -0.5) && (cosz > 0)) {
+                    scattered++;
+                    scatteredEnergy += en;
+                }
+                if (cosz < 0.0) projected++;
+                if ((sort > -0.5) && (cosz > 0)) sputtered++;
+
+            }
+            br.close();
+        }
         catch (Exception e)
         {
             e.printStackTrace();
@@ -303,11 +374,6 @@ public class Analyzer  {
             if ((Math.abs(Math.atan(Math.sqrt(x * x + y * y) /z) - thetaNE) < dThetaNE) )
             {
 
-                /*if (NER && !NEY) if (sort<-0.5) AddParticleToEnergySpectrum(en);
-                if (!NER && NEY) if (sort>-0.5) AddParticleToEnergySpectrum(en);
-                if (NER && NEY)  AddParticleToEnergySpectrum(en);
-
-                 */
                 if ((NER && !NEY&&(sort<-0.5))||(!NER && NEY&&(sort>-0.5))||(NER&&NEY))
                     AddParticleToEnergySpectrum(en);
             }
@@ -340,10 +406,7 @@ public class Analyzer  {
                 local= (float) (180-57.2958*Math.atan(z/Math.sqrt(x * x + y * y)));
             else
                 local=(float) (180+57.2958*Math.atan(-1*z/Math.sqrt(x * x + y * y)));
-            /*f (NThetaR && !NThetaY) if (sort<-0.5) AddParticleToPolarAngleSpectrum( local);
-            if (!NThetaR && NThetaY) if (sort>-0.5) AddParticleToPolarAngleSpectrum( local);
-            if (NThetaR && NThetaY)  AddParticleToPolarAngleSpectrum( local);
-             */
+
             if ((NThetaR && !NThetaY&&(sort<-0.5))||(!NThetaR && NThetaY&&(sort>-0.5))||(NThetaR&&NThetaY))
                 AddParticleToPolarAngleSpectrum( local);
         }

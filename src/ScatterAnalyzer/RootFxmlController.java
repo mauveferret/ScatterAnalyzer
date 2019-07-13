@@ -1,15 +1,14 @@
 package ScatterAnalyzer;
 import javafx.application.Platform;
-import javafx.application.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URLDecoder;
 
 public class RootFxmlController {
 
@@ -85,10 +84,23 @@ public class RootFxmlController {
     @FXML
     private TextField numberOfParticlesInScatter;
     @FXML TextField energyScattering;
+    //TRIM
+    @FXML
+    private Slider FileType;
 
 
     String path="lol";
 
+    @FXML
+    public void readme()
+    {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                new Main().showHelpPage("readme.png");
+            }
+        });
+    }
     @FXML
     public void pushed() {
 
@@ -101,8 +113,8 @@ public class RootFxmlController {
            String myJarPath = RootFxmlController.class.getProtectionDomain().getCodeSource().getLocation().getPath();
            String dirPath = new File(myJarPath).getParent();
            FileChooser.ExtensionFilter ScatterFilter =
-                   new FileChooser.ExtensionFilter("SCATTER (.dat)", "*.dat");
-           fileChooser.setTitle("Необходимо выбрать файл SC******.dat");
+                   new FileChooser.ExtensionFilter("SCATTER/TRIM (.dat, .txt)", "*.dat","*.txt");
+           fileChooser.setTitle("Необходимо выбрать файл SC******.dat (или *.txt в случае TRIM)");
            fileChooser.getExtensionFilters().add(ScatterFilter);
            fileChooser.setSelectedExtensionFilter(ScatterFilter);
            fileChooser.setInitialDirectory(new File(dirPath));
@@ -112,6 +124,30 @@ public class RootFxmlController {
            fileChooser.setInitialDirectory(new File(path.substring(0, path.lastIndexOf("\\"))));
        File  file = fileChooser.showOpenDialog(button.getScene().getWindow());
        path = file.getAbsolutePath();
+
+        if (file.getPath().contains("SC")) FileType.setValue(0);
+        else
+       if (file.getPath().contains(".txt"))
+       {
+           try {
+
+               FileType.setValue(100);
+               BufferedReader br = new BufferedReader(new FileReader(path));
+               //rubbish lines
+               String line = br.readLine();
+               while (!line.contains("TRIM Calc.")) line = br.readLine();
+               //find out the initial energy
+               int energy = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf("keV") - 1)) * 1000;
+               E0.setText(""+energy);
+               energyResolution.setText(""+energy/100);
+               br.close();
+           }
+           catch (Exception e)
+           {
+
+           }
+       }
+
 }
 
     @FXML
@@ -122,7 +158,7 @@ public class RootFxmlController {
             if (t < 0 || t > 90) {
                 polarAngleNE.setText("71");
 
-                new ScatterAnalyser().showNotification("Установите угол  в пределах 0<=t<=90");
+                new Main().showNotification("Установите угол  в пределах 0<=t<=90");
             }
         }
         catch (Exception e)
@@ -134,7 +170,7 @@ public class RootFxmlController {
             if (t < 0 || t > 180) {
                 azimuthAngleNE.setText("0");
 
-                new ScatterAnalyser().showNotification("Установите угол  в пределах 0<=t<=180");
+                new Main().showNotification("Установите угол  в пределах 0<=t<=180");
             }
         }
         catch (Exception e)
@@ -146,7 +182,7 @@ public class RootFxmlController {
             if (t < 0 || t > 179 ) {
                 azimuthAngleNtheta.setText("0");
 
-                new ScatterAnalyser().showNotification("Установите угол  в пределах 0<=t<180");
+                new Main().showNotification("Установите угол  в пределах 0<=t<180");
             }
         }
         catch (Exception e)
@@ -162,7 +198,7 @@ public class RootFxmlController {
             if (t <= 0 ) {
                 dPolarAngleNE.setText("5");
 
-                new ScatterAnalyser().showNotification("Установите разброс по углу больше нуля!");
+                new Main().showNotification("Установите разброс по углу больше нуля!");
 
             }
         }
@@ -175,7 +211,7 @@ public class RootFxmlController {
             if (t <= 0 ) {
                 dAzimuthAngleNE.setText("5");
 
-                new ScatterAnalyser().showNotification("Установите разброс по углу больше нуля!");
+                new Main().showNotification("Установите разброс по углу больше нуля!");
 
             }
         }
@@ -188,7 +224,7 @@ public class RootFxmlController {
             if (t <= 0 ) {
                 dAzimuthAngleNtheta.setText("5");
 
-                new ScatterAnalyser().showNotification("Установите разброс по углу больше нуля!");
+                new Main().showNotification("Установите разброс по углу больше нуля!");
 
             }
         }
@@ -207,8 +243,8 @@ public class RootFxmlController {
             energyResolution.setText((int) (E/100)+"");
             if (E==100000)
             {
-                new ScatterAnalyser().Futurama();
-                new ScatterAnalyser().showNotification("ничто не вечно под Луной ... кроме SCATTER");
+                new Main().Futurama();
+                new Main().showNotification("ничто не вечно под Луной ... кроме SCATTER");
             }
         }
         catch (Exception e)
@@ -224,7 +260,7 @@ public class RootFxmlController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                new ScatterAnalyser().Futurama();
+                new Main().Futurama();
             }
         });
     }
@@ -256,7 +292,7 @@ public class RootFxmlController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                new ScatterAnalyser().showHelpPage();
+                new Main().showHelpPage("axes.png");
             }
         });
 
@@ -271,28 +307,10 @@ public class RootFxmlController {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    new ScatterAnalyser().showNotificationAboutFile();
+                    new Main().showNotificationAboutFile();
                 }
             });
         }
-        else if (!path.contains(".dat")||!path.contains("SC"))
-        {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    new ScatterAnalyser().showNotificationAboutFileType();
-                }
-            });
-        }
-            /* if  else  (!(NER.isSelected() || NEY.isSelected()|| NThetaR.isSelected()||NThetaY.isSelected()||NThetaPhi.isSelected()))
-        {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    new ScatterAnalyser().showNotification("Считать нечего!(Рaсставьте галочки)");
-                }
-            });
-        }  */
 
         else  if (accessGranted)
         {
@@ -324,15 +342,19 @@ public class RootFxmlController {
 
                     E0.setText("Ждите");
 
+                    boolean IsScatter = (FileType.getValue() <50);
+
                    double[] data = new Analyzer().calculateSpectra(path, E, dE , thetaNE ,dThetaNE, phiNE,dphiNE, 1, dThetaNTheta,
                            phiNTheta, dPhiNTheta, NER.isSelected(), NEY.isSelected(), NThetaR.isSelected(),
-                           NThetaY.isSelected(), Integer.parseInt(StringCount.getText()), NThetaPhiR.isSelected(),NThetaPhiY.isSelected(), NThetadPhi1, NdThetaPhi1, getTXT.isSelected());
+                           NThetaY.isSelected(), Integer.parseInt(StringCount.getText()), NThetaPhiR.isSelected(),NThetaPhiY.isSelected(), NThetadPhi1, NdThetaPhi1, getTXT.isSelected(), IsScatter);
                    //path="lol";
+                    E0.setText(E+"");
                     double initialCount=0;
                     if (Double.parseDouble(numberOfParticlesInScatter.getText())<15) initialCount=Math.pow(10,  (int) (Math.ceil(Math.log10(data[1] + 0.5))) );
                     else initialCount=Double.parseDouble(numberOfParticlesInScatter.getText());
                     time.setText(""+data[0]);
                     count.setText(data[1]+"");
+                    if ((Double.parseDouble(numberOfParticlesInScatter.getText())<15)&(!IsScatter)) initialCount=data[1];
                     scattered.setText(new BigDecimal(data[2]/initialCount).setScale(5, RoundingMode.UP).doubleValue()+"");
                     sputtered.setText(new BigDecimal(data[3]/initialCount).setScale(5, RoundingMode.UP).doubleValue()+"");
                     projected.setText(new BigDecimal(data[4]/initialCount).setScale(5, RoundingMode.UP).doubleValue()+"");
