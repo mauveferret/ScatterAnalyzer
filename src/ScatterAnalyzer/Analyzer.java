@@ -23,9 +23,13 @@ public class Analyzer  {
     private boolean isScatter;
     private int energySpectrum[] = new int[50000];  //forms energyspectra
     private int polarAngleSpectrum[] = new int[50000]; // forms polar spectra
-    private int SurfaceDistribution[][] = new int[1000][1000]; //forms surface spectra i - phi, j - theta
+    private double SurfaceDistribution[][] = new double[1000][1000]; //forms surface spectra i - phi, j - theta
     private double count=0, scattered=0, projected=0, sputtered=0; //scattering constants
     private String allParticlesData;
+
+    //i hate this shit and don't want to continue developing it, so now its pornsolutions time
+    private int colorMapParticlesCount;
+
 
     int stringCountPerCycle; // amount of strings readed per cycle in ScatterLogStringsAnalyzer
 
@@ -109,9 +113,13 @@ public class Analyzer  {
                 }
                 stroka=stroka+"\n";
                 surfaceWriter.write(stroka.getBytes());
+                double coefficientForColorMap=0;
+                if (NThetaPhiR) coefficientForColorMap += scattered/colorMapParticlesCount;
+                if (NThetaPhiY) coefficientForColorMap+=sputtered/colorMapParticlesCount;
                 for (int i = 0; i <=(int) Math.round(360 / NThetadPhi); i++) {
                     stroka=(int) (i*NThetadPhi)+" ";
                     for (int j = 0; j <= (int) Math.round(90 / NdThetaPhi); j++) {
+                        SurfaceDistribution[i][j] = SurfaceDistribution[i][j]*coefficientForColorMap;
                         if (i<(int) Math.round(360 / NdThetaPhi)) stroka = stroka + SurfaceDistribution[i][j] + " ";
                         else  stroka=stroka+SurfaceDistribution[i-1][j]+" ";
                     }
@@ -419,17 +427,26 @@ public class Analyzer  {
         if ((x >= 0) && (y > 0) && (z > 0))
         {
             if ((NThetaPhiR && !NThetaPhiY&&(sort<-0.5))||(!NThetaPhiR && NThetaPhiY&&(sort>-0.5))||(NThetaPhiR&&NThetaPhiY))
+            {
                 SurfaceDistribution[(int) ((57.2958 * Math.atan(y / x) / NThetadPhi))][(int) (Math.round(localTheta / NdThetaPhi))]++;
+                colorMapParticlesCount++;
+            }
         }
         if ((x < 0) && (z > 0))
         {
             if ((NThetaPhiR && !NThetaPhiY&&(sort<-0.5))||(!NThetaPhiR && NThetaPhiY&&(sort>-0.5))||(NThetaPhiR&&NThetaPhiY))
+            {
                 SurfaceDistribution[(int) (((180 + 57.2958 * Math.atan(y / x)) / NThetadPhi))][(int) (Math.round(localTheta / NdThetaPhi))]++;
+                colorMapParticlesCount++;
+            }
         }
         if ((x > 0) && (y < 0) && (z > 0))
         {
             if ((NThetaPhiR && !NThetaPhiY&&(sort<-0.5))||(!NThetaPhiR && NThetaPhiY&&(sort>-0.5))||(NThetaPhiR&&NThetaPhiY))
+            {
                 SurfaceDistribution[(int) ((360 + 57.2958 * Math.atan(y / x)) / NThetadPhi)][(int) (Math.round(localTheta / NdThetaPhi))]++;
+                colorMapParticlesCount++;
+            }
         }
 
     }

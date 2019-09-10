@@ -18,12 +18,12 @@ import java.awt.*;
 public class ScatterColorMap {
 
 
-    private static int maxParticlesCount = 5;
+    private static double maxParticlesCount = 5;
 
-    int[][] array;
+    double[][] array;
    static double dPhi, dTheta;
 
-    public ScatterColorMap(String title, int[][] array, double dPhi, double dTheta) {
+    public ScatterColorMap(String title, double[][] array, double dPhi, double dTheta) {
         this.array = array;
         this.dPhi = dPhi;
         this.dTheta = dTheta;
