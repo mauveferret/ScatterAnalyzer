@@ -1,27 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ArtifactsWorkspaceSettings">
-    <artifacts-to-build>
-      <artifact name="ScatterAnalyzer:jar" />
-    </artifacts-to-build>
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9eda99a-1422-4274-a6a5-b1652bbf348e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/ScatterAnalyzer_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/ScatterAnalyzer_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ScatterAnalyzer_jar/ScatterAnalyzer.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ScatterAnalyzer_jar/ScatterAnalyzer.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ScatterAnalyzer/Analyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ScatterAnalyzer/Analyzer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ScatterAnalyzer/ScatterColorMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ScatterAnalyzer/ScatterColorMap.java" afterDir="false" />
-    </list>
+    <list default="true" id="0646ca9e-0c42-444d-9b25-9d3b44ee2ca1" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="DefaultGradleProjectSettings">
-    <option name="isMigrated" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -30,36 +15,38 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>sur</find>
-      <find>surf</find>
-      <find>Typ</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1QZ7jHfiqzGU7McLNhcmpOsv4s1" />
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1W5Zuuv5qJmKSWi5RIaqTcovHUO" />
   <component name="PropertiesComponent">
-    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
-    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
-    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
-    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="scatteranalyzer" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/ru.mauveferret/fxml" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15429688" />
+    <property name="project.structure.side.proportion" value="0.34988454" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="ScatterAnalyzer" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources\ru.mauveferret\fxml" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\java" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\target\classes" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\mi\Desktop\ScatterAnalyzer\src\ScatterAnalyzer" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources\ru\mauveferret" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources\ru.mauveferret" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources\pics" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources\fxml" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\java" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -76,44 +63,26 @@
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ScatterAnalyzer.Main" />
+      <option name="MAIN_CLASS_NAME" value="ru.mauveferret.Main" />
       <module name="ScatterAnalyzer" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
   </component>
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c9eda99a-1422-4274-a6a5-b1652bbf348e" name="Default Changelist" comment="" />
-      <created>1561759615211</created>
+      <changelist id="0646ca9e-0c42-444d-9b25-9d3b44ee2ca1" name="Default Changelist" comment="" />
+      <created>1578441641632</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1561759615211</updated>
-      <workItem from="1567966399321" duration="548000" />
-      <workItem from="1567966969314" duration="4000" />
-      <workItem from="1568113370692" duration="363000" />
-      <workItem from="1568129651837" duration="988000" />
+      <updated>1578441641632</updated>
+      <workItem from="1578441644837" duration="11454000" />
+      <workItem from="1578470631100" duration="192000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
 </project>
