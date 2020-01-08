@@ -2,61 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0646ca9e-0c42-444d-9b25-9d3b44ee2ca1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Analyzer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/GUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/RootFxmlController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/ScatterColorMap.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ru/mauveferret/fxml/Root.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ru/mauveferret/pics/CrocoLogo.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ru/mauveferret/pics/CrocoLogo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ru/mauveferret/pics/axes.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ru/mauveferret/pics/readme.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ru/mauveferret/pics/yougottado.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/ScatterAnalyzer-3.4-jar-with-dependencies.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/ScatterAnalyzer-3.4.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/Analyzer$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/Analyzer$2.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/Analyzer$3.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/Analyzer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/GUI.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/Main.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/RootFxmlController$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/RootFxmlController$2.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/RootFxmlController$3.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/RootFxmlController$4.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/RootFxmlController$5.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/RootFxmlController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/ScatterColorMap$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/ScatterColorMap$SpectrumPaintScale.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/ScatterColorMap.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/fxml/Root.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/pics/CrocoLogo.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/pics/CrocoLogo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/pics/axes.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/pics/readme.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/ru/mauveferret/pics/yougottado.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/hamcrest-core-1.3.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/javafx-base-13-win.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/javafx-base-13.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/javafx-controls-13-win.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/javafx-controls-13.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/javafx-fxml-13-win.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/javafx-fxml-13.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/javafx-graphics-13-win.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/javafx-graphics-13.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/jcommon-1.0.16.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/jfoenix-9.0.9.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/jfreechart-1.0.13.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/junit-4.12.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/libs/log4j-1.2.17.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -135,7 +81,7 @@
       <updated>1578441641632</updated>
       <workItem from="1578441644837" duration="11454000" />
       <workItem from="1578470631100" duration="192000" />
-      <workItem from="1578470856420" duration="267000" />
+      <workItem from="1578470856420" duration="613000" />
     </task>
     <task id="LOCAL-00001" summary="wrapped in maven, auto exe creating made, now will work without external JavaFX with Java 11+">
       <created>1578470961177</created>
@@ -151,7 +97,21 @@
       <option name="project" value="LOCAL" />
       <updated>1578471111533</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="wrapped in maven, auto exe creating made, now will work without external JavaFX with Java 11+">
+      <created>1578471243636</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1578471243636</updated>
+    </task>
+    <task id="LOCAL-00004" summary="some gitIgnore improvements">
+      <created>1578471311027</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1578471311027</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -170,6 +130,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="wrapped in maven, auto exe creating made, now will work without external JavaFX with Java 11+" />
-    <option name="LAST_COMMIT_MESSAGE" value="wrapped in maven, auto exe creating made, now will work without external JavaFX with Java 11+" />
+    <MESSAGE value="some gitIgnore improvements" />
+    <option name="LAST_COMMIT_MESSAGE" value="some gitIgnore improvements" />
   </component>
 </project>

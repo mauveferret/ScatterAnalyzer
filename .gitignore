@@ -7,5 +7,6 @@
 *.iml
 out
 gen
-ScatterAnalyzer.exe
+.exe
 src/test/
+/target
