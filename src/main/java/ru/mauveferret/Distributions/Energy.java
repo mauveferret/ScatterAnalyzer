@@ -35,15 +35,10 @@ public class Energy extends Distribution{
 
     public void check (double x, double y, double z, String someSort, double E)
     {
-        if (((x>0)&&(y>0&&(z>0))&&(Math.abs(Math.atan(y / x) - phi) < dPhi))||
-                ((x>0)&&(y<0)&&(z>0)&&(Math.abs(-1*Math.atan(y / x) - phi) < dPhi))||
-                ((x<0)&&(z>0)&&(Math.abs(3.14+Math.atan(y / x) - phi) < dPhi)))
-        {
-            if ((Math.abs(Math.atan(Math.sqrt(x * x + y * y) /z) - theta) < dTheta) )
-            {
-                if (sort.contains(someSort)) energySpectrum[(int) Math.round(E/dE)]++;
-            }
-        }
+       PolarAngles angle = new PolarAngles(x,y,z);
+       if (angle.doesAngleMatch(theta,dTheta,true) && angle.doesAngleMatch(phi,dPhi,false))
+           if (sort.contains(someSort))
+               energySpectrum[(int) Math.round(E/dE)]++;
     }
 
     public int[] getSpectrum() {

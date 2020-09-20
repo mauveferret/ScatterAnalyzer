@@ -126,7 +126,8 @@ public class Scatter extends ParticleInMatterCalculator {
                             break;
                             case "anglemap": ((AngleMap) distr).check(cosx,cosy,cosz,sort);
                             break;
-                            case "gettxt": ((getTXT) distr).check(sort+" "+en+" "+cosx+" "+cosy+" "+cosz+"\n");
+                            case "gettxt": ((getTXT) distr).check(cosx,cosy,cosz,sort,en);
+                            break;
                         }
                     }
 

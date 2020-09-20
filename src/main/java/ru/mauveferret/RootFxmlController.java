@@ -403,7 +403,6 @@ public class RootFxmlController {
                     //if (Double.parseDouble(numberOfParticlesInScatter.getText())<15) initialCount=Math.pow(10,  (int) (Math.ceil(Math.log10(data[1] + 0.5))) );
                    // else initialCount=Double.parseDouble(numberOfParticlesInScatter.getText());
                     time.setText(""+yourCalcuator.time);
-                    System.out.println(yourCalcuator.time);
                     count.setText(yourCalcuator.projectileAmount+"");
                     StringCount.setText(yourCalcuator.particleCount+"");
 

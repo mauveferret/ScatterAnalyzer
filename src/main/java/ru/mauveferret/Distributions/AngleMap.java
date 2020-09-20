@@ -18,7 +18,7 @@ public class AngleMap extends Distribution{
         this.dPhi = dPhi;
         this.dTheta = dTheta;
         //TODO 180 or 360?
-        angleMap = new double[(int) Math.ceil(360/dTheta)+1][(int) Math.ceil(90/dPhi)+1];
+        angleMap = new double[(int) Math.ceil(360/dTheta)+1][(int) Math.ceil(180/dPhi)+1];
         pathToLog+="_dphi "+dPhi+"_dTheta"+dTheta+"_time "+ ((int ) (Math.random()*100))+".txt";
         headerComment+=" dPhi "+dPhi+"dTheta "+dTheta+"            |"+"\n";
         headerComment+="|----------------------------------------------------------------------|"+"\n";
@@ -26,31 +26,14 @@ public class AngleMap extends Distribution{
 
     public  void check (double x, double y, double z, String someSort)
     {
-        double localTheta = 57.2958 * Math.atan(Math.sqrt(x * x + y * y) / Math.abs(z));
-        if ((x >= 0) && (y > 0) && (z > 0))
-        {
+        PolarAngles angles = new PolarAngles(x,y,z);
+
             if (sort.contains(someSort))
             {
-                angleMap[(int) ((57.2958 * Math.atan(y / x) / dPhi))][(int) (Math.round(localTheta / dTheta))]++;
+                angleMap[(int) (Math.round(angles.getPolar() / dTheta))][(int) (( angles.getAzimuth()/ dPhi))]++;
                 particlesCount++;
             }
-        }
-        if ((x < 0) && (z > 0))
-        {
-            if (sort.contains(someSort))
-            {
-                angleMap[(int) (((180 + 57.2958 * Math.atan(y / x)) / dPhi))][(int) (Math.round(localTheta / dTheta))]++;
-                particlesCount++;
-            }
-        }
-        if ((x > 0) && (y < 0) && (z > 0))
-        {
-            if (sort.contains(someSort))
-            {
-                angleMap[(int) ((360 + 57.2958 * Math.atan(y / x)) / dPhi)][(int) (Math.round(localTheta / dTheta))]++;
-                particlesCount++;
-            }
-        }
+
     }
 
     public int[]getSpectrum() {

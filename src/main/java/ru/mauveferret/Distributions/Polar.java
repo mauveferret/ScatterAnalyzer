@@ -28,30 +28,10 @@ public class Polar extends Distribution {
 
     public void check (double x, double y, double z, String someSort)
     {
-
-        if (((x>0)&&(y>0)&&((Math.abs(Math.atan(y / x) - phi) < dPhi)))||
-                ((x<0)&&(y>0)&&((3.14+Math.abs(Math.atan(y / x) - phi) < dPhi))))
-        {
-            float local=0;
-            if (z>=0)
-                local= (float) (57.2958*Math.atan(z/Math.sqrt(x * x + y * y)));
-            else
-                local=(float) (360-57.2958*Math.atan(-1*z/Math.sqrt(x * x + y * y)));
-
-            if (sort.contains(someSort)) polarAngleSpectrum[Math.round((int) (local / (dTheta)))]++;
-        }
-
-        if (((x<0)&&(y<0)&&((Math.abs(Math.atan(y / x) - phi) < dPhi)))||
-                ((x>0)&&(y<0)&&((3.14+Math.abs(Math.atan(y / x) - phi) < dPhi))))
-        {
-            float local=0;
-            if (z>=0)
-                local= (float) (180-57.2958*Math.atan(z/Math.sqrt(x * x + y * y)));
-            else
-                local=(float) (180+57.2958*Math.atan(-1*z/Math.sqrt(x * x + y * y)));
-
-            if (sort.contains(someSort)) polarAngleSpectrum[Math.round((int) (local / (dTheta)))]++;
-        }
+        PolarAngles angles = new PolarAngles(x,y,z);
+        if (angles.doesAngleMatch(phi, dPhi, true))
+            if (sort.contains(someSort))
+                polarAngleSpectrum[Math.round((int) (angles.getPolar() / (dTheta)))]++;
     }
 
     public int[] getSpectrum() {

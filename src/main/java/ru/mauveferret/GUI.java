@@ -33,7 +33,6 @@ public class GUI extends Application {
     public static void main(String[] args) {
 
         launch(args);
-        System.out.println("?!");
     }
 
     public void showGraph(int spectra[], double E0, double dE, String name)
