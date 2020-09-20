@@ -133,31 +133,47 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 else if (particlesType.contains("stop")) sort = "I";
                 else if (particlesType.contains("tran")) sort = "T";
 
+
+                cosx=0;
+                cosy=0;
+                cosz=0;
+
             while (br.ready()) {
                 line = br.readLine();
                 if (!line.contains("end")) {
 
-                   // line.replaceAll("\\s+","\t");
-                    line.replaceAll("\\\\u0020'", " ");
-                  //line.replaceAll("\\u0020\\u0020"," ");
-                 //  line.replaceAll("[^\\u0009\\u000a\\u000d\\u0020-\\uD7FF\\uE000-\\uFFFD]", "");
+                   //line.replaceAll("\\\\s+"," ");
+                 //  line.replaceAll("\\\\u0020'", " ");
+                 // line.replaceAll("\\\\u0020\\\\u0020"," ");
+               //  line.replaceAll("[^\\\\u0009\\\\u000a\\\\u000d\\\\u0020-\\\\uD7FF\\\\uE000-\\\\uFFFD]", "");
 
-                    System.out.println(line);
                     datas = line.split(" ");
 
-                    for (int i=0; i<datas.length;i++) System.out.println(i+"  "+datas[i]);
-
-
-                    en = Float.parseFloat(datas[27]);
-                    cosx = Float.parseFloat(datas[33]);
-                    cosy = Float.parseFloat(datas[35]);
-                    try{
-                        cosz = Float.parseFloat(datas[37]);
-                    }
-                    catch (Exception e)
+                    int ien=0, ix=0,iy=0,iz=0;
+                    int n=0;
+                    float k=0;
+                    for (int i=0; i<datas.length;i++)
                     {
-                        cosz = Float.parseFloat(datas[38]);
+                        try {
+                            k = Float.parseFloat(datas[i]);
+                            n++;
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        if (n==4) en = k;
+                        if (n==14) cosx = k;
+                        if (n==15) cosy = k;
+                        if (n==11) {
+                            if (k<0)  cosz = 1-cosx*cosx-cosy*cosy;
+                            if (k>0)cosz = -1+cosx*cosx+cosy*cosy;
+                        }
+
                     }
+
+                    System.out.println(en+" "+cosx+" "+cosy+" "+cosz);
+
 
 
                     //Here is several spectra calculators
