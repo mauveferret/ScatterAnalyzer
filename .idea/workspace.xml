@@ -1,12 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:shared" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="0646ca9e-0c42-444d-9b25-9d3b44ee2ca1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/AngleMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/Distribution.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/Energy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/Polar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/PolarAngles.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/getTXT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/ParticleInMatterCalculator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/PostProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/SDTrimSP.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Scatter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/TRIM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Analyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Analyzer_DISABLED.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/RootFxmlController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/RootFxmlController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ru/mauveferret/fxml/Root.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ru/mauveferret/fxml/Root.fxml" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,22 +57,34 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MavenImportPreferences">
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="importAutomatically" value="true" />
-      </MavenImportingSettings>
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.2\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
     </option>
   </component>
   <component name="ProjectId" id="1W5Zuuv5qJmKSWi5RIaqTcovHUO" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/ru.mauveferret/fxml" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/target/classes/ru/mauveferret/fxml" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15429688" />
     <property name="project.structure.side.proportion" value="0.34988454" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\OneDrive\Проги и чертежи\Git\ScatterAnalyzer\target\classes\ru\mauveferret\fxml" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources\ru.mauveferret\fxml" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\java" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\target\classes" />
+      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources\ru\mauveferret" />
       <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources\ru.mauveferret" />
@@ -46,24 +92,6 @@
       <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources\fxml" />
       <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\java" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources\ru.mauveferret\fxml" />
-      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\java" />
-      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\target\classes" />
-      <recent name="C:\Users\mauve\Git\temp\ScatterAnalyzer\src\main\resources" />
-    </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
@@ -73,7 +101,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="0646ca9e-0c42-444d-9b25-9d3b44ee2ca1" name="Default Changelist" comment="" />
@@ -84,7 +124,18 @@
       <workItem from="1578441644837" duration="11454000" />
       <workItem from="1578470631100" duration="192000" />
       <workItem from="1578470856420" duration="682000" />
-      <workItem from="1578650220997" duration="241000" />
+      <workItem from="1578650220997" duration="356000" />
+      <workItem from="1578738899327" duration="90000" />
+      <workItem from="1579431894788" duration="39000" />
+      <workItem from="1586769400170" duration="379000" />
+      <workItem from="1586770167864" duration="18000" />
+      <workItem from="1586770205681" duration="14000" />
+      <workItem from="1588255682441" duration="324000" />
+      <workItem from="1594990684475" duration="682000" />
+      <workItem from="1600549952574" duration="39213000" />
+      <workItem from="1600609813008" duration="267000" />
+      <workItem from="1600610113705" duration="253000" />
+      <workItem from="1600610889093" duration="5456000" />
     </task>
     <task id="LOCAL-00001" summary="wrapped in maven, auto exe creating made, now will work without external JavaFX with Java 11+">
       <created>1578470961177</created>
@@ -121,28 +172,65 @@
       <option name="project" value="LOCAL" />
       <updated>1578471473361</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="25 keV energy is set as basic">
+      <created>1578650556341</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1578650556341</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="wrapped in maven, auto exe creating made, now will work without external JavaFX with Java 11+" />
     <MESSAGE value="some gitIgnore improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="some gitIgnore improvements" />
+    <MESSAGE value="25 keV energy is set as basic" />
+    <option name="LAST_COMMIT_MESSAGE" value="25 keV energy is set as basic" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="974" y="176" key="#com.intellij.ide.util.MemberChooser" timestamp="1600619880368">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="974" y="176" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1600619880368" />
+    <state width="1877" height="258" key="GridCell.Tab.0.bottom" timestamp="1600611227189">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="258" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600611227189" />
+    <state width="1877" height="258" key="GridCell.Tab.0.center" timestamp="1600611227188">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="258" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600611227188" />
+    <state width="1877" height="258" key="GridCell.Tab.0.left" timestamp="1600611227188">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="258" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600611227188" />
+    <state width="1877" height="258" key="GridCell.Tab.0.right" timestamp="1600611227189">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="258" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600611227189" />
+    <state x="221" y="78" width="1515" height="741" key="dock-window-1" timestamp="1600608667099">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="221" y="78" width="1515" height="741" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1600608667099" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1600604710441">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1600604710441" />
   </component>
 </project>

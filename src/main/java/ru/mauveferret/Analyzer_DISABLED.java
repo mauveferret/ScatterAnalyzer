@@ -9,7 +9,7 @@ import java.nio.ByteOrder;
 import java.util.Stack;
 
 
-public class Analyzer  {
+public class Analyzer_DISABLED {
 
     private int  threadCount=6;
     private Stack<Thread> threadStack = new Stack<>();
@@ -69,9 +69,9 @@ public class Analyzer  {
 
                     @Override
                     public void run() {
-                        if (getTXT) Analyzer.this.CreateTXT(file);
-                         if (isScatter) Analyzer.this.ScatterLogStringsAnalyzer(file);
-                         else Analyzer.this.TRIMLogStringsAnalyzer(file);
+                        if (getTXT) Analyzer_DISABLED.this.CreateTXT(file);
+                         if (isScatter) Analyzer_DISABLED.this.ScatterLogStringsAnalyzer(file);
+                         else Analyzer_DISABLED.this.TRIMLogStringsAnalyzer(file);
                     }
                 });
                 threadStack.push(thread);

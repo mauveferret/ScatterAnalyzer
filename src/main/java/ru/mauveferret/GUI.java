@@ -36,7 +36,7 @@ public class GUI extends Application {
         System.out.println("?!");
     }
 
-    public void showGraph(int spectra[], int E0, double dE, String name)
+    public void showGraph(int spectra[], double E0, double dE, String name)
     {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("SCATTER ONE LOVE");
