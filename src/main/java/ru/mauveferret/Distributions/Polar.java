@@ -29,9 +29,11 @@ public class Polar extends Distribution {
     public void check (double x, double y, double z, String someSort)
     {
         PolarAngles angles = new PolarAngles(x,y,z);
-        if (angles.doesAngleMatch(phi, dPhi, true))
+        if (angles.doesAngleMatch(phi, dPhi, false))
             if (sort.contains(someSort))
-                polarAngleSpectrum[Math.round((int) (angles.getPolar() / (dTheta)))]++;
+            {
+                polarAngleSpectrum[(int) Math.round(angles.getPolar() / dTheta)]++;
+            }
     }
 
     public int[] getSpectrum() {

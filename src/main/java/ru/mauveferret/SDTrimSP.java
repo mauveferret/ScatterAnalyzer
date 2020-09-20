@@ -9,11 +9,15 @@ import java.util.ArrayList;
 
 public class SDTrimSP extends ParticleInMatterCalculator{
 
-    String dataPath;
+    ArrayList<String> dataPath;
 
     SDTrimSP(String directoryPath) {
         super(directoryPath);
-        dataPath = "";
+        dataPath = new ArrayList<>();
+
+        projectileIncidentAzimuthAngle = 0;
+        projectileIncidentPolarAngle = 0;
+        projectileAmount = -1;
     }
 
     @Override
@@ -23,49 +27,65 @@ public class SDTrimSP extends ParticleInMatterCalculator{
         if (dataDirectory.isDirectory()){
             String tscConfig = "";
 
-            //get info from *.tsc file
+            //get info from tri.inp file
 
             try {
                 for (File file:  dataDirectory.listFiles()){
-                    if (file.getName().matches("SC\\d+.tsc")){
-                        modelingID = file.getName();
+                    if (file.getName().contains("tri.inp")){
+                        modelingID = "SDTrimSP"+((int) (Math.random()*1000));
                         tscConfig = file.getAbsolutePath();
                     }
-                    if (file.getName().matches("SC\\d+.dat")){
-                        modelingID = file.getName();
-                        dataPath = file.getAbsolutePath();
+                    if (file.getName().contains("partic")){
+                        dataPath.add(file.getAbsolutePath());
                     }
                 }
                 BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tscConfig)));
                 String line;
-                String previousLine = "";
                 String someParameter = "";
+
+
                 while (reader.ready()){
                     line = reader.readLine();
-                    if (line.contains("=")) someParameter = line.substring(line.indexOf("="+1)).trim();
-                    if (line.contains("Atom") && previousLine.contains("Projectile")) projectileElements= someParameter;
-                    if (line.contains("Atom") && !previousLine.contains("Projectile")) targetElements += someParameter+" ";
-                    if (line.contains("StartEnergy")) projectileMaxEnergy = Double.parseDouble(someParameter);
-                    if (line.contains("StartAngle")) projectileIncidentPolarAngle = Double.parseDouble(someParameter);
-                    if (line.contains("StartPhi")) projectileIncidentAzimuthAngle = Double.parseDouble(someParameter);
-                    if (line.contains("Number")) projectileIncidentPolarAngle = Integer.parseInt(someParameter);
-                    previousLine = line;
+
+                    if (line.contains("=")) {
+                        someParameter = line.substring(line.indexOf("=")+1).trim();
+                    }
+
+                    if (line.contains("symbol")) {
+                        projectileElements = someParameter;
+                        targetElements = "";
+                    }
+
+                    if (line.contains("e0")&& !line.contains("case"))
+                    {
+                        projectileMaxEnergy = Double.parseDouble(someParameter.substring(0, someParameter.indexOf(",")).trim());
+                    }
+
+                    if (line.contains("alpha0")) {
+                        projectileIncidentPolarAngle = Double.parseDouble(someParameter);
+                        projectileIncidentAzimuthAngle = 0;
+                    }
+                    if (line.contains("nh")) projectileAmount = Integer.parseInt(someParameter);
                 }
                 reader.close();
 
             }
             catch (FileNotFoundException ex){
-                return "\"SC******.tsc\" config is not found";
+                ex.printStackTrace();
+                return "\"tri.inp\" config is not found";
             }
             catch (IOException ex){
+                ex.printStackTrace();
                 return "File "+tscConfig+" is damaged";
             }
 
             //check whether the *.dat file exist
 
             try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath)));
-                reader.close();
+                for (String someDataFilePath: dataPath ) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(someDataFilePath)));
+                    reader.close();
+                }
             }
             catch (Exception e){
                 return "data file wasn't found";
@@ -82,50 +102,79 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
         time = System.currentTimeMillis();
 
-        //find all SCATTER-related distributions
+        //find all TRIM-related distributions
 
-        float  floatSort, en = 0, cosx, cosy, cosz;
-        String sort = "";
+        float en = 0, cosx, cosy, cosz;
+        String sort;
 
         try {
-            DataInputStream reader = new DataInputStream(new FileInputStream(dataPath));
-            byte[] buf = new byte[18];
 
-            //TODO +17
-            while (reader.available() >  stringCountPerCycle*18) {
+            for (String someDataFilePath: dataPath){
 
-                reader.read(buf);
-                int shift = 0;
+            BufferedReader br = new BufferedReader(new FileReader(someDataFilePath));
 
-                // movement through buf for 'stringCountPerCycle' times
-                for (int j = 1; j <= stringCountPerCycle; j++) {
+            //rubbish lines
+            String line = br.readLine();
+                br.readLine();
+                br.readLine();
+                br.readLine();
+                br.readLine();
+            //now lets sort
 
-                    floatSort = buf[shift];
+                String[] datas;
 
-                    if (floatSort<0) sort = "B";
-                    else if (floatSort == 0) sort = "S";
-                    else if (floatSort>0) sort = "I";
 
-                    //second byte of buf has  unknown purpose
+                String particlesType = someDataFilePath.substring(someDataFilePath.indexOf(File.separator));
+                particlesType = particlesType.substring(particlesType.indexOf("_"),particlesType.lastIndexOf("."));
 
-                    en = ByteBuffer.wrap(ArraySubPart(buf, 2 + shift, 5 + shift)).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-                    cosx = ByteBuffer.wrap(ArraySubPart(buf, 6 + shift, 9 + shift)).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-                    cosy = ByteBuffer.wrap(ArraySubPart(buf, 10 + shift, 13 + shift)).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-                    cosz = ByteBuffer.wrap(ArraySubPart(buf, 14 + shift, 17 + shift)).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-                    //allParticlesData+=sort+" "+en+" "+cosx+" "+cosy+" "+cosz+"\n";
+                sort = "";
+                if (particlesType.contains("back_p")) sort = "B";
+                else if (particlesType.contains("back_r")) sort = "S";
+                else if (particlesType.contains("stop")) sort = "I";
+                else if (particlesType.contains("tran")) sort = "T";
+
+            while (br.ready()) {
+                line = br.readLine();
+                if (!line.contains("end")) {
+
+                   // line.replaceAll("\\s+","\t");
+                    line.replaceAll("\\\\u0020'", " ");
+                  //line.replaceAll("\\u0020\\u0020"," ");
+                 //  line.replaceAll("[^\\u0009\\u000a\\u000d\\u0020-\\uD7FF\\uE000-\\uFFFD]", "");
+
+                    System.out.println(line);
+                    datas = line.split(" ");
+
+                    for (int i=0; i<datas.length;i++) System.out.println(i+"  "+datas[i]);
+
+
+                    en = Float.parseFloat(datas[27]);
+                    cosx = Float.parseFloat(datas[33]);
+                    cosy = Float.parseFloat(datas[35]);
+                    try{
+                        cosz = Float.parseFloat(datas[37]);
+                    }
+                    catch (Exception e)
+                    {
+                        cosz = Float.parseFloat(datas[38]);
+                    }
+
 
                     //Here is several spectra calculators
 
-                    for (Distribution distr: distributions){
-                        switch (distr.getType())
-                        {
-                            case "energy": ((Energy) distr).check(cosx,cosy,cosz,sort,en);
+                    for (Distribution distr : distributions) {
+                        switch (distr.getType()) {
+                            case "energy":
+                                ((Energy) distr).check(cosx, cosy, cosz, sort, en);
                                 break;
-                            case "polar": ((Polar) distr).check(cosx,cosy,cosz,sort);
+                            case "polar":
+                                ((Polar) distr).check(cosx, cosy, cosz, sort);
                                 break;
-                            case "anglemap": ((AngleMap) distr).check(cosx,cosy,cosz,sort);
+                            case "anglemap":
+                                ((AngleMap) distr).check(cosx, cosy, cosz, sort);
                                 break;
-                            case "gettxt": ((getTXT) distr).check(cosx,cosy,cosz,sort,en);
+                            case "gettxt":
+                                ((getTXT) distr).check(cosx, cosy, cosz, sort, en);
                         }
                     }
 
@@ -135,29 +184,15 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                     if (sort.equals("B")) scattered++;
                     else if (sort.equals("S")) sputtered++;
                     else if (sort.equals("I")) implanted++;
-
-                    shift += 18;
                 }
             }
-            reader.close();
+                br.close();
+            }
+
             time=System.currentTimeMillis()-time;
             time=time/1000;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
-
-
-    private  byte[] ArraySubPart (byte[] array,int a, int b) //part of one array into another
-    {
-        byte[] subArray = new byte[b-a+1];
-        for (int i=a;i<=b;i++)
-        {
-            subArray[i-a]=array[i];
-        }
-        return subArray;
-    }
-
 }

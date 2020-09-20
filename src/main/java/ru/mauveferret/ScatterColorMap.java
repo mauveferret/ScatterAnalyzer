@@ -75,13 +75,15 @@ public class ScatterColorMap {
 
     private  XYZDataset createDataset() {
         DefaultXYZDataset dataset = new DefaultXYZDataset();
-        for (int i = 0; i < (int) (360/dPhi)+1; i++) {  //azimuth angle
+        int n=0;
+        for (int i = 0; i < (int) (180/dPhi)+1; i++) {  //azimuth angle
             double[][] data = new double[3][1000];
             for (int j = 0; j < (int) (90/dTheta); j++) {    //polar angle
                 data[0][j] = j*dTheta * Math.cos(i*dPhi*2*3.14/360);
                 data[1][j] = j*dTheta * Math.sin(i*dPhi*2*3.14/360);
+                //if (i>(int) (180/dPhi)) n = i/2;
+                //else n = i;
                 data[2][j] = array[i][j];
-
                 //finding optimal ColorScale
                 if (array[i][j]>maxParticlesCount) maxParticlesCount = array[i][j];
 

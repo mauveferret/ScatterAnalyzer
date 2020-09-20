@@ -26,7 +26,7 @@ public class PolarAngles {
 
     public boolean doesAngleMatch(double angle, double delta, boolean isPolar){
 
-       /* if (isPolar){
+        if (isPolar){
             if (angle>delta && angle<360-delta) return (Math.abs(angle - polar)<delta);
             else return (polar < delta || polar>360-delta);
         }
@@ -35,10 +35,7 @@ public class PolarAngles {
             else return (azimuth<delta || azimuth>180-delta);
         }
 
-        */
 
-        if (isPolar) return Math.abs(angle - polar)<delta;
-        else  return (Math.abs(angle - azimuth)<delta);
     }
 
     private void cartesianToAngles(double cosx,double cosy,double cosz){

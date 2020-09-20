@@ -22,18 +22,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0646ca9e-0c42-444d-9b25-9d3b44ee2ca1" name="Default Changelist" comment="code is fully rewritten, refactoring made, module structure made for easy integrating new cdes">
+    <list default="true" id="0646ca9e-0c42-444d-9b25-9d3b44ee2ca1" name="Default Changelist" comment="energy specra processing and getTXT works normally">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/AngleMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/AngleMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/Energy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/Energy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/Polar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/Polar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/PolarAngles.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/PolarAngles.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/getTXT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/getTXT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/RootFxmlController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/RootFxmlController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/SDTrimSP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/SDTrimSP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Scatter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Scatter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/TRIM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/TRIM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/ScatterColorMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/ScatterColorMap.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +125,7 @@
       <workItem from="1600549952574" duration="39213000" />
       <workItem from="1600609813008" duration="267000" />
       <workItem from="1600610113705" duration="253000" />
-      <workItem from="1600610889093" duration="9118000" />
+      <workItem from="1600610889093" duration="20322000" />
     </task>
     <task id="LOCAL-00001" summary="wrapped in maven, auto exe creating made, now will work without external JavaFX with Java 11+">
       <created>1578470961177</created>
@@ -180,7 +176,14 @@
       <option name="project" value="LOCAL" />
       <updated>1600620042800</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="energy specra processing and getTXT works normally">
+      <created>1600623738141</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1600623738141</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -203,33 +206,34 @@
     <MESSAGE value="some gitIgnore improvements" />
     <MESSAGE value="25 keV energy is set as basic" />
     <MESSAGE value="code is fully rewritten, refactoring made, module structure made for easy integrating new cdes" />
-    <option name="LAST_COMMIT_MESSAGE" value="code is fully rewritten, refactoring made, module structure made for easy integrating new cdes" />
+    <MESSAGE value="energy specra processing and getTXT works normally" />
+    <option name="LAST_COMMIT_MESSAGE" value="energy specra processing and getTXT works normally" />
   </component>
   <component name="WindowStateProjectService">
     <state x="974" y="176" key="#com.intellij.ide.util.MemberChooser" timestamp="1600622821043">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="974" y="176" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1600622821043" />
-    <state width="1877" height="241" key="GridCell.Tab.0.bottom" timestamp="1600623086626">
+    <state width="1877" height="241" key="GridCell.Tab.0.bottom" timestamp="1600634986669">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="241" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600623086626" />
-    <state width="1877" height="241" key="GridCell.Tab.0.center" timestamp="1600623086626">
+    <state width="1877" height="241" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600634986669" />
+    <state width="1877" height="241" key="GridCell.Tab.0.center" timestamp="1600634986669">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="241" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600623086626" />
-    <state width="1877" height="241" key="GridCell.Tab.0.left" timestamp="1600623086626">
+    <state width="1877" height="241" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600634986669" />
+    <state width="1877" height="241" key="GridCell.Tab.0.left" timestamp="1600634986669">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="241" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600623086626" />
-    <state width="1877" height="241" key="GridCell.Tab.0.right" timestamp="1600623086626">
+    <state width="1877" height="241" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600634986669" />
+    <state width="1877" height="241" key="GridCell.Tab.0.right" timestamp="1600634986669">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="241" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600623086626" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1600620045002">
+    <state width="1877" height="241" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600634986669" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1600623740002">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1600620045002" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1600623740002" />
     <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1600619973246">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

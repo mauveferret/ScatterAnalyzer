@@ -18,7 +18,7 @@ public class AngleMap extends Distribution{
         this.dPhi = dPhi;
         this.dTheta = dTheta;
         //TODO 180 or 360?
-        angleMap = new double[(int) Math.ceil(360/dTheta)+1][(int) Math.ceil(180/dPhi)+1];
+        angleMap = new double[(int) Math.ceil(180/dPhi)+1][(int) Math.ceil(90/dTheta)+1];
         pathToLog+="_dphi "+dPhi+"_dTheta"+dTheta+"_time "+ ((int ) (Math.random()*100))+".txt";
         headerComment+=" dPhi "+dPhi+"dTheta "+dTheta+"            |"+"\n";
         headerComment+="|----------------------------------------------------------------------|"+"\n";
@@ -30,6 +30,7 @@ public class AngleMap extends Distribution{
 
             if (sort.contains(someSort))
             {
+                if (angles.getPolar()<90)
                 angleMap[(int) (Math.round(angles.getPolar() / dTheta))][(int) (( angles.getAzimuth()/ dPhi))]++;
                 particlesCount++;
             }

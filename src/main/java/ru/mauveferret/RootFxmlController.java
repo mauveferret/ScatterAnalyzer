@@ -9,6 +9,8 @@ import javafx.stage.FileChooser;
 import ru.mauveferret.Distributions.*;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class RootFxmlController {
@@ -146,9 +148,11 @@ public class RootFxmlController {
                     if (!initialize.equals("OK")) {
                         System.out.println(initialize);
                         System.out.println("PIZDETS");
-                    }
-                }
-            }
+                    } else System.out.println("SDTrimSP initialized");
+                } else System.out.println("TRIM initialized");
+            } else System.out.println("SCATTER initialized");
+
+
 
             numberOfParticlesInScatter.setText(yourCalcuator.projectileAmount + "");
             E0.setText(yourCalcuator.projectileMaxEnergy + "");
@@ -402,9 +406,11 @@ public class RootFxmlController {
                     //double initialCount=0;
                     //if (Double.parseDouble(numberOfParticlesInScatter.getText())<15) initialCount=Math.pow(10,  (int) (Math.ceil(Math.log10(data[1] + 0.5))) );
                    // else initialCount=Double.parseDouble(numberOfParticlesInScatter.getText());
-                    time.setText(""+yourCalcuator.time);
-                    count.setText(yourCalcuator.projectileAmount+"");
-                    StringCount.setText(yourCalcuator.particleCount+"");
+                    time.setText(
+                            new BigDecimal(yourCalcuator.particleCount).setScale(5, RoundingMode.UP).doubleValue()+"");
+                    count.setText(yourCalcuator.particleCount+"");
+                    StringCount.setText(
+                            new BigDecimal(yourCalcuator.particleCount).setScale(5, RoundingMode.UP).doubleValue()+"");
 
                     /*if ((Double.parseDouble(numberOfParticlesInScatter.getText())<15)&(!IsScatter)) initialCount=data[1];
                     scattered.setText(new BigDecimal(data[2]/initialCount).setScale(5, RoundingMode.UP).doubleValue()+"");
@@ -414,9 +420,17 @@ public class RootFxmlController {
                     energyScattering.setText(new BigDecimal(data[5]/(initialCount*E)).setScale(5, RoundingMode.UP).doubleValue()+"");
 
                      */
+
+
                     scattered.setText((((double) yourCalcuator.scattered)/((double) yourCalcuator.particleCount))+"");
                     sputtered.setText((((double) yourCalcuator.sputtered)/((double) yourCalcuator.particleCount))+"");
                     implanted.setText((((double) yourCalcuator.implanted)/((double) yourCalcuator.particleCount))+"");
+
+                    yourCalcuator.scattered = 0;
+                    yourCalcuator.sputtered = 0;
+                    yourCalcuator.implanted = 0;
+                    yourCalcuator.particleCount = 0;
+
                 }
             }).start();
         }
