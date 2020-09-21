@@ -1,8 +1,10 @@
 package ru.mauveferret.Distributions;
 
 import javafx.application.Platform;
+import org.jfree.ui.RefineryUtilities;
 import ru.mauveferret.GUI;
 import ru.mauveferret.ParticleInMatterCalculator;
+import ru.mauveferret.PolarChart;
 
 import java.io.FileOutputStream;
 
@@ -36,6 +38,15 @@ public class Polar extends Distribution {
             }
     }
 
+    public void checkWithPolarAngles(double cosp, double cosa, String someSort ){
+       // System.out.println(57.2958*Math.acos(cosa));
+        if (Math.abs(57.2958*Math.acos(cosa)-phi)<dPhi || (57.2958*Math.acos(cosa) > 180- dPhi))
+            if (sort.contains(someSort)) {
+                double add = (57.2958*Math.acos(cosa) > 180- dPhi)? 270 : 0;
+                polarAngleSpectrum[(int) Math.round((57.2958 * Math.acos(cosp)+add) / dTheta)]++;
+            }
+    }
+
     public int[] getSpectrum() {
         return polarAngleSpectrum;
     }
@@ -63,8 +74,17 @@ public class Polar extends Distribution {
     public boolean visualize() {
         Platform.runLater(() -> {
 
-            if (!sort.equals("")) new GUI().showGraph(polarAngleSpectrum, 360, dTheta,  "Угловой спектр "+
-                    calculator.projectileElements+" --> "+calculator.targetElements+" phi = "+phi+" dtheta = "+dTheta);
+            //if (!sort.equals("")) new GUI().showGraph(polarAngleSpectrum, 360, dTheta,  "Угловой спектр "+
+              //      calculator.projectileElements+" --> "+calculator.targetElements+" phi = "+phi+" dtheta = "+dTheta);
+            //if (!sort.equals("")) new PolarChart().createPolarChart("Polar Chart", polarAngleSpectrum, dPhi, false,true,true);
+
+            String title = calculator.projectileElements+" "+calculator.projectileMaxEnergy+" hits at phi " + calculator.projectileIncidentAzimuthAngle+
+                    " --> "+calculator.targetElements;
+            final PolarChart demo = new PolarChart(title,polarAngleSpectrum, dTheta);
+           // demo.pack();
+          //  RefineryUtilities.centerFrameOnScreen(demo);
+           // demo.setVisible(true);
+
         });
         return  true;
     }
