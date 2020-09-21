@@ -3,6 +3,7 @@ package ru.mauveferret.Distributions;
 import javafx.application.Platform;
 import ru.mauveferret.GUI;
 import ru.mauveferret.ParticleInMatterCalculator;
+import ru.mauveferret.PolarChart;
 
 import java.io.FileOutputStream;
 
@@ -63,8 +64,9 @@ public class Polar extends Distribution {
     public boolean visualize() {
         Platform.runLater(() -> {
 
-            if (!sort.equals("")) new GUI().showGraph(polarAngleSpectrum, 360, dTheta,  "Угловой спектр "+
-                    calculator.projectileElements+" --> "+calculator.targetElements+" phi = "+phi+" dtheta = "+dTheta);
+            //if (!sort.equals("")) new GUI().showGraph(polarAngleSpectrum, 360, dTheta,  "Угловой спектр "+
+              //      calculator.projectileElements+" --> "+calculator.targetElements+" phi = "+phi+" dtheta = "+dTheta);
+            if (!sort.equals("")) new PolarChart().createPolarChart("Polar Chart", polarAngleSpectrum, dPhi, false,true,true);
         });
         return  true;
     }

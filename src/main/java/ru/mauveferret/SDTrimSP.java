@@ -172,7 +172,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                     }
 
-                    System.out.println(en+" "+cosx+" "+cosy+" "+cosz);
+                    //System.out.println(en+" "+cosx+" "+cosy+" "+cosz);
 
 
 
@@ -181,7 +181,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                     for (Distribution distr : distributions) {
                         switch (distr.getType()) {
                             case "energy":
-                                ((Energy) distr).check(cosx, cosy, cosz, sort, en);
+                                ((Energy) distr).checkWithPolarAngles(cosx,cosy,sort,en);
                                 break;
                             case "polar":
                                 ((Polar) distr).check(cosx, cosy, cosz, sort);

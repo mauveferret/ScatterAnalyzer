@@ -22,8 +22,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0646ca9e-0c42-444d-9b25-9d3b44ee2ca1" name="Default Changelist" comment="started integrating SDTrimSP">
+    <list default="true" id="0646ca9e-0c42-444d-9b25-9d3b44ee2ca1" name="Default Changelist" comment="some try te kill the u20">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/PolarChart.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/Energy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/Energy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/Polar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/Distributions/Polar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/mauveferret/SDTrimSP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/mauveferret/SDTrimSP.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -86,6 +90,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -110,7 +125,8 @@
       <workItem from="1600609813008" duration="267000" />
       <workItem from="1600610113705" duration="253000" />
       <workItem from="1600610889093" duration="20474000" />
-      <workItem from="1600635484373" duration="1282000" />
+      <workItem from="1600635484373" duration="1342000" />
+      <workItem from="1600668592412" duration="2211000" />
     </task>
     <task id="LOCAL-00001" summary="wrapped in maven, auto exe creating made, now will work without external JavaFX with Java 11+">
       <created>1578470961177</created>
@@ -175,7 +191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1600635156594</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="some try te kill the u20">
+      <created>1600636817336</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1600636817336</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,33 +223,34 @@
     <MESSAGE value="code is fully rewritten, refactoring made, module structure made for easy integrating new cdes" />
     <MESSAGE value="energy specra processing and getTXT works normally" />
     <MESSAGE value="started integrating SDTrimSP" />
-    <option name="LAST_COMMIT_MESSAGE" value="started integrating SDTrimSP" />
+    <MESSAGE value="some try te kill the u20" />
+    <option name="LAST_COMMIT_MESSAGE" value="some try te kill the u20" />
   </component>
   <component name="WindowStateProjectService">
     <state x="974" y="176" key="#com.intellij.ide.util.MemberChooser" timestamp="1600622821043">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="974" y="176" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1600622821043" />
-    <state width="1877" height="241" key="GridCell.Tab.0.bottom" timestamp="1600636556405">
+    <state width="1877" height="241" key="GridCell.Tab.0.bottom" timestamp="1600670779793">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="241" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600636556405" />
-    <state width="1877" height="241" key="GridCell.Tab.0.center" timestamp="1600636556404">
+    <state width="1877" height="241" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600670779793" />
+    <state width="1877" height="241" key="GridCell.Tab.0.center" timestamp="1600670779793">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="241" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600636556404" />
-    <state width="1877" height="241" key="GridCell.Tab.0.left" timestamp="1600636556404">
+    <state width="1877" height="241" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600670779793" />
+    <state width="1877" height="241" key="GridCell.Tab.0.left" timestamp="1600670779793">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="241" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600636556404" />
-    <state width="1877" height="241" key="GridCell.Tab.0.right" timestamp="1600636556404">
+    <state width="1877" height="241" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600670779793" />
+    <state width="1877" height="241" key="GridCell.Tab.0.right" timestamp="1600670779793">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="241" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600636556404" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1600635157934">
+    <state width="1877" height="241" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600670779793" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1600636819068">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1600635157934" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1600636819068" />
     <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1600619973246">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

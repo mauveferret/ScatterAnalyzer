@@ -35,6 +35,7 @@ public class GUI extends Application {
         launch(args);
     }
 
+
     public void showGraph(int spectra[], double E0, double dE, String name)
     {
         Stage dialogStage = new Stage();
