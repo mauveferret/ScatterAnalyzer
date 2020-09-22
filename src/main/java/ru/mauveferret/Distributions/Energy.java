@@ -39,8 +39,10 @@ public class Energy extends Distribution{
                energySpectrum[(int) Math.round(E/dE)]++;
     }
 
-    public void checkWithPolarAngles(double cosp, double cosa, String someSort, double E ){
-        if (Math.abs(57.2958*Math.acos(cosa)-phi)<dPhi && Math.abs(57.2958*Math.acos(cosp)-theta)<dTheta)
+    public void check(double cosp, double cosa, String someSort, double E ){
+        //if (Math.abs(57.2958*Math.acos(cosa)-phi)<dPhi && Math.abs(57.2958*Math.acos(cosp)-theta)<dTheta)
+        PolarAngles angles = new PolarAngles(cosp, cosa);
+        if (angles.doesAngleMatch(phi, dPhi, false))
             if (sort.contains(someSort))
                 energySpectrum[(int) Math.round(E/dE)]++;
     }

@@ -163,8 +163,8 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                         }
                         if (n==4) en = k;
-                        if (n==14) cosx = k;
-                        if (n==15) cosy = k;
+                        if (n==14) cosx = k;  //polar angle
+                        if (n==15) cosy = k; //azimuthangle
                         if (n==11) {
                             if (k<0)  cosz = 1-cosx*cosx-cosy*cosy;
                             if (k>0)cosz = -1+cosx*cosx+cosy*cosy;
@@ -181,10 +181,10 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                     for (Distribution distr : distributions) {
                         switch (distr.getType()) {
                             case "energy":
-                                ((Energy) distr).checkWithPolarAngles(cosx,cosy,sort,en);
+                                ((Energy) distr).check(cosx,cosy,sort,en);
                                 break;
                             case "polar":
-                                ((Polar) distr).checkWithPolarAngles(cosx, cosy, sort);
+                                ((Polar) distr).check(cosx, cosy, sort);
                                 break;
                             case "anglemap":
                                 ((AngleMap) distr).check(cosx, cosy, cosz, sort);
@@ -208,9 +208,10 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 br.close();
             }
 
-            energyRecoil = energyRecoil/projectileMaxEnergy;
+            energyRecoil = energyRecoil/(projectileMaxEnergy*particleCount);
+            System.out.println(energyRecoil);
             time=System.currentTimeMillis()-time;
-            time=time/1000;
+            time=time/((double) 1000);
         } catch (Exception e){
             e.printStackTrace();
         }

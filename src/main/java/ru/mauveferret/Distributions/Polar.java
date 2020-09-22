@@ -38,12 +38,14 @@ public class Polar extends Distribution {
             }
     }
 
-    public void checkWithPolarAngles(double cosp, double cosa, String someSort ){
+    public void check(double cosp, double cosa, String someSort ){
        // System.out.println(57.2958*Math.acos(cosa));
-        if (Math.abs(57.2958*Math.acos(cosa)-phi)<dPhi || (57.2958*Math.acos(cosa) > 180- dPhi))
-            if (sort.contains(someSort)) {
-                double add = (57.2958*Math.acos(cosa) > 180- dPhi)? 270 : 0;
-                polarAngleSpectrum[(int) Math.round((57.2958 * Math.acos(cosp)+add) / dTheta)]++;
+        //if (Math.abs(57.2958*Math.acos(cosa)-phi)<dPhi || (57.2958*Math.acos(cosa) > 180- dPhi))
+        PolarAngles angles = new PolarAngles(cosp, cosa);
+        if (angles.doesAngleMatch(phi,dPhi,false))
+        if (sort.contains(someSort)) {
+                //double add = (57.2958*Math.acos(cosa) > 180- dPhi)? 270 : 0;
+                polarAngleSpectrum[(int) Math.round(angles.getPolar() / dTheta)]++;
             }
     }
 

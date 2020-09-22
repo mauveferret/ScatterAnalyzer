@@ -7,9 +7,11 @@ public class PolarAngles {
     //from 0 to 180 from X axis (in which the beam strikes)
     private double azimuth;
 
-    public PolarAngles(double polar, double azimuth) {
-        this.polar = polar;
-        this.azimuth = azimuth;
+
+    public PolarAngles(double polarCos, double azimuthCos) {
+        azimuth = 57.2958*Math.acos(azimuthCos);
+        polar = (azimuth<90) ? 57.2958*Math.acos(polarCos) : 270+57.2958*Math.acos(polarCos);
+        //System.out.println(azimuth+" "+polar);
     }
 
     public PolarAngles(double cosx, double cosy, double cosz) {

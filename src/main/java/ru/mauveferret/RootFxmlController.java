@@ -11,6 +11,7 @@ import ru.mauveferret.Distributions.*;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class RootFxmlController {
@@ -324,7 +325,7 @@ public class RootFxmlController {
 
             new Thread(() -> {
                 double E;
-                if (!E0.getText().equals("Ждите"))
+                if (!E0.getText().equals("WAIT"))
                      E=Double.parseDouble(E0.getText());
                 else E=yourCalcuator.projectileMaxEnergy;
 
@@ -343,7 +344,7 @@ public class RootFxmlController {
                 double NThetadPhi1 = Double.parseDouble(NThetadPhi.getText());
                 double NdThetaPhi1 = Double.parseDouble(NdThetaPhi.getText());
 
-                E0.setText("Ждите");
+                E0.setText("WAIT");
 
                 //basicDistributions
 
@@ -389,7 +390,7 @@ public class RootFxmlController {
                // else initialCount=Double.parseDouble(numberOfParticlesInScatter.getText());
                count.setText(
                         new BigDecimal(yourCalcuator.particleCount).setScale(5, RoundingMode.UP).doubleValue()+"");
-               time.setText(yourCalcuator.time/1000+"");
+               time.setText(yourCalcuator.time+"");
                 /*if ((Double.parseDouble(numberOfParticlesInScatter.getText())<15)&(!IsScatter)) initialCount=data[1];
                 scattered.setText(new BigDecimal(data[2]/initialCount).setScale(5, RoundingMode.UP).doubleValue()+"");
                 sputtered.setText(new BigDecimal(data[3]/initialCount).setScale(5, RoundingMode.UP).doubleValue()+"");
@@ -399,11 +400,17 @@ public class RootFxmlController {
 
                  */
 
+                DecimalFormat nFormat = new DecimalFormat(".2f");
 
-                scattered.setText((((double) yourCalcuator.scattered)/((double) yourCalcuator.particleCount))+"");
-                sputtered.setText((((double) yourCalcuator.sputtered)/((double) yourCalcuator.particleCount))+"");
-                implanted.setText((((double) yourCalcuator.implanted)/((double) yourCalcuator.particleCount))+"");
-                energyScattering.setText(yourCalcuator.energyRecoil+"");
+
+                scattered.setText(new BigDecimal(((double) yourCalcuator.scattered)/((double) yourCalcuator.particleCount)).setScale(4, RoundingMode.UP).doubleValue()
+                        +"");
+                sputtered.setText(new BigDecimal(((double) yourCalcuator.sputtered)/((double) yourCalcuator.particleCount)).setScale(4, RoundingMode.UP).doubleValue()
+                        +"");
+                implanted.setText(new BigDecimal(((double) yourCalcuator.implanted)/((double) yourCalcuator.particleCount)).setScale(4, RoundingMode.UP).doubleValue()
+                        +"");
+                energyScattering.setText(new BigDecimal(yourCalcuator.energyRecoil).setScale(3, RoundingMode.UP).doubleValue()
+                        +"");
 
                 yourCalcuator.scattered = 0;
                 yourCalcuator.sputtered = 0;
