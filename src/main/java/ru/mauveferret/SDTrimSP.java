@@ -197,7 +197,10 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                     //calculate some scattering constants
                     particleCount++;
 
-                    if (sort.equals("B")) scattered++;
+                    if (sort.equals("B")) {
+                        scattered++;
+                        energyRecoil+=en;
+                    }
                     else if (sort.equals("S")) sputtered++;
                     else if (sort.equals("I")) implanted++;
                 }
@@ -205,6 +208,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 br.close();
             }
 
+            energyRecoil = energyRecoil/projectileMaxEnergy;
             time=System.currentTimeMillis()-time;
             time=time/1000;
         } catch (Exception e){

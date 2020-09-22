@@ -403,10 +403,12 @@ public class RootFxmlController {
                 scattered.setText((((double) yourCalcuator.scattered)/((double) yourCalcuator.particleCount))+"");
                 sputtered.setText((((double) yourCalcuator.sputtered)/((double) yourCalcuator.particleCount))+"");
                 implanted.setText((((double) yourCalcuator.implanted)/((double) yourCalcuator.particleCount))+"");
+                energyScattering.setText(yourCalcuator.energyRecoil+"");
 
                 yourCalcuator.scattered = 0;
                 yourCalcuator.sputtered = 0;
                 yourCalcuator.implanted = 0;
+                yourCalcuator.energyRecoil = 0;
                 yourCalcuator.particleCount = 0;
 
             }).start();

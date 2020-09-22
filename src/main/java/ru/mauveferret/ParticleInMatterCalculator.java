@@ -35,6 +35,7 @@ public abstract class ParticleInMatterCalculator {
     //some scattering variables
 
     int particleCount, scattered, sputtered, implanted, transmitted;
+    double energyRecoil;
 
     ParticleInMatterCalculator(String directoryPath) {
         particleCount = 0;
@@ -42,6 +43,8 @@ public abstract class ParticleInMatterCalculator {
         sputtered = 0;
         implanted = 0;
         transmitted = 0;
+        energyRecoil = 0;
+
         targetElements = "no elements";
         projectileElements = "no elements";
         modelingID = "no ID";

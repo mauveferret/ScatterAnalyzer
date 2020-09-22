@@ -3,21 +3,19 @@ package ru.mauveferret.Distributions;
 import javafx.application.Platform;
 import ru.mauveferret.GUI;
 import ru.mauveferret.ParticleInMatterCalculator;
-
 import java.io.FileOutputStream;
-import java.util.Date;
+
 
 public class Energy extends Distribution{
 
     private final double E0;
-
     private final double theta;
     private final double dTheta;
     private final double phi;
     private final double dPhi;
     private final double dE;
 
-    private int energySpectrum[];  //forms energyspectra
+    private int[] energySpectrum;  //forms energyspectra
 
     public Energy(double E0, double dE, double phi, double dPhi, double theta, double dTheta, String sort, ParticleInMatterCalculator calculator) {
         super(calculator, sort);
