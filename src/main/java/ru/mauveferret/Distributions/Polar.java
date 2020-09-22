@@ -58,7 +58,8 @@ public class Polar extends Distribution {
             String stroka;
             polarWriter.write(headerComment.getBytes());
             for (int i = 0; i <= (int) Math.round(360 / dTheta); i++) {
-                stroka = i * dTheta + " " + polarAngleSpectrum[i] + "\n";
+                stroka = i * dTheta + "" +
+                        " " + polarAngleSpectrum[i] + "\n";
                 polarWriter.write(stroka.getBytes());
             }
             polarWriter.close();
