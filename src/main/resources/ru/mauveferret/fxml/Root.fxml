@@ -76,7 +76,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="dPolarAngleNE" alignment="CENTER" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="2" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <TextField fx:id="dPolarAngleNE" alignment="CENTER" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="5" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="26.0" />
                                        </font>
@@ -86,7 +86,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="dAzimuthAngleNE" alignment="CENTER" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="81.0" text="2" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                    <TextField fx:id="dAzimuthAngleNE" alignment="CENTER" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="81.0" text="5" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="26.0" />
                                        </font>
@@ -121,14 +121,14 @@
                      <content>
                         <AnchorPane prefHeight="150.0" prefWidth="583.0">
                            <children>
-                              <TextField fx:id="dPolarAngleNtheta" alignment="CENTER" layoutX="37.0" layoutY="38.0" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="2">
+                              <TextField fx:id="dPolarAngleNtheta" alignment="CENTER" layoutX="37.0" layoutY="38.0" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="5">
                                  <font>
                                     <Font size="24.0" />
 
                                  </font>
                               </TextField>
                               <Label fx:id="call1" layoutX="44.0" layoutY="14.0" text="delta θ" />
-                              <TextField fx:id="dAzimuthAngleNtheta" alignment="CENTER" layoutX="198.0" layoutY="38.0" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="2">
+                              <TextField fx:id="dAzimuthAngleNtheta" alignment="CENTER" layoutX="198.0" layoutY="38.0" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="5">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -151,13 +151,13 @@
                      <content>
                         <AnchorPane prefHeight="150.0" prefWidth="583.0">
                            <children>
-                              <TextField fx:id="NdThetaPhi" alignment="CENTER" layoutX="132.0" layoutY="34.0" onKeyReleased="#ResChanged" prefHeight="51.0" prefWidth="101.0" text="1">
+                              <TextField fx:id="NdThetaPhi" alignment="CENTER" layoutX="132.0" layoutY="34.0" onKeyReleased="#ResChanged" prefHeight="51.0" prefWidth="101.0" text="5">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </TextField>
                               <Label layoutX="161.0" layoutY="10.0" text="delta θ" />
-                              <TextField fx:id="NThetadPhi" alignment="CENTER" layoutX="22.0" layoutY="34.0" onKeyReleased="#EChanged" prefHeight="51.0" prefWidth="101.0" text="1">
+                              <TextField fx:id="NThetadPhi" alignment="CENTER" layoutX="22.0" layoutY="34.0" onKeyReleased="#EChanged" prefHeight="51.0" prefWidth="101.0" text="5">
                                  <font>
                                     <Font size="24.0" />
                                  </font>

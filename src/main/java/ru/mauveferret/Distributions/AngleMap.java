@@ -18,23 +18,22 @@ public class AngleMap extends Distribution{
         this.dPhi = dPhi;
         this.dTheta = dTheta;
         //TODO 180 or 360?
-        angleMap = new double[(int) Math.ceil(180/dPhi)+1][(int) Math.ceil(90/dTheta)+1];
+        angleMap = new double[(int) Math.ceil(360/dPhi)+1][(int) Math.ceil(90/dTheta)+1];
         pathToLog+="_dphi "+dPhi+"_dTheta"+dTheta+"_time "+ ((int ) (Math.random()*100))+".txt";
         headerComment+=" dPhi "+dPhi+"dTheta "+dTheta+"            |"+"\n";
         headerComment+="|----------------------------------------------------------------------|"+"\n";
     }
 
-    public  void check (double x, double y, double z, String someSort)
+    public  void check (PolarAngles angles, String someSort)
     {
-        PolarAngles angles = new PolarAngles(x,y,z);
-
+        //only for backscattered and sputtered!
             if (sort.contains(someSort))
             {
-                if (angles.getPolar()<90)
-                angleMap[(int) (Math.round(angles.getPolar() / dTheta))][(int) (( angles.getAzimuth()/ dPhi))]++;
-                particlesCount++;
+                double polar = angles.getPolar();
+                polar = (polar>270) ? polar-270 : polar;
+                if (polar>90 && polar<270) System.out.println("ZHOPPA_AngleMap");
+                angleMap[(int) (Math.round(angles.getAzimuth() / dPhi))][(int) (( polar/ dTheta))]++;
             }
-
     }
 
     public int[]getSpectrum() {

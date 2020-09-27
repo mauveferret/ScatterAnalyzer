@@ -26,7 +26,7 @@ public class GUI extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("fxml/Root.fxml"));
         primaryStage.setTitle("Scatter Analyzer");
         primaryStage.getIcons().add(new Image( Main.class.getResourceAsStream( "pics/CrocoLogo.png" )));
-        primaryStage.setScene(new Scene(root, 640, 480));
+        primaryStage.setScene(new Scene(root, 700, 480));
         primaryStage.show();
     }
 

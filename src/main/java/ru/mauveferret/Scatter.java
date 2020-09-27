@@ -2,6 +2,7 @@ package ru.mauveferret;
 
 import ru.mauveferret.Distributions.*;
 
+import java.awt.*;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -117,16 +118,18 @@ public class Scatter extends ParticleInMatterCalculator {
 
                     //Here is several spectra calculators
 
+                    PolarAngles angles = new PolarAngles(cosx,cosy,cosz);
+
                     for (Distribution distr: distributions){
                         switch (distr.getType())
                         {
-                            case "energy": ((Energy) distr).check(cosx,cosy,cosz,sort,en);
+                            case "energy": ((Energy) distr).check(angles,sort,en);
                             break;
-                            case "polar": ((Polar) distr).check(cosx,cosy,cosz,sort);
+                            case "polar": ((Polar) distr).check(angles,sort);
                             break;
-                            case "anglemap": ((AngleMap) distr).check(cosx,cosy,cosz,sort);
+                            case "anglemap": ((AngleMap) distr).check(angles,sort);
                             break;
-                            case "gettxt": ((getTXT) distr).check(cosx,cosy,cosz,sort,en);
+                            case "gettxt": ((getTXT) distr).check(angles,sort,en);
                             break;
                         }
                     }

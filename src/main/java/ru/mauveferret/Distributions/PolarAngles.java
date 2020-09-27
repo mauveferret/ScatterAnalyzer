@@ -2,15 +2,19 @@ package ru.mauveferret.Distributions;
 
 public class PolarAngles {
 
-    //from 0 to 360 from normal to sufrace
+    //from 0 to 360 from normal to sufrace (-x Axis)
     private double polar;
-    //from 0 to 180 from X axis (in which the beam strikes)
+    //from 0 to 360 from Z axis (in which the beam strikes)
     private double azimuth;
 
 
-    public PolarAngles(double polarCos, double azimuthCos) {
+    public PolarAngles(double polarCos, double azimuthCos, double x,double y) {
         azimuth = 57.2958*Math.acos(azimuthCos);
-        polar = (azimuth<90) ? 57.2958*Math.acos(polarCos) : 270+57.2958*Math.acos(polarCos);
+        polar = 57.2958*Math.acos(polarCos);
+        polar += (x>0 && (azimuth<=90)) ? 90 : 0;
+        polar += (x>0 && (azimuth>90)) ? 180 : 0;
+        polar += (x<0 && (azimuth>90)) ? 270 : 0;
+        azimuth += ((y>0) ? 0 : 180);
         //System.out.println(azimuth+" "+polar);
     }
 
@@ -28,22 +32,15 @@ public class PolarAngles {
 
     public boolean doesAngleMatch(double angle, double delta, boolean isPolar){
 
-        if (isPolar){
-            if (angle>delta && angle<360-delta) return (Math.abs(angle - polar)<delta);
-            else return (polar < delta || polar>360-delta);
-        }
-        else {
-            if (angle>delta && angle<180-delta) return (Math.abs(angle - azimuth)<delta);
-            else return (azimuth<delta || azimuth>180-delta);
-        }
-
-
+        double toCheck = (isPolar)? polar : azimuth;
+        if (angle>delta && angle<360-delta) return (Math.abs(angle - toCheck)<delta);
+        else return (toCheck < delta || toCheck>360-delta);
     }
 
     private void cartesianToAngles(double cosx,double cosy,double cosz){
 
 
-        //z is  directed normally from the surface
+        // TRIM style Cartesian system ( -x is a normal, projectiles are in ZX plane) TODO
         if ((cosx>0 & cosy>0) || (cosx<0 & cosy<0)) azimuth = Math.atan(cosy / cosx)*57.2958;
         else if ((cosx<0 && cosy>0) || (cosx>0 && cosy<0)) azimuth = 180-Math.atan(-1*(cosy/cosx))*57.2958;
 

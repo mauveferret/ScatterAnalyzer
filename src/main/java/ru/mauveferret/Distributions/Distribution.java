@@ -15,11 +15,8 @@ public abstract class Distribution {
 
     ParticleInMatterCalculator calculator;
     String type;
-    int particlesCount;
-
 
     public Distribution(ParticleInMatterCalculator calculator, String sort) {
-        particlesCount = 0;
         this.calculator = calculator;
         this.sort = sort;
         fileSeparator = File.separator;

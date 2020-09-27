@@ -360,8 +360,8 @@ public class RootFxmlController {
 
                 sort = (NThetaB.isSelected()) ? "B" : "";
                 sort += (NThetaS.isSelected()) ? "S" : "";
-                sort += (NThetaS.isSelected()) ? "I" : "";
-                sort += (NThetaS.isSelected()) ? "T" : "";
+                sort += (NThetaI.isSelected()) ? "I" : "";
+                sort += (NThetaT.isSelected()) ? "T" : "";
 
                 if (!sort.equals(""))
                     distributions.add(new Polar(phiNTheta, dPhiNTheta, dThetaNTheta,sort, yourCalcuator));

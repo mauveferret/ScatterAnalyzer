@@ -58,7 +58,10 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                     if (line.contains("e0")&& !line.contains("case"))
                     {
-                        projectileMaxEnergy = Double.parseDouble(someParameter.substring(0, someParameter.indexOf(",")).trim());
+                        if (someParameter.contains(",")) {
+                            projectileMaxEnergy = Double.parseDouble(someParameter.substring(0, someParameter.indexOf(",")).trim());
+                        }
+                        else projectileMaxEnergy = Double.parseDouble(someParameter.trim());
                     }
 
                     if (line.contains("alpha0")) {
@@ -77,6 +80,9 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             catch (IOException ex){
                 ex.printStackTrace();
                 return "File "+tscConfig+" is damaged";
+            }
+            catch (Exception e){
+                e.printStackTrace();
             }
 
             //check whether the *.dat file exist
@@ -104,7 +110,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
         //find all TRIM-related distributions
 
-        float en = 0, cosx, cosy, cosz;
+        double en = 0, collisionsAmount=0, fluence=0,  xEnd=0, yEnd=0, zEnd=0, cosP=0,cosA=0, path=0;
         String sort;
 
         try {
@@ -134,10 +140,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 else if (particlesType.contains("tran")) sort = "T";
 
 
-                cosx=0;
-                cosy=0;
-                cosz=0;
-
             while (br.ready()) {
                 line = br.readLine();
                 if (!line.contains("end")) {
@@ -150,24 +152,37 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                     datas = line.split(" ");
 
                     int ien=0, ix=0,iy=0,iz=0;
-                    int n=0;
-                    float k=0;
+                    int column=0;
+                    double value=0;
                     for (int i=0; i<datas.length;i++)
                     {
                         try {
-                            k = Float.parseFloat(datas[i]);
-                            n++;
+                            value = Float.parseFloat(datas[i]);
+                            column++;
                         }
                         catch (Exception e)
                         {
-
+                            //failed to find correct delimiter
                         }
-                        if (n==4) en = k;
-                        if (n==14) cosx = k;  //polar angle
-                        if (n==15) cosy = k; //azimuthangle
-                        if (n==11) {
-                            if (k<0)  cosz = 1-cosx*cosx-cosy*cosy;
-                            if (k>0)cosz = -1+cosx*cosx+cosy*cosy;
+                        switch (column){
+                            case 2: collisionsAmount = value;
+                            break;
+                            case 3: fluence = value;
+                            break;
+                            case 4: en = value;
+                            break;
+                            case 8: xEnd = value;
+                            break;
+                            case 9: yEnd = value;
+                            break;
+                            case 10: zEnd = value;
+                            break;
+                            case 14: cosP = value;
+                            break;
+                            case 15: cosA = value;
+                            break;
+                            case 16: path = value;
+                            break;
                         }
 
                     }
@@ -178,19 +193,21 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                     //Here is several spectra calculators
 
+                    PolarAngles angles = new PolarAngles(cosP, cosA, xEnd, yEnd);
+
                     for (Distribution distr : distributions) {
                         switch (distr.getType()) {
                             case "energy":
-                                ((Energy) distr).check(cosx,cosy,sort,en);
+                                ((Energy) distr).check(angles,sort,en);
                                 break;
                             case "polar":
-                                ((Polar) distr).check(cosx, cosy, sort);
+                                ((Polar) distr).check(angles, sort);
                                 break;
                             case "anglemap":
-                                ((AngleMap) distr).check(cosx, cosy, cosz, sort);
+                                ((AngleMap) distr).check(angles, sort);
                                 break;
                             case "gettxt":
-                                ((getTXT) distr).check(cosx, cosy, cosz, sort, en);
+                                ((getTXT) distr).check(angles, sort, en);
                         }
                     }
 

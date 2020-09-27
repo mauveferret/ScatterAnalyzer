@@ -19,8 +19,6 @@ public class getTXT extends Distribution {
         catch (Exception e){e.printStackTrace();}
     }
 
-
-
     @Override
     int[] getSpectrum() { return null;}
 
@@ -36,14 +34,10 @@ public class getTXT extends Distribution {
         return true;
     }
 
-    public void check(double x, double y, double z, String someSort, double E) {
+    public void check(PolarAngles angles, String someSort, double E) {
         try {
-
-
-            PolarAngles angles = new PolarAngles(x,y,z);
             energyWriter.write((E+" "+angles.getAzimuth()+" "+angles.getPolar()).getBytes());
             System.out.println(E+" "+angles.getAzimuth()+" "+angles.getPolar());
-
         }
         catch (Exception e) {
             System.out.println(e.getMessage());

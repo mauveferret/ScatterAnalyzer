@@ -27,6 +27,7 @@ public class ScatterColorMap {
         this.array = array;
         this.dPhi = dPhi;
         this.dTheta = dTheta;
+
         JFrame f = new JFrame(title);
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("pics/CrocoLogo.png")));
@@ -57,9 +58,9 @@ public class ScatterColorMap {
         renderer.setBlockHeight(dTheta);
         renderer.setBlockWidth(dTheta);
         plot.setRenderer(renderer);
-        JFreeChart chart = new JFreeChart("Карта рассеяния частиц",
+        JFreeChart chart = new JFreeChart("particles angular Map",
                 JFreeChart.DEFAULT_TITLE_FONT, plot, false);
-        NumberAxis scaleAxis = new NumberAxis("Число вылетевших частиц");
+        NumberAxis scaleAxis = new NumberAxis("particles number");
         PaintScaleLegend legend = new PaintScaleLegend(ps, scaleAxis);
         legend.setSubdivisionCount(126);
         legend.setMargin(10, 10, 10, 10);
@@ -76,7 +77,7 @@ public class ScatterColorMap {
     private  XYZDataset createDataset() {
         DefaultXYZDataset dataset = new DefaultXYZDataset();
         int n=0;
-        for (int i = 0; i < (int) (180/dPhi)+1; i++) {  //azimuth angle
+        for (int i = 0; i < (int) (360/dPhi)+1; i++) {  //azimuth angle
             double[][] data = new double[3][1000];
             for (int j = 0; j < (int) (90/dTheta); j++) {    //polar angle
                 data[0][j] = j*dTheta * Math.cos(i*dPhi*2*3.14/360);

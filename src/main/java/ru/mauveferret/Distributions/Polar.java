@@ -18,7 +18,7 @@ public class Polar extends Distribution {
 
     public Polar(double phi, double dPhi, double dTheta, String sort, ParticleInMatterCalculator calculator) {
         super(calculator, sort);
-        this.phi = phi;
+        this.phi = (phi > 180) ? phi-180 : phi;
         this.dPhi = dPhi;
         this.dTheta = dTheta;
         //TODO 180 or 360?
@@ -38,15 +38,17 @@ public class Polar extends Distribution {
             }
     }
 
-    public void check(double cosp, double cosa, String someSort ){
+    public void check( PolarAngles angles, String someSort ){
        // System.out.println(57.2958*Math.acos(cosa));
         //if (Math.abs(57.2958*Math.acos(cosa)-phi)<dPhi || (57.2958*Math.acos(cosa) > 180- dPhi))
-        PolarAngles angles = new PolarAngles(cosp, cosa);
-        if (angles.doesAngleMatch(phi,dPhi,false))
-        if (sort.contains(someSort)) {
+
+        if (((angles.getAzimuth()<180) && angles.doesAngleMatch(phi,dPhi,false))  ||
+        ((angles.getAzimuth()>=180) && angles.doesAngleMatch(phi+180,dPhi,false))) {
+            if (sort.contains(someSort)) {
                 //double add = (57.2958*Math.acos(cosa) > 180- dPhi)? 270 : 0;
                 polarAngleSpectrum[(int) Math.round(angles.getPolar() / dTheta)]++;
             }
+        }
     }
 
     public int[] getSpectrum() {

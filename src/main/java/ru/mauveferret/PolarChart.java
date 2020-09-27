@@ -73,6 +73,12 @@ public class PolarChart extends ApplicationFrame {
     public PolarChart(final String title, int[] thetaDistr,double dTheta ) {
         super(title);
         this.title = title;
+
+        JFrame f = new JFrame(title);
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("pics/CrocoLogo.png")));
+        f.setLayout(new BorderLayout(0, 5));
+
         final XYDataset dataset = createDataset(thetaDistr, dTheta);
         final JFreeChart chart = createChart(dataset);
 
@@ -83,10 +89,7 @@ public class PolarChart extends ApplicationFrame {
         chartPanel.setMouseZoomable(true,true);
         setContentPane(chartPanel);
 
-        JFrame f = new JFrame(title);
-        f.setTitle(title);
-        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        f.setLayout(new BorderLayout(0, 5));
+
         f.add(chartPanel, BorderLayout.CENTER);
         chartPanel.setMouseWheelEnabled(true);
         chartPanel.setHorizontalAxisTrace(true);
