@@ -43,7 +43,7 @@ public class Polar extends Distribution {
         //if (Math.abs(57.2958*Math.acos(cosa)-phi)<dPhi || (57.2958*Math.acos(cosa) > 180- dPhi))
 
         if (((angles.getAzimuth()<180) && angles.doesAngleMatch(phi,dPhi,false))  ||
-        ((angles.getAzimuth()>=180) && angles.doesAngleMatch(phi+180,dPhi,false))) {
+        ((angles.getAzimuth()>=180) && angles.doesAngleMatch(phi-180,dPhi,false))) {
             if (sort.contains(someSort)) {
                 //double add = (57.2958*Math.acos(cosa) > 180- dPhi)? 270 : 0;
                 polarAngleSpectrum[(int) Math.round(angles.getPolar() / dTheta)]++;

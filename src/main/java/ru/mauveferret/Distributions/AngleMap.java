@@ -30,7 +30,13 @@ public class AngleMap extends Distribution{
             if (sort.contains(someSort))
             {
                 double polar = angles.getPolar();
-                polar = (polar>270) ? polar-270 : polar;
+
+              // if (polar >270) System.out.println(angles.getAzimuth());
+                polar = (polar>270) ? polar-270 : polar; //FIXME
+
+
+                // FIXME phi 0<phi<180
+
                 if (polar>90 && polar<270) System.out.println("ZHOPPA_AngleMap");
                 angleMap[(int) (Math.round(angles.getAzimuth() / dPhi))][(int) (( polar/ dTheta))]++;
             }

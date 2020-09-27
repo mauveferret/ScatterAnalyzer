@@ -24,7 +24,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("fxml/Root.fxml"));
-        primaryStage.setTitle("Scatter Analyzer");
+        primaryStage.setTitle("ISInCa - Ion Surface Interaction Calculation");
         primaryStage.getIcons().add(new Image( Main.class.getResourceAsStream( "pics/CrocoLogo.png" )));
         primaryStage.setScene(new Scene(root, 700, 480));
         primaryStage.show();

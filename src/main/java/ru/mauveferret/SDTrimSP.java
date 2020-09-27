@@ -68,7 +68,9 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                         projectileIncidentPolarAngle = Double.parseDouble(someParameter);
                         projectileIncidentAzimuthAngle = 0;
                     }
-                    if (line.contains("nh")) projectileAmount = Integer.parseInt(someParameter);
+                    //we multiply on 10 because there is a bug in SDTrimSP 6_02: it counts 10 time more particles,
+                    //than in "nh" field FIXME
+                    if (line.contains("nh")) projectileAmount = Integer.parseInt(someParameter); //*10;
                 }
                 reader.close();
 
@@ -136,7 +138,8 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 sort = "";
                 if (particlesType.contains("back_p")) sort = "B";
                 else if (particlesType.contains("back_r")) sort = "S";
-                else if (particlesType.contains("stop")) sort = "I";
+                else if (particlesType.contains("stop_p")) sort = "I";
+                else if (particlesType.contains("stop_r")) sort = "D"; //displaces FIXME
                 else if (particlesType.contains("tran")) sort = "T";
 
 
@@ -195,6 +198,8 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                     PolarAngles angles = new PolarAngles(cosP, cosA, xEnd, yEnd);
 
+                 //  if (!someDataFilePath.contains("stop")) System.out.println(angles.getPolar()+" "+angles.getAzimuth());
+
                     for (Distribution distr : distributions) {
                         switch (distr.getType()) {
                             case "energy":
@@ -212,7 +217,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                     }
 
                     //calculate some scattering constants
-                    particleCount++;
+                    if (!sort.contains("S") && !sort.contains("D")) particleCount++;
 
                     if (sort.equals("B")) {
                         scattered++;
@@ -226,7 +231,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             }
 
             energyRecoil = energyRecoil/(projectileMaxEnergy*particleCount);
-            System.out.println(energyRecoil);
             time=System.currentTimeMillis()-time;
             time=time/((double) 1000);
         } catch (Exception e){

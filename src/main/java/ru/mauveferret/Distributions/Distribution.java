@@ -20,7 +20,7 @@ public abstract class Distribution {
         this.calculator = calculator;
         this.sort = sort;
         fileSeparator = File.separator;
-        pathToLog = calculator.directoryPath+fileSeparator+calculator.modelingID+"_"+this.getClass().getSimpleName().toUpperCase()+" DISTRIBUTION_"+
+        pathToLog = calculator.directoryPath+fileSeparator+"ISInCa"+File.separator+calculator.modelingID+"_"+this.getClass().getSimpleName().toUpperCase()+" DISTRIBUTION_"+
         sort ;
         headerComment = "---------------"+" PARTICLE IN MATTER ANALYZER 2020 "+"---------------"+"\n";
         headerComment+= "|  "+"by Mauveferret@gmail.com from Plasma Physics Dep., MEPhI"+"    |"+"\n";
