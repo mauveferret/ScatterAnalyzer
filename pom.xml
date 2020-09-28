@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
     <groupId>ru.mauveferret</groupId>
-    <artifactId>ScatterAnalyzer</artifactId>
+    <artifactId>ISInCa</artifactId>
     <version>3.4</version>
     <properties>
         <javafx.version>13</javafx.version>
@@ -178,7 +178,7 @@
                             <headerType>gui</headerType>
                             <jar>${project.build.directory}/${project.artifactId}-${project.version}-jar-with-dependencies.jar</jar>
                             <icon>${project.build.directory}/classes/ru/mauveferret/pics/CrocoLogo.ico</icon>
-                            <outfile>ScatterAnalyzer.exe</outfile>
+                            <outfile>ISInCa.exe</outfile>
                             <errTitle>some went wrong</errTitle>
                             <classPath>
                                 <mainClass>ru.mauveferret.Main</mainClass>
@@ -190,15 +190,15 @@
                                 <jdkPreference>jdkOnly</jdkPreference>
                             </jre>
                             <versionInfo>
-                                <fileVersion>2.5.0.0</fileVersion>
+                                <fileVersion>2020.1.0.0</fileVersion>
                                 <txtFileVersion>snapshot</txtFileVersion>
-                                <fileDescription>Postprocessing for SCATTER/TRIM calculations</fileDescription>
+                                <fileDescription>Postprocessing for Monte-carlo based ISI calculation codes</fileDescription>
                                 <copyright>mauveferret</copyright>
                                 <productVersion>2.5.0.0</productVersion>
                                 <txtProductVersion>mauveferret@gmail.com</txtProductVersion>
-                                <productName>ScatterAnalyzer</productName>
-                                <internalName>scatteranalyzer</internalName>
-                                <originalFilename>ScatterAnalyzer.exe</originalFilename>
+                                <productName>ISInCa</productName>
+                                <internalName>isinca</internalName>
+                                <originalFilename>ISInCa.exe</originalFilename>
                             </versionInfo>
                         </configuration>
                     </execution>
