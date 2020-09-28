@@ -15,7 +15,7 @@ public class Energy extends Distribution{
     private final double dPhi;
     private final double dE;
 
-    private int[] energySpectrum;  //forms energyspectra
+    private double[] energySpectrum;  //forms energyspectra
 
     public Energy(double E0, double dE, double phi, double dPhi, double theta, double dTheta, String sort, ParticleInMatterCalculator calculator) {
         super(calculator, sort);
@@ -25,39 +25,43 @@ public class Energy extends Distribution{
         this.phi = phi;
         this.dPhi = dPhi;
         this.dE = dE;
-        energySpectrum =  new int[(int) Math.ceil(E0/dE)+1];
+        energySpectrum =  new double[(int) Math.ceil(E0/dE)+1];
         pathToLog+="_theta "+theta+"_phi "+phi+"_dE"+dE+"_time "+ ((int ) (Math.random()*100))+".txt";
         headerComment+="| delate E "+dE+" theta "+theta+"dTheta "+dTheta+" phi "+phi+" dPhi "+dPhi+"  |"+"\n";
         headerComment+="|----------------------------------------------------------------------|"+"\n";
     }
 
-    public void check (double x, double y, double z, String someSort, double E)
-    {
-       PolarAngles angle = new PolarAngles(x,y,z);
-       if (angle.doesAngleMatch(theta,dTheta,true) && angle.doesAngleMatch(phi,dPhi,false))
-           if (sort.contains(someSort))
-               energySpectrum[(int) Math.round(E/dE)]++;
-    }
-
     public void check(PolarAngles angles, String someSort, double E ){
-        //if (Math.abs(57.2958*Math.acos(cosa)-phi)<dPhi && Math.abs(57.2958*Math.acos(cosp)-theta)<dTheta)
-        if (angles.doesAngleMatch(phi, dPhi, false))
-            if (sort.contains(someSort))
-                energySpectrum[(int) Math.round(E/dE)]++;
+
+        if (sort.contains(someSort)) {
+
+            //if (Math.abs(57.2958*Math.acos(cosa)-phi)<dPhi && Math.abs(57.2958*Math.acos(cosp)-theta)<dTheta)
+            if (angles.doesAzimuthAngleMatch(phi, dPhi) && angles.doesPolarAngleMatch(theta, dTheta)) {
+
+                energySpectrum[(int) Math.round(E / dE)]++;
+            }
+        }
     }
 
-    public int[] getSpectrum() {
+    public double[] getSpectrum() {
         return energySpectrum;
     }
 
     @Override
     public boolean logDistribution() {
+
+        //I don't know why, but Daniel want spectra to be divided by E
+        //TODO check why is it need?
+       for (int i=0; i<energySpectrum.length; i++){
+            energySpectrum[i]=energySpectrum[i]/((i!=0)? i*dE : dE);
+        }
+
         try {
             FileOutputStream energyWriter = new FileOutputStream(pathToLog);
             String stroka;
             energyWriter.write(headerComment.getBytes());
             for (int i = 0; i <= (int) Math.round(E0 / dE); i++) {
-                 stroka = i * dE + " " + ((double) energySpectrum[i])/dE + "\n";
+                 stroka = i * dE + " " + energySpectrum[i]/dE + "\n";
                 energyWriter.write(stroka.getBytes());
             }
             energyWriter.close();

@@ -20,7 +20,7 @@ public class getTXT extends Distribution {
     }
 
     @Override
-    int[] getSpectrum() { return null;}
+    double[] getSpectrum() { return null;}
 
     @Override
     public boolean logDistribution() { return true; }

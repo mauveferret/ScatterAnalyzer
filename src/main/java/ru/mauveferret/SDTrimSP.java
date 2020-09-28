@@ -11,8 +11,8 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
     ArrayList<String> dataPath;
 
-    SDTrimSP(String directoryPath) {
-        super(directoryPath);
+    SDTrimSP(String directoryPath, boolean doVizualization) {
+        super(directoryPath, doVizualization);
         dataPath = new ArrayList<>();
 
         projectileIncidentAzimuthAngle = 0;
@@ -82,9 +82,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             catch (IOException ex){
                 ex.printStackTrace();
                 return "File "+tscConfig+" is damaged";
-            }
-            catch (Exception e){
-                e.printStackTrace();
             }
 
             //check whether the *.dat file exist
@@ -190,10 +187,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                     }
 
-                    //System.out.println(en+" "+cosx+" "+cosy+" "+cosz);
-
-
-
                     //Here is several spectra calculators
 
                     PolarAngles angles = new PolarAngles(cosP, cosA, xEnd, yEnd);
@@ -229,7 +222,10 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             }
                 br.close();
             }
-
+            scattered = scattered / particleCount;
+            sputtered = sputtered / particleCount;
+            implanted = implanted / particleCount;
+            transmitted = transmitted / particleCount;
             energyRecoil = energyRecoil/(projectileMaxEnergy*particleCount);
             time=System.currentTimeMillis()-time;
             time=time/((double) 1000);

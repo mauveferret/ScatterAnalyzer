@@ -1,54 +1,23 @@
 package ru.mauveferret;
 
-/* ===========================================================
- * JFreeChart : a free chart library for the Java(tm) platform
- * ===========================================================
- *
- * (C) Copyright 2000-2004, by Object Refinery Limited and Contributors.
- *
- * Project Info:  http://www.jfree.org/jfreechart/index.html
- *
- * This library is free software; you can redistribute it and/or modify it under the terms
- * of the GNU Lesser General Public License as published by the Free Software Foundation;
- * either version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along with this
- * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
- *
- * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
- * in the United States and other countries.]
- *
- * -------------------
- * PolarChartDemo.java
- * -------------------
- * (C) Copyright 2004, by Solution Engineering, Inc. and Contributors.
- *
- * Original Author:  Daniel Bridenbecker, Solution Engineering, Inc.;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
- *
- * $Id: PolarChartDemo.java,v 1.4 2004/04/30 11:19:22 mungady Exp $
- *
- * Changes
- * -------
- * 19-Jan-2004 : Version 1, contributed by DB with minor changes by DG (DG);
- *
- */
-
 
 import java.awt.*;
+import java.text.DecimalFormat;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.PolarChartPanel;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.TickUnits;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.PolarPlot;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.DefaultPolarItemRenderer;
+import org.jfree.chart.renderer.PolarItemRenderer;
+import org.jfree.chart.renderer.xy.XYBlockRenderer;
+import org.jfree.chart.title.PaintScaleLegend;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -56,48 +25,72 @@ import org.jfree.ui.ApplicationFrame;
 
 import javax.swing.*;
 
-/**
- * <code>PolarChartDemo</code> demonstrates the capabilities of the {@link PolarPlot}.
- *
- * @author  Daniel Bridenbecker, Solution Engineering, Inc.
- */
+
 public class PolarChart extends ApplicationFrame {
 
-    /**
-     * Creates a new instance of the demo.
-     *
-     * @param title  the frame title.
-     */
     String title;
+    double[] thetaDistr;
+    double dTheta;
 
-    public PolarChart(final String title, int[] thetaDistr,double dTheta ) {
+    public PolarChart(final String title, double[] thetaDistr,double dTheta ) {
         super(title);
         this.title = title;
+        this.thetaDistr = thetaDistr;
+        this.dTheta = dTheta;
 
         JFrame f = new JFrame(title);
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("pics/CrocoLogo.png")));
         f.setLayout(new BorderLayout(0, 5));
 
-        final XYDataset dataset = createDataset(thetaDistr, dTheta);
-        final JFreeChart chart = createChart(dataset);
+        ChartPanel chartPanel = new ChartPanel(createChart(createDataset())) {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(640, 640);
+            }
+        };
 
-        final ChartPanel chartPanel = new PolarChartPanel(chart);
-
-        chartPanel.setPreferredSize(new Dimension(500, 500));
-        chartPanel.setEnforceFileExtensions(false);
+        chartPanel.getChart().getPlot().setBackgroundPaint(Color.BLACK);
+        chartPanel.getChart().getPlot().setOutlinePaint(Color.WHITE);
         chartPanel.setMouseZoomable(true,true);
         setContentPane(chartPanel);
-
-
         f.add(chartPanel, BorderLayout.CENTER);
+        f.pack();
+        //f.setLocationRelativeTo(null);
+        f.setVisible(true);
         chartPanel.setMouseWheelEnabled(true);
         chartPanel.setHorizontalAxisTrace(true);
         chartPanel.setVerticalAxisTrace(true);
 
-        PolarPlot polPlot = (PolarPlot) chart.getPlot();
+    }
 
+    private XYDataset createDataset() {
+        final XYSeriesCollection data = new XYSeriesCollection();
+        XYSeries mainSeries = new XYSeries(title);
+        double max = 0;
+        for (int i=0; i<thetaDistr.length; i++) {
+            mainSeries.add(i*dTheta-90, thetaDistr[i]);
+            if (thetaDistr[i]>max) max = thetaDistr[i];
+        }
+        XYSeries cosineSeries = new XYSeries("cosine");
+        for (int i=0; i<thetaDistr.length; i++) {
+            cosineSeries.add(i*dTheta-90, max*Math.cos(Math.toRadians(i*dTheta-90)));
+        }
+        data.addSeries(mainSeries);
+        data.addSeries(cosineSeries);
+        return data;
+    }
+
+
+    private JFreeChart createChart(XYDataset dataset) {
+
+        final JFreeChart chart =  ChartFactory.createPolarChart(
+              "Polar Chart "+title, dataset, true, true, true);
+        PolarPlot polPlot =(PolarPlot)  chart.getPlot();
         polPlot.setAngleGridlinePaint(Color.GREEN);
+        DecimalFormat df2 = new DecimalFormat("0");
+
+        polPlot.setAngleTickUnit(new NumberTickUnit(15, df2, 4));
         polPlot.setRadiusGridlinePaint(Color.GREEN);
         Font font = new Font("Verdana", Font.BOLD, 24);
         polPlot.setAngleLabelPaint(Color.WHITE);
@@ -106,54 +99,25 @@ public class PolarChart extends ApplicationFrame {
         ValueAxis axis = polPlot.getAxis();
         axis.setTickLabelFont(font);
         axis.setLabelFont(font);
-        axis.setMinorTickCount(5);
-        chartPanel.getChart().getPlot().setBackgroundPaint(Color.BLACK);
-        chartPanel.getChart().getPlot().setOutlinePaint(Color.WHITE);
+
 
         DefaultPolarItemRenderer renderer = (DefaultPolarItemRenderer) polPlot.getRenderer();
-        renderer.setSeriesStroke(0, new BasicStroke(5.0f));;
-        renderer.setSeriesFilled(0, true);
 
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panel.setFont(font);
-        f.add(panel, BorderLayout.SOUTH);
-        f.pack();
-        f.setLocationRelativeTo(null);
-        f.setVisible(true);
-    }
+        renderer.setSeriesVisible(0, true);
+        renderer.setSeriesVisible(1, true);
 
-    /**
-     * Creates a sample dataset.
-     *
-     * @return A sample dataset.
-     */
-    private XYDataset createDataset(int[] thetaDistr,double dTheta) {
-        final XYSeriesCollection data = new XYSeriesCollection();
-        XYSeries series = new XYSeries(title);
-        for (int i=0; i<thetaDistr.length; i++) {
-            series.add(i*dTheta, thetaDistr[i]);
-        }
-        //final XYSeries series2 = createRandomData("Series 2", 50.0, 5.0);
-        //final XYSeries series3 = createRandomData("Series 3", 25.0, 1.0);
-        data.addSeries(series);
-        //data.addSeries(series2);
-        //data.addSeries(series3);
-        return data;
-    }
+        renderer.setSeriesStroke(0, new BasicStroke(2.0f));
+        renderer.setSeriesStroke(1,new BasicStroke(
+                4.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+                1.0f, new float[] {10.0f, 6.0f}, 0.0f ));
 
+        renderer.setSeriesFilled(1,false);
+        renderer.setSeriesFilled(0,true);
 
-    /**
-     * Creates a sample chart.
-     *
-     * @param dataset  the dataset.
-     *
-     * @return A sample chart.
-     */
-    private JFreeChart createChart(final XYDataset dataset) {
-        final JFreeChart chart = ChartFactory.createPolarChart(
-                "Polar Chart "+title, dataset, true, true, false
-        );
-       return chart;
+        renderer.setSeriesPaint(0, Color.RED);
+        renderer.setSeriesPaint(1,Color.CYAN);
+
+        return chart;
     }
 
 }

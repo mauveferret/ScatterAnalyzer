@@ -36,7 +36,7 @@ public abstract class Distribution {
     }
 
     public void check(){};
-    abstract int[] getSpectrum();
+    abstract double[] getSpectrum();
     public abstract boolean logDistribution();
     public abstract boolean visualize();
 

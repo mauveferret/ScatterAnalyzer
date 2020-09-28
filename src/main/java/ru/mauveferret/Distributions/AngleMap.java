@@ -17,7 +17,6 @@ public class AngleMap extends Distribution{
         super(calculator, sort);
         this.dPhi = dPhi;
         this.dTheta = dTheta;
-        //TODO 180 or 360?
         angleMap = new double[(int) Math.ceil(360/dPhi)+1][(int) Math.ceil(90/dTheta)+1];
         pathToLog+="_dphi "+dPhi+"_dTheta"+dTheta+"_time "+ ((int ) (Math.random()*100))+".txt";
         headerComment+=" dPhi "+dPhi+"dTheta "+dTheta+"            |"+"\n";
@@ -27,22 +26,11 @@ public class AngleMap extends Distribution{
     public  void check (PolarAngles angles, String someSort)
     {
         //only for backscattered and sputtered!
-            if (sort.contains(someSort))
-            {
-                double polar = angles.getPolar();
-
-              // if (polar >270) System.out.println(angles.getAzimuth());
-                polar = (polar>270) ? polar-270 : polar; //FIXME
-
-
-                // FIXME phi 0<phi<180
-
-                if (polar>90 && polar<270) System.out.println("ZHOPPA_AngleMap");
-                angleMap[(int) (Math.round(angles.getAzimuth() / dPhi))][(int) (( polar/ dTheta))]++;
-            }
+        if (sort.contains(someSort))
+            angleMap[(int) (Math.round(angles.getAzimuth() / dPhi))][(int) Math.round( angles.getPolar()/ dTheta)]++;
     }
 
-    public int[]getSpectrum() {
+    public double[]getSpectrum() {
         return null;
     }
 
@@ -84,12 +72,7 @@ public class AngleMap extends Distribution{
 
     @Override
     public boolean visualize() {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new ScatterColorMap("ScatterAnalyzer",  angleMap, dPhi, dTheta);
-            }
-        });
+        EventQueue.invokeLater(() -> new ScatterColorMap("ScatterAnalyzer",  angleMap, dPhi, dTheta));
         return  true;
     }
 

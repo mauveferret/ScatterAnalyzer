@@ -120,7 +120,7 @@ public class RootFxmlController {
     @FXML
     public void readme()
     {
-        Platform.runLater(() -> new GUI().showHelpPage("readme.png"));
+        Platform.runLater(() -> new GUI().showHelpPage("pics/readme.png"));
     }
 
     @FXML
@@ -148,15 +148,15 @@ public class RootFxmlController {
             file = chooser.showDialog(button.getScene().getWindow());
             path = file.getAbsolutePath();
 
-            yourCalcuator = new Scatter(path);
+            yourCalcuator = new Scatter(path,true);
             String initialize = yourCalcuator.initializeVariables();
             if (!initialize.equals("OK")) {
                 System.out.println(initialize);
-                yourCalcuator = new TRIM(path);
+                yourCalcuator = new TRIM(path,true);
                 initialize = yourCalcuator.initializeVariables();
                 if (!initialize.equals("OK")) {
                     System.out.println(initialize);
-                    yourCalcuator = new SDTrimSP(path);
+                    yourCalcuator = new SDTrimSP(path, true);
                     initialize = yourCalcuator.initializeVariables();
                     if (!initialize.equals("OK")) {
                         System.out.println(initialize);
@@ -310,7 +310,7 @@ public class RootFxmlController {
     @FXML
     public  void showHelp()
     {
-        Platform.runLater(() -> new GUI().showHelpPage("axes.png"));
+        Platform.runLater(() -> new GUI().showHelpPage("pics/axes.png"));
 
     }
 
@@ -403,11 +403,11 @@ public class RootFxmlController {
                 DecimalFormat nFormat = new DecimalFormat(".2f");
 
 
-                scattered.setText(new BigDecimal(((double) yourCalcuator.scattered)/((double) yourCalcuator.particleCount)).setScale(4, RoundingMode.UP).doubleValue()
+                scattered.setText(new BigDecimal( yourCalcuator.scattered).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
-                sputtered.setText(new BigDecimal(((double) yourCalcuator.sputtered)/((double) yourCalcuator.particleCount)).setScale(4, RoundingMode.UP).doubleValue()
+                sputtered.setText(new BigDecimal(yourCalcuator.sputtered).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
-                implanted.setText(new BigDecimal(((double) yourCalcuator.implanted)/((double) yourCalcuator.particleCount)).setScale(4, RoundingMode.UP).doubleValue()
+                implanted.setText(new BigDecimal(yourCalcuator.implanted).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
                 energyScattering.setText(new BigDecimal(yourCalcuator.energyRecoil).setScale(3, RoundingMode.UP).doubleValue()
                         +"");

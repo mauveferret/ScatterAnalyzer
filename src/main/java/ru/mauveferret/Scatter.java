@@ -12,8 +12,8 @@ public class Scatter extends ParticleInMatterCalculator {
 
     String dataPath;
 
-    Scatter(String directoryPath) {
-        super(directoryPath);
+    Scatter(String directoryPath, boolean doVizualization) {
+        super(directoryPath, doVizualization);
         dataPath = "";
     }
 
@@ -45,7 +45,10 @@ public class Scatter extends ParticleInMatterCalculator {
                     line = reader.readLine();
                     if (line.contains("=")) someParameter = line.substring(line.indexOf("=")+1).trim();
                     if (line.contains("Atom") && previousLine.contains("Projectile")) projectileElements= someParameter;
-                    if (line.contains("Atom") && !previousLine.contains("Projectile")) targetElements += someParameter+" ";
+                    if (line.contains("Atom") && !previousLine.contains("Projectile")) {
+                        if (targetElements.contains("elements")) targetElements = "";
+                        targetElements += someParameter+" ";
+                    }
                     if (line.contains("StartEnergy")) projectileMaxEnergy = Double.parseDouble(someParameter);
                     if (line.contains("StartAngle")) projectileIncidentPolarAngle = Double.parseDouble(someParameter);
                     if (line.contains("StartPhi")) projectileIncidentAzimuthAngle = Double.parseDouble(someParameter);
@@ -135,7 +138,7 @@ public class Scatter extends ParticleInMatterCalculator {
                     }
 
                     //calculate some scattering constants
-                    particleCount++;
+                    if (!sort.contains("S")) particleCount++;
 
                     if (sort.equals("B")) {
                         scattered++;
@@ -148,6 +151,10 @@ public class Scatter extends ParticleInMatterCalculator {
                 }
             }
             reader.close();
+            scattered = scattered / projectileAmount;
+            sputtered = sputtered /projectileAmount;
+            implanted = implanted / projectileAmount;
+            transmitted = transmitted / projectileAmount;
             energyRecoil = energyRecoil/projectileMaxEnergy;
             time=System.currentTimeMillis()-time;
             time=time/1000;

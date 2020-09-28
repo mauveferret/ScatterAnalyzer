@@ -14,44 +14,33 @@ public class Polar extends Distribution {
     private final double dPhi;
     private final double dTheta;
 
-    private int polarAngleSpectrum[];
+    private final double[] polarAngleSpectrum;
 
     public Polar(double phi, double dPhi, double dTheta, String sort, ParticleInMatterCalculator calculator) {
         super(calculator, sort);
+        //even if user entered phi>180, we will look after the plane with phi<180, which is generally the same
         this.phi = (phi > 180) ? phi-180 : phi;
         this.dPhi = dPhi;
         this.dTheta = dTheta;
-        //TODO 180 or 360?
-        polarAngleSpectrum = new int[(int) Math.ceil(360/dTheta)+1];
+        polarAngleSpectrum = new double[(int) Math.ceil(180/dTheta)+1];
         pathToLog+="_phi "+phi+"_dphi "+dPhi+"_dTheta"+dTheta+"_time "+ ((int ) (Math.random()*100))+".txt";
         headerComment+="| phi "+phi+" dPhi "+dPhi+"dTheta "+dTheta+"            |"+"\n";
         headerComment+="|----------------------------------------------------------------------|"+"\n";
     }
 
-    public void check (double x, double y, double z, String someSort)
-    {
-        PolarAngles angles = new PolarAngles(x,y,z);
-        if (angles.doesAngleMatch(phi, dPhi, false))
-            if (sort.contains(someSort))
-            {
-                polarAngleSpectrum[(int) Math.round(angles.getPolar() / dTheta)]++;
-            }
-    }
 
     public void check( PolarAngles angles, String someSort ){
        // System.out.println(57.2958*Math.acos(cosa));
         //if (Math.abs(57.2958*Math.acos(cosa)-phi)<dPhi || (57.2958*Math.acos(cosa) > 180- dPhi))
-
-        if (((angles.getAzimuth()<180) && angles.doesAngleMatch(phi,dPhi,false))  ||
-        ((angles.getAzimuth()>=180) && angles.doesAngleMatch(phi-180,dPhi,false))) {
-            if (sort.contains(someSort)) {
-                //double add = (57.2958*Math.acos(cosa) > 180- dPhi)? 270 : 0;
-                polarAngleSpectrum[(int) Math.round(angles.getPolar() / dTheta)]++;
+        if (sort.contains(someSort)) {
+            if (angles.doesAzimuthAngleMatch(phi,dPhi))
+                polarAngleSpectrum[(int) Math.round((90+angles.getPolar()) / dTheta)]++;
+            if (angles.doesAzimuthAngleMatch(phi+180,dPhi))
+                polarAngleSpectrum[(int) Math.round((90-angles.getPolar()) / dTheta)]++;
             }
-        }
     }
 
-    public int[] getSpectrum() {
+    public double[] getSpectrum() {
         return polarAngleSpectrum;
     }
 
@@ -61,8 +50,8 @@ public class Polar extends Distribution {
             FileOutputStream polarWriter = new FileOutputStream(pathToLog);
             String stroka;
             polarWriter.write(headerComment.getBytes());
-            for (int i = 0; i <= (int) Math.round(360 / dTheta); i++) {
-                stroka = i * dTheta + "" +
+            for (int i = 0; i <= (int) Math.round(180/ dTheta); i++) {
+                stroka = ((i * dTheta)-90) + "" +
                         " " + polarAngleSpectrum[i] + "\n";
                 polarWriter.write(stroka.getBytes());
             }
@@ -78,18 +67,10 @@ public class Polar extends Distribution {
     @Override
     public boolean visualize() {
         Platform.runLater(() -> {
-
-            //if (!sort.equals("")) new GUI().showGraph(polarAngleSpectrum, 360, dTheta,  "Угловой спектр "+
-              //      calculator.projectileElements+" --> "+calculator.targetElements+" phi = "+phi+" dtheta = "+dTheta);
-            //if (!sort.equals("")) new PolarChart().createPolarChart("Polar Chart", polarAngleSpectrum, dPhi, false,true,true);
-
-            String title = calculator.projectileElements+" "+calculator.projectileMaxEnergy+" hits at phi " + calculator.projectileIncidentAzimuthAngle+
+            String title = calculator.projectileElements+" "+calculator.projectileMaxEnergy+" hits at phi " +
+                    calculator.projectileIncidentAzimuthAngle+
                     " --> "+calculator.targetElements;
-            final PolarChart demo = new PolarChart(title,polarAngleSpectrum, dTheta);
-           // demo.pack();
-          //  RefineryUtilities.centerFrameOnScreen(demo);
-           // demo.setVisible(true);
-
+           new PolarChart(title,polarAngleSpectrum, dTheta);
         });
         return  true;
     }

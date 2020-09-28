@@ -10,6 +10,9 @@ public abstract class ParticleInMatterCalculator {
 
     public String directoryPath;
 
+    //for console mode we don't need it
+    boolean doVizualization;
+
     //like SC100432, H_W and etc.
     public String modelingID;
 
@@ -36,10 +39,11 @@ public abstract class ParticleInMatterCalculator {
 
     //some scattering variables
 
-    int particleCount, scattered, sputtered, implanted, transmitted;
+    double particleCount, scattered, sputtered, implanted, transmitted;
     double energyRecoil;
 
-    ParticleInMatterCalculator(String directoryPath) {
+    ParticleInMatterCalculator(String directoryPath, boolean doVizualization) {
+        this.doVizualization = doVizualization;
         particleCount = 0;
         scattered = 0;
         sputtered = 0;
@@ -63,7 +67,9 @@ public abstract class ParticleInMatterCalculator {
         for (Distribution distr: distributions){
             if (!distr.logDistribution())  System.out.println("ERROR during logging "+distr.getType());
             if (!logAdditionalData()) System.out.println("ERROR during logging summary");
-            if (!distr.visualize())  System.out.println("ERROR during plotting "+distr.getType());
+            if (doVizualization) {
+              if (!distr.visualize())  System.out.println("ERROR during plotting "+distr.getType());
+          }
 
         }
     }

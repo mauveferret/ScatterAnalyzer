@@ -9,8 +9,8 @@ public class TRIM extends ParticleInMatterCalculator{
 
     String dataPath;
 
-    TRIM(String directoryPath) {
-        super(directoryPath);
+    TRIM(String directoryPath, boolean doVizualization) {
+        super(directoryPath, doVizualization);
         dataPath = "";
 
         projectileIncidentAzimuthAngle = 0;
@@ -40,18 +40,18 @@ public class TRIM extends ParticleInMatterCalculator{
                 BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tscConfig)));
                 String line;
                 String someParameter = "";
+                int i=0;
                 while (reader.ready()){
                     line = reader.readLine();
+                    i++;
                     if (line.contains("=")) someParameter = line.substring(line.indexOf("=")+1).trim();
                     if (line.contains(">")) someParameter = line.substring(line.indexOf(">")+1).trim();
 
                     if (line.contains("Ion Name")) projectileElements= someParameter;
                     if (line.contains(">") ) targetElements += someParameter.substring(0,2).trim()+" ";
 
-                    System.out.println(someParameter.substring(0, line.indexOf("k")).trim());
-
-
-                    if (line.contains("Ion Energy")) projectileMaxEnergy = Double.parseDouble(someParameter.substring(0, line.indexOf("k")).trim());
+                    if (line.contains("Ion Energy")) projectileMaxEnergy = Double.parseDouble(someParameter.substring(0, someParameter.indexOf("k")).trim().replace(",","."));
+                    if (i>1000) break;
                 }
                 reader.close();
 
@@ -61,6 +61,9 @@ public class TRIM extends ParticleInMatterCalculator{
             }
             catch (IOException ex){
                 return "File "+tscConfig+" is damaged";
+            }
+            catch (Exception e){
+                e.printStackTrace();
             }
 
             //check whether the *.dat file exist
@@ -104,7 +107,7 @@ public class TRIM extends ParticleInMatterCalculator{
                 line = br.readLine();
 
                 sort = ((line.charAt(0)+"").equals("T")) ? "I" : line.charAt(0)+"";
-
+                //FIXME axis directions
                 line = line.substring(line.indexOf(","));
                 en = Float.parseFloat(line.substring(0, line.indexOf(" ")).replace(",", "0."));
                 //find "cosz" column
@@ -144,7 +147,7 @@ public class TRIM extends ParticleInMatterCalculator{
                 }
 
                 //calculate some scattering constants
-                particleCount++;
+                if (!sort.contains("S") && !sort.contains("D")) particleCount++;
 
                 if (sort.equals("B")) {
                     scattered++;
@@ -155,6 +158,10 @@ public class TRIM extends ParticleInMatterCalculator{
 
             }
             br.close();
+            scattered = scattered / particleCount;
+            sputtered = sputtered / particleCount;
+            implanted = implanted / particleCount;
+            transmitted = transmitted / particleCount;
             energyRecoil = energyRecoil / projectileMaxEnergy;
             time=System.currentTimeMillis()-time;
             time=time/1000;
