@@ -99,8 +99,8 @@ public class PolarChart extends ApplicationFrame {
         }
 
         XYSeries projectiles = new XYSeries("incident beam");
-        projectiles.add(Theta-90,max);
-        projectiles.add(Theta-90,0);
+        projectiles.add(-1*Theta,max);
+        projectiles.add(-1*Theta,0);
 
         data.addSeries(mainSeries);
         data.addSeries(cosineSeries);

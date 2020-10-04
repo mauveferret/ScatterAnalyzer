@@ -110,6 +110,8 @@ public class RootFxmlController {
     @FXML
     private TextField implanted;
     @FXML
+    private TextField transmitted;
+    @FXML
     private TextField numberOfParticlesInScatter;
     @FXML
     TextField energyScattering;
@@ -408,6 +410,8 @@ public class RootFxmlController {
                 sputtered.setText(new BigDecimal(yourCalcuator.sputtered).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
                 implanted.setText(new BigDecimal(yourCalcuator.implanted).setScale(4, RoundingMode.UP).doubleValue()
+                        +"");
+                transmitted.setText(new BigDecimal(yourCalcuator.transmitted).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
                 energyScattering.setText(new BigDecimal(yourCalcuator.energyRecoil).setScale(3, RoundingMode.UP).doubleValue()
                         +"");

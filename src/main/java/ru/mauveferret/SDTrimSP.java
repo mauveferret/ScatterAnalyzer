@@ -230,6 +230,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                     }
                     else if (sort.equals("S")) sputtered++;
                     else if (sort.equals("I")) implanted++;
+                    else if (sort.equals("T")) transmitted++;
                 }
             }
                 br.close();
