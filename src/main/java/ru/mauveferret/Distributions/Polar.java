@@ -51,9 +51,18 @@ public class Polar extends Distribution {
             String stroka;
             polarWriter.write(headerComment.getBytes());
             for (int i = 0; i <= (int) Math.round(180/ dTheta); i++) {
-                stroka = ((i * dTheta)-90) + "" +
+                //FIXME Omega angle ?!
+                if (i*dTheta!=90) {
+                    polarAngleSpectrum[i] = polarAngleSpectrum[i]/(2*Math.PI*Math.sin(Math.toRadians(Math.abs(i*dTheta-90))));
+                } //we can't divide by zero
+                else{
+                    //TODO
+                    polarAngleSpectrum[i] = polarAngleSpectrum[i]/(2*Math.PI*Math.sin(Math.toRadians(dTheta)));
+                }
+                stroka = ((i * dTheta-90)) + "" +
                         " " + polarAngleSpectrum[i] + "\n";
-                polarWriter.write(stroka.getBytes());
+                //FIXME maybe you shoud write it as it is?!
+                if (i*dTheta!=90) polarWriter.write(stroka.getBytes());
             }
             polarWriter.close();
             return  true;
@@ -68,8 +77,8 @@ public class Polar extends Distribution {
     public boolean visualize() {
         Platform.runLater(() -> {
             String title = calculator.projectileElements+" "+calculator.projectileMaxEnergy+" hits at phi " +
-                    calculator.projectileIncidentAzimuthAngle+
-                    " --> "+calculator.targetElements;
+                    calculator.projectileIncidentAzimuthAngle;
+                  //  " --> "+calculator.targetElements;
            new PolarChart(title,polarAngleSpectrum, dTheta);
         });
         return  true;

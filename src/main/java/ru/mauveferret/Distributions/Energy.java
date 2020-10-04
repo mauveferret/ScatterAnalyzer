@@ -53,8 +53,8 @@ public class Energy extends Distribution{
         //I don't know why, but Daniel want spectra to be divided by E
         //TODO check why is it need?
        for (int i=0; i<energySpectrum.length; i++){
-            energySpectrum[i]=energySpectrum[i]/((i!=0)? i*dE : dE);
-        }
+           energySpectrum[i]=energySpectrum[i]/((i!=0)? i*dE : dE);
+       }
 
         try {
             FileOutputStream energyWriter = new FileOutputStream(pathToLog);
