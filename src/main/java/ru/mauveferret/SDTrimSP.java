@@ -73,7 +73,19 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                     if (line.contains("nh")) projectileAmount = Integer.parseInt(someParameter); //*10;
                 }
                 reader.close();
-
+                //all elements are in projectileElements variable, in form "H","W"
+                String[] elements = projectileElements.split(",");
+                try {
+                    //i just can't remove " by replace so i made it in this barbaric manner
+                    for (int i=0; i <elements.length; i++) elements[i] = elements[i].substring(1,elements[i].length()-1);
+                }
+                catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
+                projectileElements = elements[0]; //FIXME LIE IN CASE OF SEVERAL PROJECTILES
+                //projectileElements.replaceAll("\\W", "");
+                for (int i=1; i<elements.length; i++) targetElements+=elements[i];
+                //targetElements.replaceAll("\\W","");
             }
             catch (FileNotFoundException ex){
                 ex.printStackTrace();

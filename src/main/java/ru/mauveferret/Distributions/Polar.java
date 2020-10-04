@@ -76,10 +76,12 @@ public class Polar extends Distribution {
     @Override
     public boolean visualize() {
         Platform.runLater(() -> {
-            String title = calculator.projectileElements+" "+calculator.projectileMaxEnergy+" hits at phi " +
-                    calculator.projectileIncidentAzimuthAngle;
-                  //  " --> "+calculator.targetElements;
-           new PolarChart(title,polarAngleSpectrum, dTheta);
+            String title = calculator.projectileElements+" with "+calculator.projectileMaxEnergy+" eV hits at polar angle of "+
+                    calculator.projectileIncidentPolarAngle +" degrees target of "+
+                    calculator.targetElements+".\n Distribution made at phi " +
+                    calculator.projectileIncidentAzimuthAngle+" degrees. Delta is "+dTheta+" degrees. Chart is for "+
+                    sort+" particles";
+           new PolarChart(title,polarAngleSpectrum, dTheta, calculator.projectileIncidentPolarAngle, pathToLog);
         });
         return  true;
     }
