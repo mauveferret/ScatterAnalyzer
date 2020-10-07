@@ -381,8 +381,17 @@ public class RootFxmlController {
 
                 if (getTXT.isSelected()) distributions.add(new getTXT(yourCalcuator, ""));
 
+                //FIXME full funtional is not presented, not made in Scatter, Trim
+
+                if (true) distributions.add(new CartesianMap(50, "XY", "S", yourCalcuator));
+
                 yourCalcuator.postProcessCalculatedFiles(distributions);
                 yourCalcuator.printAndVisualizeData(distributions);
+
+
+
+
+
 
                 //Calculation is ended
 

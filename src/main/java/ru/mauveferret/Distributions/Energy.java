@@ -77,7 +77,7 @@ public class Energy extends Distribution{
     public boolean visualize() {
         Platform.runLater(() -> {
 
-            if (!sort.equals("")) new GUI().showGraph(energySpectrum, E0, dE, "Энергетический спектр "+
+            if (!sort.equals("") && doVisualisation) new GUI().showGraph(energySpectrum, E0, dE, "Энергетический спектр "+
                     calculator.projectileElements+" --> "+calculator.targetElements+" phi = "+phi+" theta = "+theta);
             //if (NThetaR||NThetaY) new GUI().showGraph(polarAngleSpectrum,360, dThetaNTheta, "угловой спектр, phi = "+phiNTheta1);
         });

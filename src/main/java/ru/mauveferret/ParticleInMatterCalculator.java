@@ -11,7 +11,7 @@ public abstract class ParticleInMatterCalculator {
     public String directoryPath;
 
     //for console mode we don't need it
-    boolean doVizualization;
+    public boolean doVizualization;
 
     //like SC100432, H_W and etc.
     public String modelingID;
@@ -22,7 +22,6 @@ public abstract class ParticleInMatterCalculator {
     //how mich lines per FileRead can be processed
     public int stringCountPerCycle = 2000;
     double time;
-
 
     //primary beam
 

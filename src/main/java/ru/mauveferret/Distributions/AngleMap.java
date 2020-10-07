@@ -72,7 +72,7 @@ public class AngleMap extends Distribution{
 
     @Override
     public boolean visualize() {
-        EventQueue.invokeLater(() -> new ScatterColorMap("ISInCa",  angleMap, dPhi, dTheta));
+        if (!sort.equals("") && doVisualisation) EventQueue.invokeLater(() -> new ScatterColorMap("ISInCa",  angleMap, dPhi, dTheta));
         return  true;
     }
 

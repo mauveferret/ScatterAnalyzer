@@ -15,10 +15,12 @@ public abstract class Distribution {
 
     ParticleInMatterCalculator calculator;
     String type;
+    boolean doVisualisation;
 
     public Distribution(ParticleInMatterCalculator calculator, String sort) {
         this.calculator = calculator;
         this.sort = sort;
+        this.doVisualisation = calculator.doVizualization;
         fileSeparator = File.separator;
         pathToLog = calculator.directoryPath+fileSeparator+"ISInCa"+File.separator+calculator.modelingID+"_"+this.getClass().getSimpleName().toUpperCase()+" DISTRIBUTION_"+
         sort ;
@@ -44,6 +46,7 @@ public abstract class Distribution {
         return type;
     }
 
+    public String getSort(){return  sort;}
 
     //outputs
 

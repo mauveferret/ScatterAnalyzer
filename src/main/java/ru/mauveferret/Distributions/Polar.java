@@ -75,6 +75,7 @@ public class Polar extends Distribution {
 
     @Override
     public boolean visualize() {
+        if (!sort.equals("") && doVisualisation)
         Platform.runLater(() -> {
             String title = calculator.projectileElements+" with "+calculator.projectileMaxEnergy+" eV hits at polar angle of "+
                     calculator.projectileIncidentPolarAngle +" degrees target of "+

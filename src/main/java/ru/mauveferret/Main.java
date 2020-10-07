@@ -3,7 +3,10 @@ package ru.mauveferret;
 public class Main  {
 
     public static void main(String[] args) {
-        GUI.main(args);
+
+        if (args.length>0)
+            new Console(args);
+        else  GUI.main(args);
     }
 
 }
