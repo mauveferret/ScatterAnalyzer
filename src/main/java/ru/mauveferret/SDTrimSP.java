@@ -44,6 +44,10 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 String someParameter = "";
 
 
+                // if nr_pproj was written than projectileAmount = nr_pproj* nh else projectileAmount = nh*10
+                // because default for nr_pproj is 10
+                boolean nr_pprojWasWritten = false;
+
                 while (reader.ready()){
                     line = reader.readLine();
 
@@ -68,11 +72,20 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                         projectileIncidentPolarAngle = Double.parseDouble(someParameter);
                         projectileIncidentAzimuthAngle = 0;
                     }
-                    //we multiply on 10 because there is a bug in SDTrimSP 6_02: it counts 10 time more particles,
-                    //than in "nh" field FIXME
-                    if (line.contains("nh")) projectileAmount = Integer.parseInt(someParameter); //*10;
+
+                    if (line.contains("nh")) {
+                        projectileAmount = Integer.parseInt(someParameter);
+                    }
+                    if (line.contains("nr_pproj")) {
+                        nr_pprojWasWritten = true;
+                        projectileAmount = projectileAmount* Integer.parseInt(someParameter);
+                    }
                 }
+
+                if (!nr_pprojWasWritten) projectileAmount = projectileAmount*10;
+
                 reader.close();
+
                 //all elements are in projectileElements variable, in form "H","W"
                 String[] elements = projectileElements.split(",");
                 try {
@@ -152,11 +165,12 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 else if (particlesType.contains("tran")) sort = "T";
 
 
-                //in order not to check files that we dont't need
-                String sorts = "";
-                for (Distribution someDistr : distributions) sorts += someDistr.getSort();
+                //was disabled as we need to get some summary, so we should analyze all files
+                //TODO add some control: whether to calculate summary or not
+                //String sorts = "";
+               // for (Distribution someDistr : distributions) sorts += someDistr.getSort();
 
-                if (sorts.contains(sort)) {
+                //if (sorts.contains(sort)) {
                     while (br.ready()) {
                         line = br.readLine();
                         if (!line.contains("end")) {
@@ -231,7 +245,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                                         ((getTXT) distr).check(angles, sort, en);
                                         break;
                                     case "cartesianmap":
-                                        ((CartesianMap) distr).check(yEnd, zEnd, sort);
+                                        ((CartesianMap) distr).check(zEnd, yEnd, sort);
                                 }
                             }
 
@@ -246,7 +260,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                             else if (sort.equals("T")) transmitted++;
                         }
                     }
-                }
                 br.close();
             }
             scattered = scattered / particleCount;

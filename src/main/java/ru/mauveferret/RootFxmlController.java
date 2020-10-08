@@ -383,7 +383,7 @@ public class RootFxmlController {
 
                 //FIXME full funtional is not presented, not made in Scatter, Trim
 
-                if (true) distributions.add(new CartesianMap(50, "XY", "S", yourCalcuator));
+                if (true) distributions.add(new CartesianMap(1, "XY", "S", yourCalcuator));
 
                 yourCalcuator.postProcessCalculatedFiles(distributions);
                 yourCalcuator.printAndVisualizeData(distributions);
@@ -412,7 +412,6 @@ public class RootFxmlController {
                  */
 
                 DecimalFormat nFormat = new DecimalFormat(".2f");
-
 
                 scattered.setText(new BigDecimal( yourCalcuator.scattered).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
