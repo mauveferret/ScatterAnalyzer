@@ -313,7 +313,6 @@ public class RootFxmlController {
     public  void showHelp()
     {
         Platform.runLater(() -> new GUI().showHelpPage("pics/axes.png"));
-
     }
 
     @FXML

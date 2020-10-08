@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ISInCa>
+    <baseParam>
+        <deltaAngle>2</deltaAngle>
+        <basePhi>0</basePhi>
+        <MapSize>1000</MapSize>
+        <deltaPosition>10</deltaPosition>
+        <cartesianMapType>ZY</cartesianMapType>
+    </baseParam>
+    <calcs>
+        <calc id="0">
+            <dir>/case/H_W</dir>
+            <N_E>
+                <sort>B</sort>
+                <theta>71</theta>
+                <phi>0</phi>
+            </N_E>
+            <N_Theta>
+                <sort>BS</sort>
+                <delta>3</delta>
+            </N_Theta>
+            <polar_Map>
+                <sort>S</sort>
+                <delta>2</delta>
+            </polar_Map>
+        </calc>
+    </calcs>
+</ISInCa>
