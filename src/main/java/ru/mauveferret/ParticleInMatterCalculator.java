@@ -81,10 +81,10 @@ public abstract class ParticleInMatterCalculator {
             summary.write(("Monte-Carlo model: "+calculatorType+"\n").getBytes());
             summary.write(("modeling ID: "+modelingID+"\n").getBytes());
             summary.write(("Particle count: "+particleCount+"\n").getBytes());
-            summary.write(("backscattered: "+((double) scattered/ (double) particleCount)+"\n").getBytes());
-            summary.write(("sputtered: "+((double) sputtered/ (double) particleCount)+"\n").getBytes());
-            summary.write(("implanted: "+((double) implanted/ (double) particleCount)+"\n").getBytes());
-            summary.write(("transmitted: "+((double) transmitted/ (double) particleCount)+"\n").getBytes());
+            summary.write(("backscattered: "+ scattered+"\n").getBytes());
+            summary.write(("sputtered: "+ sputtered+"\n").getBytes());
+            summary.write(("implanted: "+implanted+"\n").getBytes());
+            summary.write(("transmitted: "+ transmitted+"\n").getBytes());
             summary.write(("energy recoil: "+energyRecoil+"\n").getBytes());
             summary.write(("ISInCa calculation time: "+time).getBytes());
             summary.close();
