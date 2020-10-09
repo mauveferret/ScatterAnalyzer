@@ -7,6 +7,8 @@ import ru.mauveferret.ParticleInMatterCalculator;
 import ru.mauveferret.PolarChart;
 
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Polar extends Distribution {
 
@@ -60,7 +62,7 @@ public class Polar extends Distribution {
                     polarAngleSpectrum[i] = polarAngleSpectrum[i]/(2*Math.PI*Math.sin(Math.toRadians(dTheta)));
                 }
                 stroka = ((i * dTheta-90)) + "" +
-                        " " + polarAngleSpectrum[i] + "\n";
+                        " " + new BigDecimal( polarAngleSpectrum[i]).setScale(4, RoundingMode.UP) + "\n";
                 //FIXME maybe you shoud write it as it is?!
                 if (i*dTheta!=90) polarWriter.write(stroka.getBytes());
             }

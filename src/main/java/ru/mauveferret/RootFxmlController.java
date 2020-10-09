@@ -357,7 +357,7 @@ public class RootFxmlController {
                 sort += (NET.isSelected()) ? "T" : "";
 
                 if (!sort.equals(""))
-                    distributions.add(new Energy(E,dE,phiNE, dphiNE, thetaNE, dThetaNE,sort, yourCalcuator));
+                    distributions.add(new Energy(dE,phiNE, dphiNE, thetaNE, dThetaNE,sort, yourCalcuator));
 
                 sort = (NThetaB.isSelected()) ? "B" : "";
                 sort += (NThetaS.isSelected()) ? "S" : "";
@@ -386,11 +386,6 @@ public class RootFxmlController {
 
                 yourCalcuator.postProcessCalculatedFiles(distributions);
                 yourCalcuator.printAndVisualizeData(distributions);
-
-
-
-
-
 
                 //Calculation is ended
 

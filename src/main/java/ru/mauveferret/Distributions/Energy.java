@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import ru.mauveferret.GUI;
 import ru.mauveferret.ParticleInMatterCalculator;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 
 public class Energy extends Distribution{
@@ -17,9 +19,9 @@ public class Energy extends Distribution{
 
     private double[] energySpectrum;  //forms energyspectra
 
-    public Energy(double E0, double dE, double phi, double dPhi, double theta, double dTheta, String sort, ParticleInMatterCalculator calculator) {
+    public Energy(double dE, double phi, double dPhi, double theta, double dTheta, String sort, ParticleInMatterCalculator calculator) {
         super(calculator, sort);
-        this.E0 = E0;
+        this.E0 = calculator.projectileMaxEnergy;
         this.theta = theta;
         this.dTheta = dTheta;
         this.phi = phi;
@@ -61,7 +63,7 @@ public class Energy extends Distribution{
             String stroka;
             energyWriter.write(headerComment.getBytes());
             for (int i = 0; i <= (int) Math.round(E0 / dE); i++) {
-                 stroka = i * dE + " " + energySpectrum[i]/dE + "\n";
+                 stroka = i * dE + " " +  new BigDecimal( energySpectrum[i]/dE).setScale(4, RoundingMode.UP) + "\n";
                 energyWriter.write(stroka.getBytes());
             }
             energyWriter.close();

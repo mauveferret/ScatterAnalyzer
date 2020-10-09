@@ -4,9 +4,11 @@ import ru.mauveferret.Distributions.Distribution;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
-public abstract class ParticleInMatterCalculator {
+public abstract class ParticleInMatterCalculator{
 
     public String directoryPath;
 
@@ -60,6 +62,7 @@ public abstract class ParticleInMatterCalculator {
     }
 
     abstract String  initializeVariables();
+
     abstract void postProcessCalculatedFiles(ArrayList<Distribution> distributions);
 
     public void printAndVisualizeData(ArrayList<Distribution> distributions){
@@ -81,11 +84,11 @@ public abstract class ParticleInMatterCalculator {
             summary.write(("Monte-Carlo model: "+calculatorType+"\n").getBytes());
             summary.write(("modeling ID: "+modelingID+"\n").getBytes());
             summary.write(("Particle count: "+particleCount+"\n").getBytes());
-            summary.write(("backscattered: "+ scattered+"\n").getBytes());
-            summary.write(("sputtered: "+ sputtered+"\n").getBytes());
-            summary.write(("implanted: "+implanted+"\n").getBytes());
-            summary.write(("transmitted: "+ transmitted+"\n").getBytes());
-            summary.write(("energy recoil: "+energyRecoil+"\n").getBytes());
+            summary.write(("backscattered: "+ new BigDecimal(scattered).setScale(4, RoundingMode.UP)+"\n").getBytes());
+            summary.write(("sputtered: "+ new BigDecimal(sputtered).setScale(4, RoundingMode.UP)+"\n").getBytes());
+            summary.write(("implanted: "+new BigDecimal(implanted).setScale(4, RoundingMode.UP)+"\n").getBytes());
+            summary.write(("transmitted: "+ new BigDecimal( transmitted).setScale(4, RoundingMode.UP)+"\n").getBytes());
+            summary.write(("energy recoil: "+new BigDecimal(energyRecoil).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("ISInCa calculation time: "+time).getBytes());
             summary.close();
         }

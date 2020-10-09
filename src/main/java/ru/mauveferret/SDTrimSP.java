@@ -262,11 +262,11 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                     }
                 br.close();
             }
-            scattered = scattered / particleCount;
-            sputtered = sputtered / particleCount;
-            implanted = implanted / particleCount;
-            transmitted = transmitted / particleCount;
-            energyRecoil = energyRecoil/(projectileMaxEnergy*particleCount);
+            scattered = scattered / projectileAmount;
+            sputtered = sputtered / projectileAmount;
+            implanted = implanted / projectileAmount;
+            transmitted = transmitted / projectileAmount;
+            energyRecoil = energyRecoil/(projectileMaxEnergy*projectileAmount);
             time=System.currentTimeMillis()-time;
             time=time/((double) 1000);
         } catch (Exception e){

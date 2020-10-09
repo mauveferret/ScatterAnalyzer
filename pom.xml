@@ -118,13 +118,12 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>Main</mainClass>
+                            <mainClass>ru.mauveferret.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

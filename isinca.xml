@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ISInCa>
+	<pref>
+	<getTXT>false</getTXT>
+        <getSummary>true</getSummary>
+    </pref>
+    <calcs>
+        <calc id="0">
+            <dir>case/500eV_0deg_100kPart</dir>
+            <N_E>
+                <sort>BS</sort>
+                <theta>71</theta>
+                <phi>0</phi>
+            </N_E>
+            <N_Theta>
+                <sort>BIO</sort>
+                <delta>3</delta>
+                <phi>0</phi>
+            </N_Theta>
+            <polar_Map>
+                <sort>S</sort>
+                <delta>2</delta>
+            </polar_Map>
+            <cartesian_Map>
+                <sort>B</sort>
+                <MapSize>1000</MapSize>
+                <delta>10</delta>
+                <cartesianMapType>ZY</cartesianMapType>
+            </cartesian_Map>
+        </calc>
+		<calc id="1">
+			<dir>case/5 keV_0deg_100kPart</dir>
+			<N_E>
+				<sort>OIU</sort>
+			</N_E>
+		</calc>
+		<calc>
+			<dir>case/1Mev_0deg_1Mpart</dir>
+		</calc>
+    </calcs>
+</ISInCa>
