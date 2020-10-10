@@ -161,7 +161,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 if (particlesType.contains("back_p")) sort = "B";
                 else if (particlesType.contains("back_r")) sort = "S";
                 else if (particlesType.contains("stop_p")) sort = "I";
-                else if (particlesType.contains("stop_r")) sort = "D"; //displaces FIXME
+                else if (particlesType.contains("stop_r")) sort = "D";
                 else if (particlesType.contains("tran")) sort = "T";
 
 
@@ -258,6 +258,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                             } else if (sort.equals("S")) sputtered++;
                             else if (sort.equals("I")) implanted++;
                             else if (sort.equals("T")) transmitted++;
+                            else if (sort.equals("D")) displaced++;
                         }
                     }
                 br.close();
@@ -266,9 +267,10 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             sputtered = sputtered / projectileAmount;
             implanted = implanted / projectileAmount;
             transmitted = transmitted / projectileAmount;
+            displaced = displaced / projectileAmount;
             energyRecoil = energyRecoil/(projectileMaxEnergy*projectileAmount);
             time=System.currentTimeMillis()-time;
-            time=time/((double) 1000);
+            time=time/((double) 60000);
         } catch (Exception e){
             e.printStackTrace();
         }

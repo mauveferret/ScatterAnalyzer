@@ -40,7 +40,7 @@ public abstract class ParticleInMatterCalculator{
 
     //some scattering variables
 
-    double particleCount, scattered, sputtered, implanted, transmitted;
+    double particleCount, scattered, sputtered, implanted, transmitted, displaced;
     double energyRecoil;
 
     ParticleInMatterCalculator(String directoryPath, boolean doVizualization) {
@@ -50,6 +50,7 @@ public abstract class ParticleInMatterCalculator{
         sputtered = 0;
         implanted = 0;
         transmitted = 0;
+        displaced = 0;
         energyRecoil = 0;
 
         targetElements = "no elements";
@@ -88,6 +89,7 @@ public abstract class ParticleInMatterCalculator{
             summary.write(("sputtered: "+ new BigDecimal(sputtered).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("implanted: "+new BigDecimal(implanted).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("transmitted: "+ new BigDecimal( transmitted).setScale(4, RoundingMode.UP)+"\n").getBytes());
+            summary.write(("transmitted: "+ new BigDecimal( displaced).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("energy recoil: "+new BigDecimal(energyRecoil).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("ISInCa calculation time: "+time).getBytes());
             summary.close();

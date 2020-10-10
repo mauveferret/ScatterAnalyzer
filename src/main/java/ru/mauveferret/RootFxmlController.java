@@ -53,7 +53,10 @@ public class RootFxmlController {
     private CheckBox NThetaPhiI;
     @FXML
     private CheckBox NThetaPhiT;
-
+    @FXML
+    private CheckBox NzyB, NzyS, NzyI,NzyT, NzyD;
+    @FXML
+    private CheckBox NzxB, NzxS, NzxI,NzxT, NzxD;
     //other
     @FXML
     private CheckBox depthProfile;
@@ -111,6 +114,8 @@ public class RootFxmlController {
     private TextField implanted;
     @FXML
     private TextField transmitted;
+    @FXML
+    private TextField displaced;
     @FXML
     private TextField numberOfParticlesInScatter;
     @FXML
@@ -378,11 +383,17 @@ public class RootFxmlController {
 
                 //others
 
-                if (getTXT.isSelected()) distributions.add(new getTXT(yourCalcuator, ""));
-
                 //FIXME full funtional is not presented, not made in Scatter, Trim
 
-                if (true) distributions.add(new CartesianMap(1, "XY", "S", yourCalcuator));
+                sort = (NzyB.isSelected()) ? "B" : "";
+                sort += (NzyS.isSelected()) ? "S" : "";
+                sort += (NzyI.isSelected()) ? "I" : "";
+                sort += (NzyT.isSelected()) ? "T" : "";
+                sort += (NzyD.isSelected()) ? "D" : "";
+
+                if (!sort.equals("")) distributions.add(new CartesianMap(1, "ZY", sort, yourCalcuator));
+
+                if (getTXT.isSelected()) distributions.add(new getTXT(yourCalcuator, ""));
 
                 yourCalcuator.postProcessCalculatedFiles(distributions);
                 yourCalcuator.printAndVisualizeData(distributions);
@@ -390,28 +401,17 @@ public class RootFxmlController {
                 //Calculation is ended
 
                 E0.setText(E+"");
-                //double initialCount=0;
-                //if (Double.parseDouble(numberOfParticlesInScatter.getText())<15) initialCount=Math.pow(10,  (int) (Math.ceil(Math.log10(data[1] + 0.5))) );
-               // else initialCount=Double.parseDouble(numberOfParticlesInScatter.getText());
-               count.setText(
+                count.setText(
                         new BigDecimal(yourCalcuator.particleCount).setScale(5, RoundingMode.UP).doubleValue()+"");
-               time.setText(yourCalcuator.time+"");
-                /*if ((Double.parseDouble(numberOfParticlesInScatter.getText())<15)&(!IsScatter)) initialCount=data[1];
-                scattered.setText(new BigDecimal(data[2]/initialCount).setScale(5, RoundingMode.UP).doubleValue()+"");
-                sputtered.setText(new BigDecimal(data[3]/initialCount).setScale(5, RoundingMode.UP).doubleValue()+"");
-                projected.setText(new BigDecimal(data[4]/initialCount).setScale(5, RoundingMode.UP).doubleValue()+"");
-                E0.setText(""+energyReturnValue);
-                energyScattering.setText(new BigDecimal(data[5]/(initialCount*E)).setScale(5, RoundingMode.UP).doubleValue()+"");
-
-                 */
-
-                DecimalFormat nFormat = new DecimalFormat(".2f");
+                time.setText(yourCalcuator.time+"");
 
                 scattered.setText(new BigDecimal( yourCalcuator.scattered).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
                 sputtered.setText(new BigDecimal(yourCalcuator.sputtered).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
                 implanted.setText(new BigDecimal(yourCalcuator.implanted).setScale(4, RoundingMode.UP).doubleValue()
+                        +"");
+                displaced.setText(new BigDecimal(yourCalcuator.displaced).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
                 transmitted.setText(new BigDecimal(yourCalcuator.transmitted).setScale(4, RoundingMode.UP).doubleValue()
                         +"");

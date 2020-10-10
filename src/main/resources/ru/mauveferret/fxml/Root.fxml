@@ -19,7 +19,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="339.0" prefHeight="490.0" prefWidth="684.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mauveferret.RootFxmlController">
    <children>
-      <ImageView fitHeight="332.0" fitWidth="299.0" layoutX="368.0" layoutY="219.0" onMouseClicked="#secretLaunch" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="332.0" fitWidth="299.0" layoutX="387.0" layoutY="219.0" onMouseClicked="#secretLaunch" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../pics/CrocoLogo.png" />
          </image>
@@ -76,7 +76,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="dPolarAngleNE" alignment="CENTER" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="5" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <TextField fx:id="dPolarAngleNE" alignment="CENTER" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="3" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="26.0" />
                                        </font>
@@ -86,7 +86,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="dAzimuthAngleNE" alignment="CENTER" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="81.0" text="5" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                    <TextField fx:id="dAzimuthAngleNE" alignment="CENTER" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="81.0" text="3" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="26.0" />
                                        </font>
@@ -109,7 +109,7 @@
                                  </children>
                               </GridPane>
                               <Label layoutX="14.0" layoutY="97.0" prefHeight="27.0" prefWidth="557.0" text="θ is measured relatively normal to the outside of the surface, φ is from X axis  (check at help page)!" />
-                              <Label layoutX="16.0" layoutY="138.0" prefHeight="27.0" prefWidth="557.0" text="Just choose directory, where your calculations lays, ISINCA will  finds out the rest of the parameters">
+                              <Label layoutX="16.0" layoutY="138.0" prefHeight="27.0" prefWidth="557.0" text="Just choose directory, where your calculations are located, ISINCA will  finds out the rest of the parameters">
                                  <font>
                                     <Font name="System Bold Italic" size="12.0" />
                                  </font></Label>
@@ -121,14 +121,14 @@
                      <content>
                         <AnchorPane prefHeight="150.0" prefWidth="583.0">
                            <children>
-                              <TextField fx:id="dPolarAngleNtheta" alignment="CENTER" layoutX="37.0" layoutY="38.0" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="5">
+                              <TextField fx:id="dPolarAngleNtheta" alignment="CENTER" layoutX="37.0" layoutY="38.0" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="3">
                                  <font>
                                     <Font size="24.0" />
 
                                  </font>
                               </TextField>
                               <Label fx:id="call1" layoutX="44.0" layoutY="14.0" text="delta θ" />
-                              <TextField fx:id="dAzimuthAngleNtheta" alignment="CENTER" layoutX="198.0" layoutY="38.0" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="5">
+                              <TextField fx:id="dAzimuthAngleNtheta" alignment="CENTER" layoutX="198.0" layoutY="38.0" onKeyReleased="#DeltaChanged" prefHeight="51.0" prefWidth="69.0" text="3">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -140,7 +140,6 @@
                               </TextField>
                               <Label fx:id="call123" layoutX="225.0" layoutY="14.0" text="dφ" />
                               <Label layoutX="154.0" layoutY="14.0" text="φ" />
-                              <Label layoutX="13.0" layoutY="102.0" prefHeight="27.0" prefWidth="567.0" text="Здесь θ считается от плоскости XY в сторону нормали (см. справку)!" />
                               <Label layoutX="280.0" layoutY="67.0" prefHeight="27.0" prefWidth="274.0" text="0&lt;θ&lt;360 (см. справку)" />
                               <Label layoutX="280.0" layoutY="34.0" prefHeight="27.0" prefWidth="274.0" text="0&lt;φ&lt;180" />
                            </children>
@@ -151,13 +150,13 @@
                      <content>
                         <AnchorPane prefHeight="150.0" prefWidth="583.0">
                            <children>
-                              <TextField fx:id="NdThetaPhi" alignment="CENTER" layoutX="132.0" layoutY="34.0" onKeyReleased="#ResChanged" prefHeight="51.0" prefWidth="101.0" text="5">
+                              <TextField fx:id="NdThetaPhi" alignment="CENTER" layoutX="132.0" layoutY="34.0" onKeyReleased="#ResChanged" prefHeight="51.0" prefWidth="101.0" text="3">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </TextField>
                               <Label layoutX="161.0" layoutY="10.0" text="delta θ" />
-                              <TextField fx:id="NThetadPhi" alignment="CENTER" layoutX="22.0" layoutY="34.0" onKeyReleased="#EChanged" prefHeight="51.0" prefWidth="101.0" text="5">
+                              <TextField fx:id="NThetadPhi" alignment="CENTER" layoutX="22.0" layoutY="34.0" onKeyReleased="#EChanged" prefHeight="51.0" prefWidth="101.0" text="3">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -217,7 +216,7 @@
                                           <Font size="24.0" />
                                        </font>
                                     </TextField>
-                                    <Label alignment="CENTER" text="energy recoil" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Label alignment="CENTER" text="energy scattered" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                     <TextField fx:id="transmitted" alignment="CENTER" onKeyReleased="#ResChanged" prefHeight="51.0" prefWidth="87.0" text="0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                        <font>
                                           <Font size="24.0" />
@@ -226,9 +225,15 @@
                                     <Label alignment="CENTER" text="transmitted (T)" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                  </children>
                               </GridPane>
-                              <Label layoutX="14.0" layoutY="93.0" prefHeight="17.0" prefWidth="368.0" text="нет распылённых =&gt; поставьте галочку в SCATTER logSputter " />
-                              <Label layoutX="14.0" layoutY="108.0" prefHeight="27.0" prefWidth="439.0" text="&quot;Рассеяние энергии&quot; требует задания начальной энергии (в dN/dE(E))" />
-                              <Label layoutX="10.0" layoutY="134.0" prefHeight="27.0" prefWidth="502.0" text="&quot;Общее число&quot; - число строк в SC****.dat (в *.txt для TRIM)" />
+                              <Label layoutX="161.0" layoutY="100.0" prefHeight="24.0" prefWidth="481.0" text="Note that for plausible values you have to set enough large sizes of correspond files" />
+                              <TextField fx:id="displaced" alignment="CENTER" layoutX="8.0" layoutY="109.0" onKeyReleased="#EChanged" prefHeight="51.0" prefWidth="145.0" text="0">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </TextField>
+                              <Label alignment="CENTER" layoutX="45.0" layoutY="90.0" text="displaced (D)" />
+                              <Label layoutX="161.0" layoutY="118.0" prefHeight="24.0" prefWidth="491.0" text="For Scatter you should mark Sputter and Profiles (netter more than 100 nm) in the left top " />
+                              <Label layoutX="161.0" layoutY="135.0" prefHeight="24.0" prefWidth="491.0" text="of the GUI. On SDTrimSP you should set enough amount of particles in the &quot;partic_*.dat&quot; file" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -256,52 +261,72 @@
             </TabPane>
          </items>
       </SplitPane>
-      <SplitPane layoutX="12.0" layoutY="237.0" prefHeight="229.0" prefWidth="339.0">
+      <SplitPane layoutX="12.0" layoutY="237.0" prefHeight="229.0" prefWidth="363.0">
          <items>
-            <Pane prefHeight="227.0" prefWidth="344.0">
+            <Pane prefHeight="227.0" prefWidth="350.0">
                <children>
                   <Button fx:id="go" layoutX="12.0" layoutY="54.0" mnemonicParsing="false" onAction="#runCalculation" prefHeight="41.0" prefWidth="157.0" text="start calculation" textAlignment="CENTER" textFill="#0a0a0a">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Label layoutX="125.0" layoutY="99.0" text="time, c" />
-                  <Label layoutX="33.0" layoutY="99.0" text="code name" />
+                  <Label layoutX="116.0" layoutY="99.0" text="time, min" />
+                  <Label layoutX="33.0" layoutY="99.0" text="code type" />
                   <Separator layoutX="178.0" orientation="VERTICAL" prefHeight="229.0" prefWidth="10.0" />
-                  <GridPane alignment="CENTER" layoutX="186.0" layoutY="8.0" prefHeight="90.0" prefWidth="145.0">
+                  <GridPane alignment="CENTER" layoutX="186.0" layoutY="8.0" prefHeight="137.0" prefWidth="168.0">
                      <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="40.0" minWidth="10.0" prefWidth="34.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="39.0" minWidth="10.0" prefWidth="31.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="45.0" minWidth="10.0" prefWidth="42.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="39.0" minWidth="10.0" prefWidth="25.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="33.0" minWidth="10.0" prefWidth="27.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="39.0" minWidth="10.0" prefWidth="34.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="10.0" prefWidth="26.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="59.0" minWidth="10.0" prefWidth="27.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.0" minWidth="10.0" prefWidth="21.0" />
                      </columnConstraints>
                      <rowConstraints>
+                        <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="24.0" minHeight="10.0" prefHeight="24.0" valignment="CENTER" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="27.0" minHeight="10.0" prefHeight="22.0" valignment="CENTER" vgrow="SOMETIMES" />
                         <RowConstraints fillHeight="false" maxHeight="26.0" minHeight="10.0" prefHeight="23.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints fillHeight="false" maxHeight="26.0" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="26.0" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
                      </rowConstraints>
                      <children>
-                        <CheckBox fx:id="NThetaB" mnemonicParsing="false" prefHeight="17.0" prefWidth="7.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                        <CheckBox fx:id="NEB" mnemonicParsing="false" prefHeight="17.0" prefWidth="7.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <Label text="N(θ)" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                        <Label text="N(E)" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <CheckBox fx:id="NES" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <CheckBox fx:id="NThetaS" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NThetaB" mnemonicParsing="false" prefHeight="17.0" prefWidth="7.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NEB" mnemonicParsing="false" prefHeight="17.0" prefWidth="7.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <Label text="N(θ)" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <Label text="N(E)" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NES" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NThetaS" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                         <Label text="B" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <Label text="S" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                        <Label text="N(θ,φ)" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                        <CheckBox fx:id="NThetaPhiB" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                        <CheckBox fx:id="NThetaPhiS" mnemonicParsing="false" prefHeight="27.0" prefWidth="13.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <Label text="N(θ,φ)" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NThetaPhiB" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NThetaPhiS" mnemonicParsing="false" prefHeight="27.0" prefWidth="13.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                         <Label text="I" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <Label prefWidth="3.0" text="T" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                        <CheckBox fx:id="NEI" disable="true" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <CheckBox fx:id="NThetaI" disable="true" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                        <CheckBox fx:id="NThetaPhiI" disable="true" mnemonicParsing="false" prefHeight="27.0" prefWidth="12.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                        <CheckBox fx:id="NET" mnemonicParsing="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <CheckBox fx:id="NThetaT" mnemonicParsing="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                        <CheckBox fx:id="NThetaPhiT" mnemonicParsing="false" prefHeight="29.0" prefWidth="9.0" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NEI" disable="true" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NThetaI" disable="true" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NThetaPhiI" disable="true" mnemonicParsing="false" prefHeight="27.0" prefWidth="12.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NET" mnemonicParsing="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NThetaT" mnemonicParsing="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NThetaPhiT" mnemonicParsing="false" prefHeight="29.0" prefWidth="9.0" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                        <CheckBox fx:id="NED" disable="true" mnemonicParsing="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <CheckBox fx:id="NThetaD" disable="true" mnemonicParsing="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                        <CheckBox fx:id="NThetaPhiD" disable="true" mnemonicParsing="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="20.0" text="D" GridPane.columnIndex="5" GridPane.halignment="CENTER" />
+                        <Label text="N(Z,Y)" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
+                        <Label text="N(Z,X)" GridPane.halignment="LEFT" GridPane.rowIndex="6" />
+                        <CheckBox fx:id="NzyB" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <CheckBox fx:id="NzxB" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <CheckBox fx:id="NzyS" mnemonicParsing="false" prefHeight="27.0" prefWidth="13.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                        <CheckBox fx:id="NzxS" mnemonicParsing="false" prefHeight="27.0" prefWidth="13.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                        <CheckBox fx:id="NzyI" mnemonicParsing="false" prefHeight="27.0" prefWidth="12.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                        <CheckBox fx:id="NzxI" mnemonicParsing="false" prefHeight="27.0" prefWidth="12.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                        <CheckBox fx:id="NzyT" mnemonicParsing="false" prefHeight="29.0" prefWidth="9.0" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                        <CheckBox fx:id="NZXT" mnemonicParsing="false" prefHeight="29.0" prefWidth="9.0" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                        <CheckBox fx:id="NzyD" mnemonicParsing="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                        <CheckBox fx:id="NzxD" mnemonicParsing="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                      </children>
                   </GridPane>
                   <TextField fx:id="time" alignment="CENTER" layoutX="116.0" layoutY="119.0" prefHeight="41.0" prefWidth="52.0" promptText="?" />
@@ -315,19 +340,19 @@
                         <Font size="19.0" />
                      </font></TextField>
                   <Label layoutX="47.0" layoutY="162.0" text="projectiles amount" textAlignment="CENTER" />
-                  <CheckBox fx:id="getTXT" layoutX="261.0" layoutY="134.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="21.0" />
-                  <Label layoutX="189.0" layoutY="139.0" text="get *.txt" />
-                  <Separator layoutX="182.0" layoutY="107.0" prefHeight="4.0" prefWidth="157.0" />
-                  <TextField fx:id="codeName" alignment="CENTER" layoutX="14.0" layoutY="119.0" prefHeight="41.0" prefWidth="94.0" promptText="choose file">
+                  <Separator layoutX="190.0" layoutY="149.0" prefHeight="4.0" prefWidth="157.0" />
+                  <TextField fx:id="codeName" alignment="CENTER" layoutX="14.0" layoutY="119.0" prefHeight="41.0" prefWidth="94.0" promptText="choose dir">
                      <font>
                         <Font size="14.0" />
                      </font></TextField>
-                  <CheckBox fx:id="depthProfile" layoutX="261.0" layoutY="109.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="21.0" />
-                  <Label layoutX="186.0" layoutY="114.0" text="depth profile" />
+                  <Label layoutX="198.0" layoutY="161.0" text="visualize data" />
+                  <CheckBox fx:id="visualize" layoutX="279.0" layoutY="159.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="21.0" />
+                  <Label layoutX="209.0" layoutY="190.0" text="get *.txt" />
+                  <CheckBox fx:id="getTXT" layoutX="278.0" layoutY="186.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="21.0" />
                </children>
             </Pane>
          </items>
       </SplitPane>
-      <Label fx:id="secret" layoutX="350.0" layoutY="418.0" prefHeight="17.0" prefWidth="168.0" textOverrun="WORD_ELLIPSIS" />
+      <Label fx:id="secret" layoutX="414.0" layoutY="449.0" prefHeight="17.0" prefWidth="168.0" textOverrun="WORD_ELLIPSIS" />
    </children>
 </Pane>
