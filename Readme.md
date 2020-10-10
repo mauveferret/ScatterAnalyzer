@@ -22,10 +22,10 @@ It can calculate:
 
 # Install
 ISInCa is fully JAVA program so it can be launched in any OS on every architecture!  
-Executable files are located in *[`/out`](https://github.com/mauveferret/ISInCa/tree/master/out)* directory:
-- For Windows OS you can download file executable file *[`ISInCa.exe`](https://github.com/mauveferret/ISInCa/tree/master/out/ISInCa.exe)*
-- For other OS you should try *[`isinca.jar`](https://github.com/mauveferret/ISInCa/tree/master/out/isinca.jar)*
-- For console mode you can also download config file *[`isinca`](https://github.com/mauveferret/ISInCa/tree/master/out/isinca.xml)*
+Executable files are located in *[`/out`](https://github.com/mauveferret/ISInCa/blob/tree/master/out)* directory:
+- For Windows OS you can download file executable file *[`ISInCa.exe`](https://github.com/mauveferret/ISInCa/blob/tree/master/out/ISInCa.exe)*
+- For other OS you should try *[`isinca.jar`](https://github.com/mauveferret/ISInCa/blob/tree/master/out/ISInCa.jar)*
+- For console mode you can also download config file *[`isinca`](https://github.com/mauveferret/ISInCa/blob/tree/master/out/isinca.xml)*
 
 In any case you need to have a **Java Virtual Machine** (version **11** or newer) installed on your device. To check whether the JVM was already installed on the device, open the console and type `java -version`... If the output looks like 
 > Java is not recognized as an internal or external command
