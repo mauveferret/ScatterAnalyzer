@@ -217,6 +217,7 @@ public class Console {
         } else calcType = "SCATTER";
 
         System.out.println("**********************************************************");
+        System.out.println(dir);
         System.out.println("Thread: "+calc.getChildNodes().item(0).getTextContent()+" calc type "+calcType);
         System.out.println("***********************************************************");
 

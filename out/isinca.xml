@@ -18,7 +18,7 @@
           for <calc> 2, you have to rewrite it in <calc> 3 -->
 
         <calc id="0">
-            <dir>500eV_0deg_100kPart</dir>
+            <dir>Ne_Fe</dir>
             <N_E>
                 <!-- params <delta> and <theta> have default values
                 for <N_E>. delta = (incident particles energy)/100,
@@ -40,23 +40,14 @@
                 <delta>3</delta>
             </polar_Map>
             <cartesian_Map>
-                <sort>B</sort>
+                <sort>S</sort>
                 <MapSize>1000</MapSize>
-                <delta>10</delta>
+                <delta>1</delta>
                 <cartesianMapType>ZY</cartesianMapType>
             </cartesian_Map>
         </calc>
 		<calc id="1">
-			<dir>4proc</dir>
-			<N_Theta>
-                <sort>BS</sort>
-                <phi>0</phi>
-                <deltaPhi>3</deltaPhi>
-                <deltaTheta>3</deltaTheta>
-            </N_Theta>
-		</calc>
-		<calc id="2">
-			<dir>10keV_45deg_100k</dir>
+			<dir>Cs_Ni</dir>
 		</calc>
     </calcs>
 </ISInCa>

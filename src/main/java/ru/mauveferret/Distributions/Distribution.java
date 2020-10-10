@@ -22,16 +22,19 @@ public abstract class Distribution {
         this.sort = sort;
         this.doVisualisation = calculator.doVizualization;
         fileSeparator = File.separator;
-        pathToLog = calculator.directoryPath+fileSeparator+"ISInCa"+File.separator+calculator.modelingID+"_"+this.getClass().getSimpleName().toUpperCase()+" DISTRIBUTION_"+
-        sort ;
-        headerComment = "---------------"+" PARTICLE IN MATTER ANALYZER 2020 "+"---------------"+"\n";
-        headerComment+= "|  "+"by Mauveferret@gmail.com from Plasma Physics Dep., MEPhI"+"    |"+"\n";
-        headerComment+="| Calculated with "+calculator.calculatorType+" calc. ID "+calculator.modelingID+"|"+"\n";
-        headerComment+="| Main input parameters: beam of "+calculator.projectileElements+
-                " with E0 = "+calculator.projectileMaxEnergy+" at polar angle "+
-                calculator.projectileIncidentPolarAngle+" from normal, azimuth angle "+calculator.projectileIncidentAzimuthAngle+
-                " with doze "+calculator.projectileAmount+"particles|"+"\n";
-        headerComment+="|                      target of "+calculator.targetElements+"                      |"+"\n";
+        pathToLog = calculator.directoryPath+fileSeparator+"ISInCa"+File.separator+this.getClass().getSimpleName().toUpperCase()+"_DISTR_"+
+        sort+calculator.projectileMaxEnergy+"eV"+calculator.projectileIncidentPolarAngle+"deg" ;
+        //FIXME version 2020 to real year
+        headerComment = "|--------ISInCa - Ion Surface Interaction Calculator 2020-----|"+"\n";
+        //headerComment = "---------------"+" PARTICLE IN MATTER ANALYZER 2020 "+"---------------"+"\n";
+        headerComment+= "|  "+"by mauveferret@gmail.com from plasma physics Dep., MEPhI"+"   |"+"\n";
+        headerComment+="| Calculated with "+calculator.calculatorType+" calc. ID "+calculator.modelingID+"               |"+"\n";
+        headerComment+="|                        Main input parameters                 |\n" +
+                "| beam of "+calculator.projectileElements+
+                " with E0 = "+calculator.projectileMaxEnergy+"eV at polar angle "+
+                calculator.projectileIncidentPolarAngle+" degrees     |\n| from normal, azimuth angle "+calculator.projectileIncidentAzimuthAngle+
+                " with doze "+calculator.projectileAmount+" particles   |"+"\n";
+        headerComment+="|                      target of "+calculator.targetElements+"                             |"+"\n";
         headerComment+="|----------------------------------------------------------------------|"+"\n";
         type = this.getClass().getSimpleName().toLowerCase();
         //System.out.println(type+"      CHECK");
