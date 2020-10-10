@@ -6,6 +6,5 @@
 .idea
 *.iml
 gen
-.exe
 src/test/
 /target
