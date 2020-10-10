@@ -83,26 +83,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.2</version>
-                <configuration>
-                    <includes>
-                        <include>/resources/*</include>
-                    </includes>
-                    <archive>
-                        <addMavenDescriptor>true</addMavenDescriptor>
-                        <compress>true</compress>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>Main</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.5.1</version>
                 <executions>
@@ -121,7 +101,8 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <finalName>isinca</finalName>
+                    <finalName>ISInCa</finalName>
+                    <outputDirectory>${basedir}/out/</outputDirectory>
                     <archive>
                         <manifest>
                             <mainClass>ru.mauveferret.Main</mainClass>
@@ -130,6 +111,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
                     <execution>
@@ -176,9 +158,9 @@
                         <goals><goal>launch4j</goal></goals>
                         <configuration>
                             <headerType>gui</headerType>
-                            <jar>${project.build.directory}/${project.artifactId}-${project.version}-jar-with-dependencies.jar</jar>
+                            <jar>${basedir}/out/ISInCa.jar</jar>
                             <icon>${project.build.directory}/classes/ru/mauveferret/pics/CrocoLogo.ico</icon>
-                            <outfile>ISInCa.exe</outfile>
+                            <outfile>${basedir}/out/ISInCa.exe</outfile>
                             <errTitle>some went wrong</errTitle>
                             <classPath>
                                 <mainClass>ru.mauveferret.Main</mainClass>

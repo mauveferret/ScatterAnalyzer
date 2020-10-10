@@ -11,6 +11,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 
@@ -27,14 +28,14 @@ public class Console {
     public Console(String args[]) {
         try {
 
-            System.out.println("Hello, world!");
+            System.out.println();
+            System.out.println("************************************************************");
+            System.out.println("**       ISInCa - Ion Surface Interaction Calculator      **");
             System.out.println("**********************************************************");
-            System.out.println("**      ISInCa - Ion Surface Interaction Calculator     **");
+            System.out.println("* Created by mauveferret@gmail.com at the MEPhI University *");
             System.out.println("**********************************************************");
-            System.out.println("*Created by mauveferret@gmail.com at the MEPhI University*");
-            System.out.println("**********************************************************");
-            System.out.println("* Check updates at https://github.com/mauveferret/ISInCa *");
-            System.out.println("**********************************************************");
+            System.out.println("*  Check updates at https://github.com/mauveferret/ISInCa  *");
+            System.out.println("************************************************************");
             System.out.println();
             System.out.println();
 
@@ -65,7 +66,10 @@ public class Console {
             cartesianMapType = "ZY";
 
             //  look for *.xml file and load DOM XML
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(getConfigFile(args));
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            //in order not to see comments on getChildNodes (YES, comments are also Nodes!)
+            dbFactory.setIgnoringComments(true);
+            Document doc = dbFactory.newDocumentBuilder().parse(getConfigFile(args));
             doc.getDocumentElement().normalize(); //to start from the beginning
 
             //remove empty nodes, occurred due to spaces
@@ -88,7 +92,7 @@ public class Console {
             //List of all calcs
             NodeList calcs = root.item(1).getChildNodes();
 
-            System.out.println("[ISInCa] Started postprocessing of files...");
+            System.out.println("[ISInCa] Started postprocessing files...");
             ArrayList<Thread> threads = new ArrayList<>();
 
             //create threads
@@ -135,17 +139,18 @@ public class Console {
          fullpath = ""+Console.class.getProtectionDomain().getCodeSource().getLocation().getPath();
          File file = new File(fullpath);
          fullpath = file.getParentFile().getAbsolutePath();
-
         // ISInCa -c /case/H_W
         if (args.length>1)
         {
             if (args[0].contains("c"))
             {
                 String configPath = args[1];
-                File configFile = new File(configPath);
+                configFile = new File(configPath);
                 if (configFile.exists()) return configFile;
                 else {
-                    if (!configPath.startsWith(File.separator))  configPath= File.separator+configPath;
+                    if (!configPath.startsWith(File.separator))  {
+                        configPath= File.separator+configPath;
+                    }
                     configPath = fullpath+configPath;
                     System.out.println("[ISInCa] config path: "+configPath);
                      configFile = new File(configPath);
@@ -192,8 +197,10 @@ public class Console {
 
     private Thread runCalc(Node calc, Node zeroCalc) {
 
+        String dir = "";
         String calcType = "not found";
-        String dir = calc.getChildNodes().item(0).getTextContent();
+        dir = calc.getChildNodes().item(0).getTextContent()+"";
+        if (!dir.startsWith(File.separator)) dir = File.separator+dir;
         dir = fullpath + dir;
         ParticleInMatterCalculator yourCalculator = new Scatter(dir, visualize);
         String initialize = yourCalculator.initializeVariables();
@@ -204,7 +211,7 @@ public class Console {
                 yourCalculator = new SDTrimSP(dir, visualize);
                 initialize = yourCalculator.initializeVariables();
                 if (!initialize.equals("OK")) {
-                    System.out.println("ERROR: wrong path:" + dir);
+                    System.out.println("ERROR: for id"+calc.getAttributes().item(0).getTextContent()+" get wrong path: " + dir);
                 } else calcType = "SDTrimSP";
             } else calcType = "TRIM";
         } else calcType = "SCATTER";
