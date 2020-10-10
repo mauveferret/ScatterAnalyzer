@@ -19,40 +19,62 @@ public class Console {
     String fullpath;
     File configFile;
     //params
-    private double thetaNE, phiNE, phiNTheta, deltaNE, deltaPhiNE, deltaThetaNE, deltaNTheta, deltaPolarMap, deltaCartesianMap, MapSize;
+    private double thetaNE, phiNE, phiNTheta, deltaNE, deltaPhiNE, deltaThetaNE, deltaPhiNTheta, deltaThetaNTheta, deltaPolarMap, deltaCartesianMap, MapSize;
     private String  sortNE, sortNTheta, sortPolarMap, sortCartesianMap, cartesianMapType;
     //Preferences
-    private boolean getTXT, getSumary;
+    private boolean getTXT, getSumary, visualize;
 
     public Console(String args[]) {
         try {
 
             System.out.println("Hello, world!");
+            System.out.println("**********************************************************");
+            System.out.println("**      ISInCa - Ion Surface Interaction Calculator     **");
+            System.out.println("**********************************************************");
+            System.out.println("*Created by mauveferret@gmail.com at the MEPhI University*");
+            System.out.println("**********************************************************");
+            System.out.println("* Check updates at https://github.com/mauveferret/ISInCa *");
+            System.out.println("**********************************************************");
+            System.out.println();
+            System.out.println();
 
-            thetaNE = 70;
-            phiNE = 0;
-            phiNTheta = 0;
+            //Basic values for all parameters
+
+            getTXT = false;
+            getSumary = true;
+            visualize = false;
+            // N_E
+            sortNE = "B";
             deltaNE = 100;
-            deltaPhiNE = 5;
-            deltaThetaNE = 5;
-            deltaNTheta = 5;
-            deltaPolarMap = 5;
+            thetaNE = 70;
+            deltaThetaNE = 3;
+            phiNE = 0;
+            deltaPhiNE = 3;
+            //N_Theta
+            sortNTheta = "S";
+            phiNTheta = 0;
+            deltaPhiNTheta = 3;
+            deltaThetaNTheta = 3;
+            //polar_Map
+            sortPolarMap = "S";
+            deltaPolarMap = 3;
+            //cartesian_Map
+            sortCartesianMap = "S";
             deltaCartesianMap = 10;
             MapSize = 1000;
+            cartesianMapType = "ZY";
 
-
-            configFile = getConfigFile(args);
-
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(configFile);
+            //  look for *.xml file and load DOM XML
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(getConfigFile(args));
             doc.getDocumentElement().normalize(); //to start from the beginning
 
+            //remove empty nodes, occurred due to spaces
             XPathFactory xpathFactory = XPathFactory.newInstance();
             // XPath to find empty text nodes.
             XPathExpression xpathExp = xpathFactory.newXPath().compile(
                     "//text()[normalize-space(.) = '']");
             NodeList emptyTextNodes = (NodeList)
                     xpathExp.evaluate(doc, XPathConstants.NODESET);
-
 
             // Remove each empty text node from document.
             for (int i = 0; i < emptyTextNodes.getLength(); i++) {
@@ -61,14 +83,12 @@ public class Console {
             }
 
             NodeList root =  doc.getFirstChild().getChildNodes();
-
+            // load values for prefs like getTXT, getSummary
             getPref(root.item(0).getChildNodes());
-
-            //getParams(root.item(1).getChildNodes());
-
+            //List of all calcs
             NodeList calcs = root.item(1).getChildNodes();
 
-            System.out.println("Starting postprocessing of files...");
+            System.out.println("[ISInCa] Started postprocessing of files...");
             ArrayList<Thread> threads = new ArrayList<>();
 
             //create threads
@@ -82,7 +102,7 @@ public class Console {
             //run threads
             for (Thread thread: threads){
                 thread.start();
-                System.out.println("Thread "+thread.getName()+" is STARTED");
+                System.out.println("[ISInCa] Thread "+thread.getName()+" is STARTED");
             }
 
 
@@ -125,33 +145,33 @@ public class Console {
                 File configFile = new File(configPath);
                 if (configFile.exists()) return configFile;
                 else {
+                    if (!configPath.startsWith(File.separator))  configPath= File.separator+configPath;
                     configPath = fullpath+configPath;
-                    System.out.println("config path: "+configPath);
+                    System.out.println("[ISInCa] config path: "+configPath);
                      configFile = new File(configPath);
                      if (configFile.exists()) return configFile;
                      else {
-                         System.out.println("ERROR: wrong path");
+                         System.out.println("[ISInCa] ERROR: wrong path");
                          System.exit(-1);
                      }
                 }
-                //File configFile = new File(configPath);
 
                 //check if the config file exists, otherwise exiting
                 if (!configFile.exists()) {
-                    System.out.println("ERROR: File " + configPath + " doesn't exist! Turning off...");
+                    System.out.println("[ISInCa] ERROR: File " + configPath + " doesn't exist! Turning off...");
                     System.exit(-1);
                 }
             }
             else {
-                System.out.println("ERROR: wrong parameter: "+args[0]);
+                System.out.println("[ISInCa] ERROR: wrong parameter: "+args[0]);
                 System.exit(-1);
             }
         }
         else {
-            System.out.println("ERROR: no paths were found");
+            System.out.println("[ISInCa] ERROR: no paths were found");
             System.exit(-1);
         }
-        System.out.println("ZHOPPA");
+        System.out.println("[ISInCa] ZHOPPA");
         return null;
     }
 
@@ -162,6 +182,7 @@ public class Console {
                 break;
                 case "getsummary": getSumary = prefs.item(i).getTextContent().equals("true");
                 break;
+                case "visualize": visualize = prefs.item(i).getTextContent().equals("true");
             }
         }
     }
@@ -174,13 +195,13 @@ public class Console {
         String calcType = "not found";
         String dir = calc.getChildNodes().item(0).getTextContent();
         dir = fullpath + dir;
-        ParticleInMatterCalculator yourCalculator = new Scatter(dir, false);
+        ParticleInMatterCalculator yourCalculator = new Scatter(dir, visualize);
         String initialize = yourCalculator.initializeVariables();
         if (!initialize.equals("OK")) {
-            yourCalculator = new TRIM(dir, false);
+            yourCalculator = new TRIM(dir, visualize);
             initialize = yourCalculator.initializeVariables();
             if (!initialize.equals("OK")) {
-                yourCalculator = new SDTrimSP(dir, false);
+                yourCalculator = new SDTrimSP(dir, visualize);
                 initialize = yourCalculator.initializeVariables();
                 if (!initialize.equals("OK")) {
                     System.out.println("ERROR: wrong path:" + dir);
@@ -205,6 +226,7 @@ public class Console {
 
                     case "N_E": {
                         deltaNE = yourCalculator.projectileMaxEnergy / 100;
+                        thetaNE = yourCalculator.projectileIncidentPolarAngle;
 
                         for (int j = 0; j < distrPars.getLength(); j++) {
                             switch (distrPars.item(j).getNodeName().toLowerCase()) {
@@ -237,17 +259,17 @@ public class Console {
                                 case "sort":
                                     sortNTheta = distrPars.item(j).getTextContent();
                                     break;
-                                case "theta":
-                                    deltaNTheta = Double.parseDouble(distrPars.item(j).getTextContent());
+                                case "deltatheta":
+                                    deltaThetaNTheta = Double.parseDouble(distrPars.item(j).getTextContent());
                                     break;
                                 case "phi":
                                     phiNTheta = Double.parseDouble(distrPars.item(j).getTextContent());
                                     break;
-                                case "delta":
-                                    deltaNTheta = Double.parseDouble(distrPars.item(j).getTextContent());
+                                case "deltaphi":
+                                    deltaPhiNTheta = Double.parseDouble(distrPars.item(j).getTextContent());
                             }
                         }
-                        distributions.add(new Polar(phiNTheta, deltaNTheta, deltaNTheta, sortNTheta, yourCalculator));
+                        distributions.add(new Polar(phiNTheta, deltaPhiNTheta, deltaThetaNTheta, sortNTheta, yourCalculator));
                     }
                     break;
                     case "polar_Map": {
@@ -256,7 +278,7 @@ public class Console {
                                 case "sort":
                                     sortPolarMap = distrPars.item(j).getTextContent();
                                     break;
-                                case "theta":
+                                case "delta":
                                     deltaPolarMap = Double.parseDouble(distrPars.item(j).getTextContent());
                                     break;
                             }

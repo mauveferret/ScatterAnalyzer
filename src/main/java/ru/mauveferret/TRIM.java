@@ -54,7 +54,6 @@ public class TRIM extends ParticleInMatterCalculator{
                     if (i>1000) break;
                 }
                 reader.close();
-
             }
             catch (FileNotFoundException ex){
                 return "\"COLLISION.txt\" config is not found";
