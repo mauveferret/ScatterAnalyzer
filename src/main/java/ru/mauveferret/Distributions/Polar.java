@@ -60,11 +60,11 @@ public class Polar extends Distribution {
             for (int i = 0; i <= (int) Math.round(180/ dTheta); i++) {
                 //FIXME Omega angle ?!
                 if (i*dTheta!=90) {
-                    polarAngleSpectrum[i] = polarAngleSpectrum[i]/(Math.toRadians(dPhi)*Math.sin(Math.toRadians(Math.abs(i*dTheta-90))));
+                    polarAngleSpectrum[i] = polarAngleSpectrum[i]/(2*Math.toRadians(dPhi)*Math.sin(Math.toRadians(Math.abs(i*dTheta-90))));
                 } //we can't divide by zero
                 else{
                     //TODO
-                    polarAngleSpectrum[i] = polarAngleSpectrum[i]/(Math.toRadians(dPhi)*Math.sin(Math.toRadians(dTheta)));
+                    polarAngleSpectrum[i] = polarAngleSpectrum[i]/(2*Math.toRadians(dPhi)*Math.sin(Math.toRadians(dTheta)));
                 }
                 stroka = ((i * dTheta-90)) + columnSeparatorInLog
                         + new BigDecimal( polarAngleSpectrum[i]).setScale(4, RoundingMode.UP) + "\n";
