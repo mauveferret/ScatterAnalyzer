@@ -1,16 +1,24 @@
 package ru.mauveferret;
 
+import com.sun.javafx.application.HostServicesDelegate;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import ru.mauveferret.Distributions.*;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -131,6 +139,17 @@ public class RootFxmlController {
     public void readme()
     {
         Platform.runLater(() -> new GUI().showHelpPage("pics/readme.png"));
+    }
+
+    @FXML
+    public void openGIT(){
+        try {
+            Desktop.getDesktop().browse(new URL("https://github.com/mauveferret/ISInCa/blob/master/Readme.md").toURI());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

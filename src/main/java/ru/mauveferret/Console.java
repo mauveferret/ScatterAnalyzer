@@ -12,7 +12,10 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 
 public class Console {
@@ -30,7 +33,8 @@ public class Console {
 
             System.out.println();
             System.out.println("************************************************************");
-            System.out.println("**       ISInCa - Ion Surface Interaction Calculator      **");
+            System.out.println("**       ISInCa - Ion Surface Interaction Calculator "+
+                    Calendar.getInstance().get(Calendar.YEAR)+" **");
             System.out.println("**********************************************************");
             System.out.println("* Created by mauveferret@gmail.com at the MEPhI University *");
             System.out.println("**********************************************************");
@@ -111,13 +115,15 @@ public class Console {
 
 
             int i=1;
-            long start = System.currentTimeMillis();
+            double start = System.currentTimeMillis();
             for (Thread thread: threads){
                 thread.join();
                 System.out.println("___________________");
                 System.out.println("PROGRESS: "+i*100/threads.size()+"%");
                 System.out.println("-------------------");
-                System.out.println("time for "+thread.getName()+" : "+(System.currentTimeMillis()-start)/60000+" min");
+                double newTime = (((double) System.currentTimeMillis())-start)/((double) 60000);
+                System.out.println("time for "+thread.getName()+" : "+
+                        new BigDecimal(newTime).setScale(4, RoundingMode.UP)+" min");
                 System.out.println("----------------------------------");
                 i++;
             }

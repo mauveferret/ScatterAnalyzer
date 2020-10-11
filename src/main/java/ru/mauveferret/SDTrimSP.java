@@ -3,6 +3,8 @@ package ru.mauveferret;
 import ru.mauveferret.Distributions.*;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -134,134 +136,167 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
         //find all TRIM-related distributions
 
-        double en = 0, collisionsAmount=0, fluence=0,  xEnd=0, yEnd=0, zEnd=0, cosP=0,cosA=0, path=0;
-        String sort;
-
         try {
+
+            ArrayList<Thread> fileThreads = new ArrayList<>();
 
             for (String someDataFilePath: dataPath) {
 
-                BufferedReader br = new BufferedReader(new FileReader(someDataFilePath));
+                Thread newFile = new Thread(()->{
 
-                //rubbish lines
-                String line = br.readLine();
-                br.readLine();
-                br.readLine();
-                br.readLine();
-                br.readLine();
-                //now lets sort
+                    try {
 
-                String[] datas;
+                        double en = 0, collisionsAmount = 0, fluence = 0, xEnd = 0, yEnd = 0, zEnd = 0, cosP = 0, cosA = 0, path = 0;
+                        String sort;
 
+                        BufferedReader br = new BufferedReader(new FileReader(someDataFilePath));
 
-                String particlesType = someDataFilePath.substring(someDataFilePath.indexOf(File.separator));
-                particlesType = particlesType.substring(particlesType.indexOf("_"), particlesType.lastIndexOf("."));
+                        //rubbish lines
+                        String line = br.readLine();
+                        br.readLine();
+                        br.readLine();
+                        br.readLine();
+                        br.readLine();
+                        //now lets sort
 
-                sort = "";
-                if (particlesType.contains("back_p")) sort = "B";
-                else if (particlesType.contains("back_r")) sort = "S";
-                else if (particlesType.contains("stop_p")) sort = "I";
-                else if (particlesType.contains("stop_r")) sort = "D";
-                else if (particlesType.contains("tran")) sort = "T";
+                        String[] datas;
 
 
-                //was disabled as we need to get some summary, so we should analyze all files
-                String sorts = "";
-               for (Distribution someDistr : distributions) sorts += someDistr.getSort();
+                        String particlesType = someDataFilePath.substring(someDataFilePath.indexOf(File.separator));
+                        particlesType = particlesType.substring(particlesType.indexOf("_"), particlesType.lastIndexOf("."));
 
-                if (sorts.contains(sort) || getSummary) {
-                    while (br.ready()) {
-                        line = br.readLine();
-                        if (!line.contains("end")) {
+                        sort = "";
+                        if (particlesType.contains("back_p")) sort = "B";
+                        else if (particlesType.contains("back_r")) sort = "S";
+                        else if (particlesType.contains("stop_p")) sort = "I";
+                        else if (particlesType.contains("stop_r")) sort = "D";
+                        else if (particlesType.contains("tran")) sort = "T";
 
-                            //line.replaceAll("\\\\s+"," ");
-                            //  line.replaceAll("\\\\u0020'", " ");
-                            // line.replaceAll("\\\\u0020\\\\u0020"," ");
-                            //  line.replaceAll("[^\\\\u0009\\\\u000a\\\\u000d\\\\u0020-\\\\uD7FF\\\\uE000-\\\\uFFFD]", "");
 
-                            datas = line.split(" ");
+                        //was disabled as we need to get some summary, so we should analyze all files
+                        String sorts = "";
+                        for (Distribution someDistr : distributions) sorts += someDistr.getSort();
 
-                            int column = 0;
-                            double value = 0;
-                            for (int i = 0; i < datas.length; i++) {
-                                try {
-                                    value = Float.parseFloat(datas[i]);
-                                    column++;
-                                } catch (Exception e) {
-                                    //failed to find correct delimiter
+                        if (sorts.contains(sort) || getSummary) {
+                            while (br.ready()) {
+                                line = br.readLine();
+                                if (!line.contains("end")) {
+
+                                    //line.replaceAll("\\\\s+"," ");
+                                    //  line.replaceAll("\\\\u0020'", " ");
+                                    // line.replaceAll("\\\\u0020\\\\u0020"," ");
+                                    //  line.replaceAll("[^\\\\u0009\\\\u000a\\\\u000d\\\\u0020-\\\\uD7FF\\\\uE000-\\\\uFFFD]", "");
+
+                                    datas = line.split(" ");
+
+                                    int column = 0;
+                                    double value = 0;
+                                    for (int i = 0; i < datas.length; i++) {
+                                        try {
+                                            value = Float.parseFloat(datas[i]);
+                                            column++;
+                                        } catch (Exception e) {
+                                            //failed to find correct delimiter
+                                        }
+                                        switch (column) {
+                                            case 2:
+                                                collisionsAmount = value;
+                                                break;
+                                            case 3:
+                                                fluence = value;
+                                                break;
+                                            case 4:
+                                                en = value;
+                                                break;
+                                            case 8:
+                                                xEnd = value;
+                                                break;
+                                            case 9:
+                                                yEnd = value;
+                                                break;
+                                            case 10:
+                                                zEnd = value;
+                                                break;
+                                            case 14:
+                                                cosP = value;
+                                                break;
+                                            case 15:
+                                                cosA = value;
+                                                break;
+                                            case 16:
+                                                path = value;
+                                                break;
+                                        }
+
+                                    }
+
+                                    //Here is several spectra calculators
+
+                                    PolarAngles angles = new PolarAngles(cosP, cosA, xEnd, yEnd);
+
+                                    //  if (!someDataFilePath.contains("stop")) System.out.println(angles.getPolar()+" "+angles.getAzimuth());
+
+                                    for (Distribution distr : distributions) {
+                                        switch (distr.getType()) {
+                                            case "energy":
+                                                ((Energy) distr).check(angles, sort, en);
+                                                break;
+                                            case "polar":
+                                                ((Polar) distr).check(angles, sort);
+                                                break;
+                                            case "anglemap":
+                                                ((AngleMap) distr).check(angles, sort);
+                                                break;
+                                            case "gettxt":
+                                                ((getTXT) distr).check(angles, sort, en);
+                                                break;
+                                            case "cartesianmap":
+                                                ((CartesianMap) distr).check(zEnd, yEnd, sort);
+                                        }
+                                    }
+
+                                    //calculate some scattering constants
+                                    if (!sort.contains("S") && !sort.contains("D")) particleCount++;
+
+                                    if (sort.equals("B")) {
+                                        scattered++;
+                                        energyRecoil += en;
+                                    } else if (sort.equals("S")) sputtered++;
+                                    else if (sort.equals("I")) implanted++;
+                                    else if (sort.equals("T")) transmitted++;
+                                    else if (sort.equals("D")) displaced++;
                                 }
-                                switch (column) {
-                                    case 2:
-                                        collisionsAmount = value;
-                                        break;
-                                    case 3:
-                                        fluence = value;
-                                        break;
-                                    case 4:
-                                        en = value;
-                                        break;
-                                    case 8:
-                                        xEnd = value;
-                                        break;
-                                    case 9:
-                                        yEnd = value;
-                                        break;
-                                    case 10:
-                                        zEnd = value;
-                                        break;
-                                    case 14:
-                                        cosP = value;
-                                        break;
-                                    case 15:
-                                        cosA = value;
-                                        break;
-                                    case 16:
-                                        path = value;
-                                        break;
-                                }
-
                             }
+                            br.close();
 
-                            //Here is several spectra calculators
-
-                            PolarAngles angles = new PolarAngles(cosP, cosA, xEnd, yEnd);
-
-                            //  if (!someDataFilePath.contains("stop")) System.out.println(angles.getPolar()+" "+angles.getAzimuth());
-
-                            for (Distribution distr : distributions) {
-                                switch (distr.getType()) {
-                                    case "energy":
-                                        ((Energy) distr).check(angles, sort, en);
-                                        break;
-                                    case "polar":
-                                        ((Polar) distr).check(angles, sort);
-                                        break;
-                                    case "anglemap":
-                                        ((AngleMap) distr).check(angles, sort);
-                                        break;
-                                    case "gettxt":
-                                        ((getTXT) distr).check(angles, sort, en);
-                                        break;
-                                    case "cartesianmap":
-                                        ((CartesianMap) distr).check(zEnd, yEnd, sort);
-                                }
-                            }
-
-                            //calculate some scattering constants
-                            if (!sort.contains("S") && !sort.contains("D")) particleCount++;
-
-                            if (sort.equals("B")) {
-                                scattered++;
-                                energyRecoil += en;
-                            } else if (sort.equals("S")) sputtered++;
-                            else if (sort.equals("I")) implanted++;
-                            else if (sort.equals("T")) transmitted++;
-                            else if (sort.equals("D")) displaced++;
                         }
                     }
-                    br.close();
-                }
+                    catch (Exception e){
+                        System.out.println("for thread "+Thread.currentThread().getName()+" error: "+ e.getMessage());
+                    }
+                });
+                File file = new File(someDataFilePath);
+                String threadName = file.getParentFile().getName()+File.separator+file.getName();
+                newFile.setName(threadName);
+                fileThreads.add(newFile);
             }
+
+            for (Thread thread: fileThreads) thread.start();
+
+            //wait for end of the calculation
+            double startTime = System.currentTimeMillis();
+            int j=0;
+            for (Thread thread: fileThreads){
+                j++;
+                thread.join();
+                System.out.println("   ++++++++++++++++++++++++++++++");
+                System.out.println("    [SDTrimSP]["+thread.getName()+"] PROGRESS: "+j*100/fileThreads.size()+"%");
+                double newTime = (((double) System.currentTimeMillis())-startTime)/((double) 60000);
+                System.out.println("    [SDTrimSP]["+thread.getName()+"] time: "+
+                        new BigDecimal(newTime).setScale(4, RoundingMode.UP)+" min");
+                System.out.println("   ++++++++++++++++++++++++++++++");
+            }
+
             scattered = scattered / projectileAmount;
             sputtered = sputtered / projectileAmount;
             implanted = implanted / projectileAmount;

@@ -242,7 +242,7 @@
                      <content>
                         <AnchorPane prefHeight="150.0" prefWidth="583.0">
                            <children>
-                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#showHelp" text="Оси" />
+                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#showHelp" text="Axes" />
                               <Label layoutX="64.0" layoutY="13.0" prefHeight="27.0" prefWidth="365.0" text="&lt;= Картинка, поясняющая геометрию " />
                               <Button id="YouDoWhatYouGonnaDo" layoutX="497.0" layoutY="12.0" mnemonicParsing="false" onAction="#YouDoWhatYouGonnaDo" prefHeight="39.0" prefWidth="72.0" text="!">
                                  <font>
@@ -253,7 +253,8 @@
                               <Label layoutX="14.0" layoutY="102.0" prefHeight="27.0" prefWidth="524.0" text="Полные угловые распределения получаются при указании больших dφ, dθ " />
                               <Label layoutX="14.0" layoutY="125.0" prefHeight="27.0" prefWidth="524.0" text="delta E, delta φ, delta θ - шаг, а не разброс " />
                               <Label layoutX="13.0" layoutY="142.0" prefHeight="27.0" prefWidth="570.0" text="Если оставить число запущенных частиц равным 10, программа попытается оценить значение сама" />
-                              <Button layoutX="383.0" layoutY="14.0" mnemonicParsing="false" onAction="#readme" text="Справка" />
+                              <Button layoutX="384.0" layoutY="14.0" mnemonicParsing="false" onAction="#readme" text="Справка" />
+                              <Button layoutX="313.0" layoutY="14.0" mnemonicParsing="false" onAction="#openGIT" text="!!!HELP!!!" />
                            </children></AnchorPane>
                      </content>
                   </Tab>
