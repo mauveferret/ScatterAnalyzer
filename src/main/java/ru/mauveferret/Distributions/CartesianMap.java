@@ -12,7 +12,7 @@ public class CartesianMap extends Distribution{
     String mapType;
     String typeOfX, typeOfY;
     private final double delta;
-    int size = 500; //Angstrom
+    int size = 1000; //Angstrom
     int center;
 
     //max needs to cut from matrix zeros
@@ -28,9 +28,10 @@ public class CartesianMap extends Distribution{
         center = (int) (size/(2*delta));
         max = delta;
         pathToLog+="MAP OF "+mapType+" for "+sort+" delta "+delta+".txt";
-        headerComment+=" delta "+delta+"sort "+sort+"type "+type+"            |"+"\n";
-        headerComment+="|----------------------------------------------------------------------|"+"\n";
         cartesianMap = new double[(int) Math.ceil(size/delta)+10][(int) Math.ceil(size/delta)+10];
+
+        String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+type;
+        headerComment +=createLine(addheaderComment)+"*".repeat(lineLength)+"\n";
     }
 
     public CartesianMap(double delta, int size, String mapType, String sort, ParticleInMatterCalculator calculator) {
@@ -43,8 +44,8 @@ public class CartesianMap extends Distribution{
         center = (int) (size/(2*delta));
         max = delta;
         pathToLog+="MAP OF "+mapType+" for "+sort+" delta "+delta+".txt";
-        headerComment+=" delta "+delta+"sort "+sort+"type "+type+"            |"+"\n";
-        headerComment+="|----------------------------------------------------------------------|"+"\n";
+        String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+type;
+        headerComment +=createLine(addheaderComment)+"*".repeat(lineLength)+"\n";
         cartesianMap = new double[(int) Math.ceil(size/delta)+10][(int) Math.ceil(size/delta)+10];
     }
 
@@ -121,15 +122,15 @@ public class CartesianMap extends Distribution{
 
             for (int i = leftEdge ; i <=rightEdge; i++)
             {
-                stroka=stroka+" "+(int) ((i-center)*delta);
+                stroka=stroka+columnSeparatorInLog+(int) ((i-center)*delta);
             }
             stroka=stroka+"\n";
             surfaceWriter.write(stroka.getBytes());
 
             for (int i = leftEdge; i <=rightEdge; i++) {
-                stroka=(int) ((i-center)*delta)+" ";
+                stroka=(int) ((i-center)*delta)+columnSeparatorInLog;
                 for (int j = leftEdge; j <= rightEdge; j++) {
-                    stroka=stroka+cartesianMap[i][j] +" ";
+                    stroka=stroka+cartesianMap[i][j] +columnSeparatorInLog;
                 }
                 stroka = stroka + "\n";
                 surfaceWriter.write(stroka.getBytes());

@@ -29,8 +29,12 @@ public class Energy extends Distribution{
         this.dE = dE;
         energySpectrum =  new double[(int) Math.ceil(E0/dE)+1];
         pathToLog+="_theta "+theta+"_phi "+phi+"_dE"+dE+"_time "+ ((int ) (Math.random()*100))+".txt";
-        headerComment+="| delate E "+dE+" theta "+theta+"dTheta "+dTheta+" phi "+phi+" dPhi "+dPhi+"  |"+"\n";
-        headerComment+="|----------------------------------------------------------------------|"+"\n";
+
+        String addheaderComment = " delta E "+dE+" eV theta "+theta+" deg dTheta "+dTheta+" deg phi "+
+                phi+" deg dPhi "+dPhi+" deg";
+        headerComment +=createLine(addheaderComment)+"*".repeat(lineLength)+"\n";
+        headerComment= "Energy particles "+"\n"+"eV  count \n\n"+headerComment+"\n";
+
     }
 
     public void check(PolarAngles angles, String someSort, double E ){
@@ -63,7 +67,8 @@ public class Energy extends Distribution{
             String stroka;
             energyWriter.write(headerComment.getBytes());
             for (int i = 0; i <= (int) Math.round(E0 / dE); i++) {
-                 stroka = i * dE + " " +  new BigDecimal( energySpectrum[i]/dE).setScale(4, RoundingMode.UP) + "\n";
+                 stroka = i * dE + columnSeparatorInLog
+                         +  new BigDecimal( energySpectrum[i]/dE).setScale(4, RoundingMode.UP) + "\n";
                 energyWriter.write(stroka.getBytes());
             }
             energyWriter.close();

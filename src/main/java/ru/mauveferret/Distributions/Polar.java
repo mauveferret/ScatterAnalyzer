@@ -25,9 +25,14 @@ public class Polar extends Distribution {
         this.dPhi = dPhi;
         this.dTheta = dTheta;
         polarAngleSpectrum = new double[(int) Math.ceil(180/dTheta)+1];
-        pathToLog+="_phi "+phi+"_dphi "+dPhi+"_dTheta"+dTheta+"_time "+ ((int ) (Math.random()*100))+".txt";
-        headerComment+="| phi "+phi+" dPhi "+dPhi+"dTheta "+dTheta+"            |"+"\n";
-        headerComment+="|----------------------------------------------------------------------|"+"\n";
+        pathToLog+="_phi "+phi+"_dphi "+dPhi+"_dTheta"+dTheta+".txt";
+
+        String addheaderComment = " phi "+phi+"  degrees dPhi "+dPhi+" degrees dTheta "+dTheta+" degrees ";
+        headerComment +=createLine(addheaderComment)+"*".repeat(lineLength)+"\n";
+        headerComment= "Angle particles "+"\n"+"degrees  count \n\n"+headerComment+"\n";
+      //  String longName =" Angle,deg  partCount ";
+       // longName = "*".repeat((lineLength-longName.length())/2)+longName+"*".repeat((lineLength-longName.length())/2)+"\n";
+       // headerComment= longName+headerComment;
     }
 
 
@@ -61,8 +66,8 @@ public class Polar extends Distribution {
                     //TODO
                     polarAngleSpectrum[i] = polarAngleSpectrum[i]/(2*Math.PI*Math.sin(Math.toRadians(dTheta)));
                 }
-                stroka = ((i * dTheta-90)) + "" +
-                        " " + new BigDecimal( polarAngleSpectrum[i]).setScale(4, RoundingMode.UP) + "\n";
+                stroka = ((i * dTheta-90)) + columnSeparatorInLog
+                        + new BigDecimal( polarAngleSpectrum[i]).setScale(4, RoundingMode.UP) + "\n";
                 //FIXME maybe you shoud write it as it is?!
                 if (i*dTheta!=90) polarWriter.write(stroka.getBytes());
             }

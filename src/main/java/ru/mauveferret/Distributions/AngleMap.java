@@ -18,9 +18,9 @@ public class AngleMap extends Distribution{
         this.dPhi = dPhi;
         this.dTheta = dTheta;
         angleMap = new double[(int) Math.ceil(360/dPhi)+1][(int) Math.ceil(90/dTheta)+1];
-        pathToLog+="_dphi "+dPhi+"_dTheta"+dTheta+"_time "+ ((int ) (Math.random()*100))+".txt";
-        headerComment+=" dPhi "+dPhi+"dTheta "+dTheta+"            |"+"\n";
-        headerComment+="|----------------------------------------------------------------------|"+"\n";
+        pathToLog+="_dphi "+dPhi+"_dTheta"+dTheta+".txt";
+        String addheaderComment = " dPhi "+dPhi+" degrees dTheta "+dTheta+" degrees ";
+        headerComment +=createLine(addheaderComment)+"*".repeat(lineLength)+"\n";
     }
 
     public  void check (PolarAngles angles, String someSort)
@@ -46,17 +46,16 @@ public class AngleMap extends Distribution{
             surfaceWriter.write(headerComment.getBytes());
             for (int i = 0; i <=(int) Math.round(90 / dTheta); i++)
             {
-                stroka=stroka+" "+(int) (i*dTheta);
+                stroka=stroka+columnSeparatorInLog+(int) (i*dTheta);
             }
             stroka=stroka+"\n";
             surfaceWriter.write(stroka.getBytes());
-            double coefficientForColorMap=0;
 
             for (int i = 0; i <=(int) Math.round(360 / dPhi); i++) {
-                stroka=(int) (i*dPhi)+" ";
+                stroka=(int) (i*dPhi)+columnSeparatorInLog;
                 for (int j = 0; j <= (int) Math.round(90 / dTheta); j++) {
-                    if (i<(int) Math.round(360 / dTheta)) stroka = stroka + angleMap[i][j] + " ";
-                    else  stroka=stroka+angleMap[i-1][j]+" ";
+                    if (i<(int) Math.round(360 / dTheta)) stroka = stroka + angleMap[i][j] + columnSeparatorInLog;
+                    else  stroka=stroka+angleMap[i-1][j]+columnSeparatorInLog;
                 }
                 stroka = stroka + "\n";
                 surfaceWriter.write(stroka.getBytes());

@@ -89,7 +89,7 @@ public abstract class ParticleInMatterCalculator{
             summary.write(("sputtered: "+ new BigDecimal(sputtered).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("implanted: "+new BigDecimal(implanted).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("transmitted: "+ new BigDecimal( transmitted).setScale(4, RoundingMode.UP)+"\n").getBytes());
-            summary.write(("transmitted: "+ new BigDecimal( displaced).setScale(4, RoundingMode.UP)+"\n").getBytes());
+            summary.write(("displaced: "+ new BigDecimal( displaced).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("energy recoil: "+new BigDecimal(energyRecoil).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("ISInCa calculation time, min: "+new BigDecimal(time).setScale(4, RoundingMode.UP)).getBytes());
             summary.close();
