@@ -23,7 +23,7 @@ public class Console {
     private double thetaNE, phiNE, phiNTheta, deltaNE, deltaPhiNE, deltaThetaNE, deltaPhiNTheta, deltaThetaNTheta, deltaPolarMap, deltaCartesianMap, MapSize;
     private String  sortNE, sortNTheta, sortPolarMap, sortCartesianMap, cartesianMapType;
     //Preferences
-    private boolean getTXT, getSumary, visualize;
+    private boolean getTXT, getSummary, visualize;
 
     public Console(String args[]) {
         try {
@@ -42,7 +42,7 @@ public class Console {
             //Basic values for all parameters
 
             getTXT = false;
-            getSumary = true;
+            getSummary = true;
             visualize = false;
             // N_E
             sortNE = "B";
@@ -185,7 +185,7 @@ public class Console {
             switch (prefs.item(i).getNodeName().toLowerCase()){
                 case "gettxt":  getTXT = prefs.item(i).getTextContent().equals("true");
                 break;
-                case "getsummary": getSumary = prefs.item(i).getTextContent().equals("true");
+                case "getsummary": getSummary = prefs.item(i).getTextContent().equals("true");
                 break;
                 case "visualize": visualize = prefs.item(i).getTextContent().equals("true");
             }
@@ -208,7 +208,7 @@ public class Console {
             yourCalculator = new TRIM(dir, visualize);
             initialize = yourCalculator.initializeVariables();
             if (!initialize.equals("OK")) {
-                yourCalculator = new SDTrimSP(dir, visualize);
+                yourCalculator = new SDTrimSP(dir, visualize,getSummary);
                 initialize = yourCalculator.initializeVariables();
                 if (!initialize.equals("OK")) {
                     System.out.println("ERROR: for id"+calc.getAttributes().item(0).getTextContent()+" get wrong path: " + dir);

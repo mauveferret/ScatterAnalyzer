@@ -13,7 +13,7 @@ public abstract class ParticleInMatterCalculator{
     public String directoryPath;
 
     //for console mode we don't need it
-    public boolean doVizualization;
+    public boolean doVizualization, getSummary;
 
     //like SC100432, H_W and etc.
     public String modelingID;

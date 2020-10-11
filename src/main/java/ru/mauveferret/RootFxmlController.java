@@ -23,6 +23,9 @@ public class RootFxmlController {
     //Buttons for calculating
     @FXML
     private CheckBox getTXT;
+    @FXML
+    private CheckBox getSummary;
+    @FXML CheckBox visualize;
 
     //energy distributions
     @FXML
@@ -163,7 +166,7 @@ public class RootFxmlController {
                 initialize = yourCalcuator.initializeVariables();
                 if (!initialize.equals("OK")) {
                     System.out.println(initialize);
-                    yourCalcuator = new SDTrimSP(path, true);
+                    yourCalcuator = new SDTrimSP(path, visualize.isSelected(), getSummary.isSelected());
                     initialize = yourCalcuator.initializeVariables();
                     if (!initialize.equals("OK")) {
                         System.out.println(initialize);

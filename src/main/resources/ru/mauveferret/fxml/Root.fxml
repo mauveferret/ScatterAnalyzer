@@ -346,9 +346,11 @@
                         <Font size="14.0" />
                      </font></TextField>
                   <Label layoutX="198.0" layoutY="161.0" text="visualize data" />
-                  <CheckBox fx:id="visualize" layoutX="279.0" layoutY="159.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="21.0" />
-                  <Label layoutX="209.0" layoutY="190.0" text="get *.txt" />
-                  <CheckBox fx:id="getTXT" layoutX="278.0" layoutY="186.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="21.0" />
+                  <CheckBox fx:id="visualize" layoutX="279.0" layoutY="157.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="21.0" selected="true" />
+                  <Label layoutX="209.0" layoutY="182.0" text="get *.txt" />
+                  <CheckBox fx:id="getTXT" layoutX="279.0" layoutY="177.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="21.0" />
+                  <CheckBox fx:id="getSummary" layoutX="279.0" layoutY="197.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="21.0" selected="true" />
+                  <Label layoutX="199.0" layoutY="201.0" text="get summary" />
                </children>
             </Pane>
          </items>

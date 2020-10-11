@@ -11,10 +11,10 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
     ArrayList<String> dataPath;
 
-    SDTrimSP(String directoryPath, boolean doVizualization) {
+    SDTrimSP(String directoryPath, boolean doVizualization, boolean getSummary) {
         super(directoryPath, doVizualization);
+        this.getSummary = getSummary;
         dataPath = new ArrayList<>();
-
         projectileIncidentAzimuthAngle = 0;
         projectileIncidentPolarAngle = 0;
         projectileAmount = -1;
@@ -166,11 +166,10 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
 
                 //was disabled as we need to get some summary, so we should analyze all files
-                //TODO add some control: whether to calculate summary or not
-                //String sorts = "";
-               // for (Distribution someDistr : distributions) sorts += someDistr.getSort();
+                String sorts = "";
+               for (Distribution someDistr : distributions) sorts += someDistr.getSort();
 
-                //if (sorts.contains(sort)) {
+                if (sorts.contains(sort) || getSummary) {
                     while (br.ready()) {
                         line = br.readLine();
                         if (!line.contains("end")) {
@@ -182,7 +181,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                             datas = line.split(" ");
 
-                            int ien = 0, ix = 0, iy = 0, iz = 0;
                             int column = 0;
                             double value = 0;
                             for (int i = 0; i < datas.length; i++) {
@@ -261,7 +259,8 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                             else if (sort.equals("D")) displaced++;
                         }
                     }
-                br.close();
+                    br.close();
+                }
             }
             scattered = scattered / projectileAmount;
             sputtered = sputtered / projectileAmount;
