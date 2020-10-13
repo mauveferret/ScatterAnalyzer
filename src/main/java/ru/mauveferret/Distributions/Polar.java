@@ -28,8 +28,8 @@ public class Polar extends Distribution {
         pathToLog+="_phi "+phi+"_dphi "+dPhi+"_dTheta"+dTheta+".txt";
 
         String addheaderComment = " phi "+phi+"  degrees dPhi "+dPhi+" degrees dTheta "+dTheta+" degrees ";
-        headerComment +=createLine(addheaderComment)+"*".repeat(lineLength)+"\n";
-        headerComment= "Angle dN/dOmega "+"\n"+"degrees  a.u. \n\n"+headerComment+"\n";
+        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
+        headerComment= "Angle dN/dOmega "+"\n"+"degrees  particles \n\n"+headerComment+"\n";
       //  String longName =" Angle,deg  partCount ";
        // longName = "*".repeat((lineLength-longName.length())/2)+longName+"*".repeat((lineLength-longName.length())/2)+"\n";
        // headerComment= longName+headerComment;

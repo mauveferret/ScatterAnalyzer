@@ -31,7 +31,7 @@ public class CartesianMap extends Distribution{
         cartesianMap = new double[(int) Math.ceil(size/delta)+10][(int) Math.ceil(size/delta)+10];
 
         String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+type;
-        headerComment +=createLine(addheaderComment)+"*".repeat(lineLength)+"\n";
+        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
     }
 
     public CartesianMap(double delta, int size, String mapType, String sort, ParticleInMatterCalculator calculator) {
@@ -45,7 +45,7 @@ public class CartesianMap extends Distribution{
         max = delta;
         pathToLog+="MAP OF "+mapType+" for "+sort+" delta "+delta+".txt";
         String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+type;
-        headerComment +=createLine(addheaderComment)+"*".repeat(lineLength)+"\n";
+        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
         cartesianMap = new double[(int) Math.ceil(size/delta)+10][(int) Math.ceil(size/delta)+10];
     }
 

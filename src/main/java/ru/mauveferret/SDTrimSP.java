@@ -50,6 +50,8 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 // because default for nr_pproj is 10
                 boolean nr_pprojWasWritten = false;
 
+
+
                 while (reader.ready()){
                     line = reader.readLine();
 
@@ -151,6 +153,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                         BufferedReader br = new BufferedReader(new FileReader(someDataFilePath));
 
+
                         //rubbish lines
                         String line = br.readLine();
                         br.readLine();
@@ -173,31 +176,43 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                         else if (particlesType.contains("tran")) sort = "T";
 
 
+
                         //was disabled as we need to get some summary, so we should analyze all files
                         String sorts = "";
                         for (Distribution someDistr : distributions) sorts += someDistr.getSort();
 
                         if (sorts.contains(sort) || getSummary) {
+
                             while (br.ready()) {
                                 line = br.readLine();
                                 if (!line.contains("end")) {
 
-                                    //line.replaceAll("\\\\s+"," ");
-                                    //  line.replaceAll("\\\\u0020'", " ");
-                                    // line.replaceAll("\\\\u0020\\\\u0020"," ");
-                                    //  line.replaceAll("[^\\\\u0009\\\\u000a\\\\u000d\\\\u0020-\\\\uD7FF\\\\uE000-\\\\uFFFD]", "");
+                                  /*  line.replaceAll("\\&#32"," ");
+                                      line.replaceAll("\\\\u0020'", " ");
+                                     line.replaceAll("\\\\u0020\\\\u0020"," ");
+                                      line.replaceAll("[^\\u0009\\u000a\\u000d\\u0020-\\uD7FF\\uE000-\\uFFFD]", "");
+                                    line.replaceAll("\\s+"," ");
+                                    line.replaceAll("\\u0020'", " ");
+                                    line.replaceAll("\\u0020\\\\u0020"," ");
+                                    line.replaceAll("[^\\u0009\\u000a\\u000d\\u0020-\\uD7FF\\uE000-\\uFFFD]", "");
 
-                                    datas = line.split(" ");
+                                   */
+                                    datas = line.split("\\h");
+
 
                                     int column = 0;
                                     double value = 0;
+
                                     for (int i = 0; i < datas.length; i++) {
+
                                         try {
                                             value = Float.parseFloat(datas[i]);
                                             column++;
                                         } catch (Exception e) {
                                             //failed to find correct delimiter
                                         }
+
+
                                         switch (column) {
                                             case 2:
                                                 collisionsAmount = value;

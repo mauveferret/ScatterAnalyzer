@@ -32,7 +32,7 @@ public class Energy extends Distribution{
 
         String addheaderComment = " delta E "+dE+" eV theta "+theta+" deg dTheta "+dTheta+" deg phi "+
                 phi+" deg dPhi "+dPhi+" deg";
-        headerComment +=createLine(addheaderComment)+"*".repeat(lineLength)+"\n";
+        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
         headerComment= "Energy particles "+"\n"+"eV  count \n\n"+headerComment+"\n";
 
     }

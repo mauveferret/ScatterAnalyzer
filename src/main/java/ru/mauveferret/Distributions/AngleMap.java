@@ -20,12 +20,13 @@ public class AngleMap extends Distribution{
         angleMap = new double[(int) Math.ceil(360/dPhi)+1][(int) Math.ceil(90/dTheta)+1];
         pathToLog+="_dphi "+dPhi+"_dTheta"+dTheta+".txt";
         String addheaderComment = " dPhi "+dPhi+" degrees dTheta "+dTheta+" degrees ";
-        headerComment +=createLine(addheaderComment)+"*".repeat(lineLength)+"\n";
+        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
     }
 
     public  void check (PolarAngles angles, String someSort)
     {
         //only for backscattered and sputtered!
+        //System.out.println(angles.getAzimuth());
         if (sort.contains(someSort))
             angleMap[(int) (Math.round(angles.getAzimuth() / dPhi))][(int) Math.round( angles.getPolar()/ dTheta)]++;
     }

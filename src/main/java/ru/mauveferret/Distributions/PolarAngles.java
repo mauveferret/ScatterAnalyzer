@@ -9,6 +9,7 @@ public class PolarAngles {
 
 
     public PolarAngles(double polarCos, double azimuthCos, double x,double y) {
+       /// System.out.println(azimuthCos);
         azimuth = 57.2958*Math.acos(azimuthCos);
         polar = 57.2958*Math.acos(polarCos);
         //polar += (x>0 && (azimuth<=90)) ? 90 : 0;

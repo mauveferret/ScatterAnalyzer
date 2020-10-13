@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public abstract class ParticleInMatterCalculator{
 
@@ -14,6 +15,7 @@ public abstract class ParticleInMatterCalculator{
 
     //for console mode we don't need it
     public boolean doVizualization, getSummary;
+    public int lineLength;
 
     //like SC100432, H_W and etc.
     public String modelingID;
@@ -53,6 +55,8 @@ public abstract class ParticleInMatterCalculator{
         displaced = 0;
         energyRecoil = 0;
 
+        lineLength = 76;
+
         targetElements = "no elements";
         projectileElements = "no elements";
         modelingID = "no ID";
@@ -82,6 +86,7 @@ public abstract class ParticleInMatterCalculator{
         String pathToLog = directoryPath + File.separator+ "ISInCa"+File.separator+modelingID+"_summary.txt";
         try {
             FileOutputStream summary = new FileOutputStream(pathToLog);
+            summary.write((createHeader()+"\n").getBytes());
             summary.write(("Monte-Carlo model: "+calculatorType+"\n").getBytes());
             summary.write(("modeling ID: "+modelingID+"\n").getBytes());
             summary.write(("Particle count: "+particleCount+"\n").getBytes());
@@ -99,6 +104,27 @@ public abstract class ParticleInMatterCalculator{
             return  false;
         }
         return true;
+    }
+
+    public String createHeader(){
+        String headerComment;
+        String  name = " ISInCa - Ion Surface Interaction Calculator "+ Calendar.getInstance().get(Calendar.YEAR)+" ";
+        name = "*".repeat((lineLength-name.length())/2)+name+"*".repeat((lineLength-name.length())/2)+"\n";
+        //headerComment = "---------------"+" PARTICLE IN MATTER ANALYZER 2020 "+"---------------"+"\n";
+        String author = " by mauveferret@gmail.com from \"Plasma physics\" dep., MEPhI ";
+        String calc = "Calculated with "+calculatorType+" calc. ID "+modelingID+". Main input parameters:";
+        String beam =projectileElements+" beam with E0 = "+projectileMaxEnergy+" eV at polar angle "+
+                projectileIncidentPolarAngle+" degrees from normal";
+        String beam2 = "azimuth angle "+projectileIncidentAzimuthAngle+" degrees with doze "+projectileAmount+" particles";
+        String target = "target of "+targetElements;
+        headerComment=name+createLine(author)+"*".repeat(lineLength)+"\n"+createLine(calc);
+        headerComment+=createLine(beam)+createLine(beam2)+createLine(target)+"*".repeat(lineLength)+"\n";
+        return headerComment;
+    }
+
+    public String createLine(String line){
+        int spaces = (lineLength-line.length())/2;
+        return "*"+" ".repeat(spaces-1)+line+" ".repeat(spaces-1)+((((lineLength-line.length())%2)==0) ? "" : " ")+"*\n";
     }
 
 }
