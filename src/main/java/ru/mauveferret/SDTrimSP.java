@@ -18,7 +18,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
         this.getSummary = getSummary;
         dataPath = new ArrayList<>();
         projectileIncidentAzimuthAngle = 0;
-        projectileIncidentPolarAngle = 0;
+        projectileIncidentPolarAngle = -1;
         projectileAmount = -1;
     }
 

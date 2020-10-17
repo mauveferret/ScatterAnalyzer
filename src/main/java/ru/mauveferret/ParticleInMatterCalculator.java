@@ -6,8 +6,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public abstract class ParticleInMatterCalculator{
 
@@ -55,7 +57,7 @@ public abstract class ParticleInMatterCalculator{
         displaced = 0;
         energyRecoil = 0;
 
-        lineLength = 76;
+        lineLength = 80;
 
         targetElements = "no elements";
         projectileElements = "no elements";
@@ -89,13 +91,14 @@ public abstract class ParticleInMatterCalculator{
             summary.write((createHeader()+"\n").getBytes());
             summary.write(("Monte-Carlo model: "+calculatorType+"\n").getBytes());
             summary.write(("modeling ID: "+modelingID+"\n").getBytes());
-            summary.write(("Particle count: "+particleCount+"\n").getBytes());
+            summary.write(("Particles count: "+particleCount+"\n").getBytes());
             summary.write(("backscattered: "+ new BigDecimal(scattered).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("sputtered: "+ new BigDecimal(sputtered).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("implanted: "+new BigDecimal(implanted).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("transmitted: "+ new BigDecimal( transmitted).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("displaced: "+ new BigDecimal( displaced).setScale(4, RoundingMode.UP)+"\n").getBytes());
             summary.write(("energy recoil: "+new BigDecimal(energyRecoil).setScale(4, RoundingMode.UP)+"\n").getBytes());
+            summary.write(("ISInCa version: "+Main.getVersion()+"\n").getBytes());
             summary.write(("ISInCa calculation time, min: "+new BigDecimal(time).setScale(4, RoundingMode.UP)).getBytes());
             summary.close();
         }
@@ -108,16 +111,23 @@ public abstract class ParticleInMatterCalculator{
 
     public String createHeader(){
         String headerComment;
-        String  name = " ISInCa - Ion Surface Interaction Calculator "+ Calendar.getInstance().get(Calendar.YEAR)+" ";
+        String  name = " ISInCa - Ion Surface Interaction Calculator "+ Main.getVersion()+" ";
         name = "*".repeat((lineLength-name.length())/2)+name+"*".repeat((lineLength-name.length())/2)+"\n";
+
         //headerComment = "---------------"+" PARTICLE IN MATTER ANALYZER 2020 "+"---------------"+"\n";
         String author = " by mauveferret@gmail.com from \"Plasma physics\" dep., MEPhI ";
-        String calc = "Calculated with "+calculatorType+" calc. ID "+modelingID+". Main input parameters:";
-        String beam =projectileElements+" beam with E0 = "+projectileMaxEnergy+" eV at polar angle "+
-                projectileIncidentPolarAngle+" degrees from normal";
+
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        Date date = new Date(System.currentTimeMillis());
+        String calc = "Calculated with "+calculatorType+". ISInCa postprocessing id "+modelingID;
+        String  calc2 = "Postprocessing started at "+formatter.format(date)+ ". Main input parameters:";
+
+        String beam =projectileElements+" beam with E0 = "+projectileMaxEnergy+" eV ";
+        if (projectileIncidentPolarAngle<0) beam+="with some polar angles distribution";
+        else beam+="at polar angle "+projectileIncidentPolarAngle+" degrees from normal";
         String beam2 = "azimuth angle "+projectileIncidentAzimuthAngle+" degrees with doze "+projectileAmount+" particles";
         String target = "target of "+targetElements;
-        headerComment=name+createLine(author)+"*".repeat(lineLength)+"\n"+createLine(calc);
+        headerComment=name+createLine(author)+"*".repeat(lineLength)+"\n"+createLine(calc)+createLine(calc2);
         headerComment+=createLine(beam)+createLine(beam2)+createLine(target)+"*".repeat(lineLength)+"\n";
         return headerComment;
     }

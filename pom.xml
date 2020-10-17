@@ -6,9 +6,9 @@
     <packaging>jar</packaging>
     <groupId>ru.mauveferret</groupId>
     <artifactId>ISInCa</artifactId>
-    <version>2020.3</version>
+    <version>2020.3.1</version>
     <properties>
-        <javafx.version>13</javafx.version>
+        <javafx.version>[13,)</javafx.version>
     </properties>
 
     <dependencies>
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>[4.13.1,)</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -172,11 +172,11 @@
                                 <jdkPreference>jdkOnly</jdkPreference>
                             </jre>
                             <versionInfo>
-                                <fileVersion>2020.1.0.0</fileVersion>
-                                <txtFileVersion>snapshot</txtFileVersion>
+                                <fileVersion>${version}.0</fileVersion>
+                                <txtFileVersion>alpha</txtFileVersion>
                                 <fileDescription>Postprocessing for Monte-carlo based ISI calculation codes</fileDescription>
                                 <copyright>mauveferret</copyright>
-                                <productVersion>2.5.0.0</productVersion>
+                                <productVersion>${version}.0</productVersion>
                                 <txtProductVersion>mauveferret@gmail.com</txtProductVersion>
                                 <productName>ISInCa</productName>
                                 <internalName>isinca</internalName>

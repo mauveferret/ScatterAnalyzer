@@ -27,21 +27,26 @@ public class Console {
     private String  sortNE, sortNTheta, sortPolarMap, sortCartesianMap, cartesianMapType;
     //Preferences
     private boolean getTXT, getSummary, visualize;
+    //local
+    private final int lineLength = 80;
+
+    private String createLine1(String line){
+        int spaces = (lineLength-line.length())/2;
+        return "*"+" ".repeat(spaces-1)+line+" ".repeat(spaces-1)+((((lineLength-line.length())%2)==0) ? "" : " ")+"*"+"\n";
+    }
 
     public Console(String args[]) {
         try {
 
-            System.out.println();
-            System.out.println("************************************************************");
-            System.out.println("**       ISInCa - Ion Surface Interaction Calculator "+
-                    Calendar.getInstance().get(Calendar.YEAR)+" **");
-            System.out.println("**********************************************************");
-            System.out.println("* Created by mauveferret@gmail.com at the MEPhI University *");
-            System.out.println("**********************************************************");
-            System.out.println("*  Check updates at https://github.com/mauveferret/ISInCa  *");
-            System.out.println("************************************************************");
-            System.out.println();
-            System.out.println();
+            String headerComment = "\n"+"*".repeat(lineLength)+"\n"+createLine1("  ");
+            headerComment+=createLine1(" ISInCa - Ion Surface Interaction Calculator "+
+                    Main.getVersion()+" ")+createLine1("  ");
+            headerComment+="*".repeat(lineLength)+"\n";
+            headerComment+=createLine1(" Created by mauveferret@gmail.com at the MEPhI University ");
+            headerComment+="*".repeat(lineLength)+"\n";
+            headerComment+= createLine1(" Check updates at https://github.com/mauveferret/ISInCa ");
+            headerComment+="*".repeat(lineLength)+"\n\n";
+            System.out.println(headerComment);
 
             //Basic values for all parameters
 
@@ -99,41 +104,48 @@ public class Console {
             System.out.println("[ISInCa] Started postprocessing files...");
             ArrayList<Thread> threads = new ArrayList<>();
 
+
+
             //create threads
-            for (int i=0; i<calcs.getLength(); i++) {
+            for (int i = 0; i < calcs.getLength(); i++) {
                 try {
-                    threads.add(runCalc( calcs.item(i), calcs.item(0)));
+                    threads.add(runCalc(calcs.item(i), calcs.item(0)));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                catch (Exception e){e.printStackTrace();}
             }
 
             //run threads
-            for (Thread thread: threads){
+            for (Thread thread : threads) {
                 thread.start();
-                System.out.println("[ISInCa] Thread "+thread.getName()+" is STARTED");
+                System.out.println("[ISInCa] Thread " + thread.getName() + " is STARTED");
             }
 
-
-            int i=1;
+            int i = 1;
             double start = System.currentTimeMillis();
-            for (Thread thread: threads){
-                thread.join();
+            for (Thread thread : threads) {
+               try {
+                   thread.join();
+               }
+               catch (Exception e){}
                 System.out.println("___________________");
-                System.out.println("PROGRESS: "+i*100/threads.size()+"%");
+                System.out.println("PROGRESS: " + i * 100 / threads.size() + "%");
                 System.out.println("-------------------");
-                double newTime = (((double) System.currentTimeMillis())-start)/((double) 60000);
-                System.out.println("time for "+thread.getName()+" : "+
-                        new BigDecimal(newTime).setScale(4, RoundingMode.UP)+" min");
+                double newTime = (((double) System.currentTimeMillis()) - start) / ((double) 60000);
+                System.out.println("time for " + thread.getName() + " : " +
+                        new BigDecimal(newTime).setScale(4, RoundingMode.UP) + " min");
                 System.out.println("----------------------------------");
                 i++;
             }
+
             System.out.println();
             System.out.println("Finished! Good bye, my lord :)");
 
         }
         catch (Exception e){
-            e.printStackTrace();
+            //System.out.println("[ISInCa] file not found exception: "+e.getLocalizedMessage());
         }
+
 
     }
 
@@ -208,6 +220,13 @@ public class Console {
         dir = calc.getChildNodes().item(0).getTextContent()+"";
         if (!dir.startsWith(File.separator)) dir = File.separator+dir;
         dir = fullpath + dir;
+
+        File file = new File(dir);
+        if (!file.exists() || !file.isDirectory()) {
+            System.out.println("[ISInCa] wrong path: "+dir);
+            return null;
+        }
+
         ParticleInMatterCalculator yourCalculator = new Scatter(dir, visualize);
         String initialize = yourCalculator.initializeVariables();
         if (!initialize.equals("OK")) {
