@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class SDTrimSP extends ParticleInMatterCalculator{
@@ -131,6 +132,9 @@ public class SDTrimSP extends ParticleInMatterCalculator{
         return "OK";
     }
 
+
+
+
     @Override
     void postProcessCalculatedFiles(ArrayList<Distribution> distributions) {
 
@@ -148,18 +152,34 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                     try {
 
-                        double en = 0, collisionsAmount = 0, fluence = 0, xEnd = 0, yEnd = 0, zEnd = 0, cosP = 0, cosA = 0, path = 0;
-                        String sort;
 
-                        BufferedReader br = new BufferedReader(new FileReader(someDataFilePath));
 
+                     /*   BufferedReader br2 = new BufferedReader(new FileReader(someDataFilePath));
+
+                        String hui = br2.readLine();
+                        System.out.println("*1*"+hui+" "+hui.getBytes().length+"*2*");
+                        hui = br2.readLine();
+                        System.out.println("*1*"+hui+" "+hui.getBytes().length+"*2*");
+                        hui = br2.readLine();
+                        System.out.println("*1*"+hui+" "+hui.getBytes().length+"*2*");
+                        hui = br2.readLine();
+                        System.out.println("*1*"+hui+" "+hui.getBytes().length+"*2*");
+
+
+                      */
+
+
+                        DataInputStream br = new DataInputStream(new FileInputStream(someDataFilePath));
+                        byte[] bufLarge = new byte[stringCountPerCycle*273];
+                        byte[] bufSmall = new byte[273];
 
                         //rubbish lines
-                        String line = br.readLine();
-                        br.readLine();
-                        br.readLine();
-                        br.readLine();
-                        br.readLine();
+                        br.read(new byte[36]);
+                        br.read(new byte[80]);
+                        br.read(new byte[55]);
+                        br.read(new byte[32]);
+                        br.read(new byte[273]);
+
                         //now lets sort
 
                         String[] datas;
@@ -167,7 +187,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                         String particlesType = someDataFilePath.substring(someDataFilePath.indexOf(File.separator));
                         particlesType = particlesType.substring(particlesType.indexOf("_"), particlesType.lastIndexOf("."));
 
-                        sort = "";
+                        String  sort = "";
                         if (particlesType.contains("back_p")) sort = "B";
                         else if (particlesType.contains("back_r")) sort = "S";
                         else if (particlesType.contains("stop_p")) sort = "I";
@@ -180,62 +200,25 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                         if (sorts.contains(sort) || getSummary) {
 
+
                             //FIXME read several lines, not one
-                            while (br.ready()) {
-                                line = br.readLine();
-                               // System.out.println(line.getBytes().length);
-                                if (!line.contains("end")) {
 
-                                    line = line.replaceAll("\\h+"," ");
-                                    datas = line.split(" ");
-
-                                    try {
-                                        collisionsAmount = Double.parseDouble(datas[2]);
-                                        fluence = Double.parseDouble(datas[3]);
-                                        en = Double.parseDouble(datas[4]);
-                                        xEnd = Double.parseDouble(datas[8]);
-                                        yEnd = Double.parseDouble(datas[9]);
-                                        zEnd = Double.parseDouble(datas[10]);
-                                        cosP = Double.parseDouble(datas[14]);
-                                        cosA = Double.parseDouble(datas[15]);
-                                        path = Double.parseDouble(datas[16]);
-                                    }
-                                    catch (Exception ignored){}
-
-                                    //Here is several spectra calculators
-
-                                    PolarAngles angles = new PolarAngles(cosP, cosA, xEnd, yEnd);
-
-                                    for (Distribution distr : distributions) {
-                                        switch (distr.getType()) {
-                                            case "energy":
-                                                ((Energy) distr).check(angles, sort, en);
-                                                break;
-                                            case "polar":
-                                                ((Polar) distr).check(angles, sort);
-                                                break;
-                                            case "anglemap":
-                                                ((AngleMap) distr).check(angles, sort);
-                                                break;
-                                            case "gettxt":
-                                                ((getTXT) distr).check(angles, sort, en);
-                                                break;
-                                            case "cartesianmap":
-                                                ((CartesianMap) distr).check(zEnd, yEnd, sort);
-                                        }
+                            while (br.available()>=273) {
+                                if (br.available()>=stringCountPerCycle*273){
+                                    br.read(bufLarge);
+                                    String line = new String( bufLarge, StandardCharsets.UTF_8 );
+                                    for (int i=0; i<stringCountPerCycle; i++){
+                                        //System.out.println("*"+line.substring(i*275,(i+1)*275)+"*");
+                                        //System.out.println(line.substring(i*273,(i+1)*273-1));
+                                        analyse(line.substring(i*273,(i+1)*273-1), distributions, sort);
                                     }
 
-                                    //calculate some scattering constants
-                                    if (!sort.contains("S") && !sort.contains("D")) particleCount++;
-
-                                    if (sort.equals("B")) {
-                                        scattered++;
-                                        energyRecoil += en;
-                                    } else if (sort.equals("S")) sputtered++;
-                                    else if (sort.equals("I")) implanted++;
-                                    else if (sort.equals("T")) transmitted++;
-                                    else if (sort.equals("D")) displaced++;
                                 }
+                                else {
+                                    br.read(bufSmall);
+                                    analyse(new String( bufSmall, StandardCharsets.UTF_8 ),distributions,sort);
+                                }
+
                             }
                             br.close();
 
@@ -243,6 +226,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                     }
                     catch (Exception e){
                         System.out.println("for thread "+Thread.currentThread().getName()+" error: "+ e.getMessage());
+                        e.printStackTrace();
                     }
                 });
                 File file = new File(someDataFilePath);
@@ -279,4 +263,72 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             e.printStackTrace();
         }
     }
+
+    private void analyse(String line, ArrayList<Distribution> distributions, String sort){
+
+        //System.out.println("*"+line+"*");
+
+        double en = 0, collisionsAmount = 0, fluence = 0, xEnd = 0, yEnd = 0, zEnd = 0, cosP = 0, cosA = 0, path = 0;
+        //System.out.println(line.getBytes().length);
+        if (!line.contains("end")) {
+
+            //System.out.println("*1*"+line+"*2*");
+
+            line = line.replaceAll("\\h+"," ");
+            line = line.replaceAll("\\n", "");
+
+            String[] datas = line.split(" ");
+
+
+            try {
+                //collisionsAmount = Double.parseDouble(datas[2]);
+                //fluence = Double.parseDouble(datas[3]);
+                en = Double.parseDouble(datas[4]);
+                xEnd = Double.parseDouble(datas[8]);
+                yEnd = Double.parseDouble(datas[9]);
+                zEnd = Double.parseDouble(datas[10]);
+                cosP = Double.parseDouble(datas[14]);
+                cosA = Double.parseDouble(datas[15]);
+               // path = Double.parseDouble(datas[16]);
+            }
+            catch (Exception ignored){}
+
+            //Here is several spectra calculators
+
+            PolarAngles angles = new PolarAngles(cosP, cosA, xEnd, yEnd);
+
+           //System.out.println(cosP+" "+cosA );
+
+            for (Distribution distr : distributions) {
+                switch (distr.getType()) {
+                    case "energy":
+                        ((Energy) distr).check(angles, sort, en);
+                        break;
+                    case "polar":
+                        ((Polar) distr).check(angles, sort);
+                        break;
+                    case "anglemap":
+                        ((AngleMap) distr).check(angles, sort);
+                        break;
+                    case "gettxt":
+                        ((getTXT) distr).check(angles, sort, en);
+                        break;
+                    case "cartesianmap":
+                        ((CartesianMap) distr).check(zEnd, yEnd, sort);
+                }
+            }
+
+            //calculate some scattering constants
+            if (!sort.contains("S") && !sort.contains("D")) particleCount++;
+
+            if (sort.equals("B")) {
+                scattered++;
+                energyRecoil += en;
+            } else if (sort.equals("S")) sputtered++;
+            else if (sort.equals("I")) implanted++;
+            else if (sort.equals("T")) transmitted++;
+            else if (sort.equals("D")) displaced++;
+        }
+    }
+
 }

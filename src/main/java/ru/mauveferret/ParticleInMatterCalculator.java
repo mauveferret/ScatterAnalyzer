@@ -26,7 +26,7 @@ public abstract class ParticleInMatterCalculator{
     public String calculatorType;
 
     //how mich lines per FileRead can be processed
-    public int stringCountPerCycle = 2000;
+    public int stringCountPerCycle = 200;
     double time;
 
     //primary beam
