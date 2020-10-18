@@ -23,9 +23,10 @@ public class Energy extends Distribution{
         super(calculator, sort);
         this.E0 = calculator.projectileMaxEnergy;
         this.theta = theta;
-        this.dTheta = dTheta;
+        // Idea is that input delta is absolute values, but we use at as difference |a-b|<delta
+        this.dTheta = dTheta/2;
         this.phi = phi;
-        this.dPhi = dPhi;
+        this.dPhi = dPhi/2;
         this.dE = dE;
         energySpectrum =  new double[(int) Math.ceil(E0/dE)+1];
         pathToLog+="_theta "+theta+"_phi "+phi+"_dE"+dE+"_time "+ ((int ) (Math.random()*100))+".txt";
@@ -56,10 +57,8 @@ public class Energy extends Distribution{
     @Override
     public boolean logDistribution() {
 
-        //I don't know why, but Daniel want spectra to be divided by E
-        //TODO check why is it need?
        for (int i=0; i<energySpectrum.length; i++){
-           energySpectrum[i]=energySpectrum[i]/((i!=0)? i*dE : dE);
+           energySpectrum[i]=energySpectrum[i]/dE;
        }
 
         try {

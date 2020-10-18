@@ -26,9 +26,13 @@ public class AngleMap extends Distribution{
     public  void check (PolarAngles angles, String someSort)
     {
         //only for backscattered and sputtered!
-        //System.out.println(angles.getAzimuth());
         if (sort.contains(someSort))
+        {
             angleMap[(int) (Math.round(angles.getAzimuth() / dPhi))][(int) Math.round( angles.getPolar()/ dTheta)]++;
+            //FIXME ITS  A TRAP!!!
+            angleMap[(int) (Math.round((360-angles.getAzimuth())/ dPhi))][(int) Math.round( angles.getPolar()/ dTheta)]++;
+
+        }
     }
 
     public double[]getSpectrum() {
@@ -41,6 +45,21 @@ public class AngleMap extends Distribution{
 
     @Override
     public boolean logDistribution() {
+
+        //FIXME ITS A TRAP!!!
+
+        for (int i=0; i<(int) Math.ceil(90/dTheta)+1; i++){
+            angleMap[0][i] = angleMap[(int) Math.round((360-dPhi)/dPhi)][i];
+        }
+
+        // from probability distr. to angle
+
+        for  (int i = 0; i <=(int) Math.round(360 / dPhi); i++){
+            for (int j = 1; j <= (int) Math.round(90 / dTheta); j++){
+                angleMap[i][j] = angleMap[i][j]/(dPhi*Math.sin(Math.toRadians(Math.abs(j*dTheta))));
+            }
+        }
+
         try {
             FileOutputStream surfaceWriter = new FileOutputStream(pathToLog);
             String stroka ="Phi";

@@ -7,7 +7,6 @@ public class PolarAngles {
     //from 0 to 360 from Z axis (in which the beam strikes)
     private double azimuth;
 
-
     public PolarAngles(double polarCos, double azimuthCos, double x,double y) {
        /// System.out.println(azimuthCos);
         azimuth = 57.2958*Math.acos(azimuthCos);
@@ -15,7 +14,8 @@ public class PolarAngles {
         //polar += (x>0 && (azimuth<=90)) ? 90 : 0;
         //polar += (x>0 && (azimuth>90)) ? 180 : 0;
         //polar += (x<0 && (azimuth>90)) ? 270 : 0;
-        if (y<0) azimuth =360-azimuth;
+        //FIXME
+        //if (y<0) azimuth =360-azimuth;
     }
 
     public PolarAngles(double cosx, double cosy, double cosz) {

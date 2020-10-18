@@ -164,7 +164,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                         String[] datas;
 
-
                         String particlesType = someDataFilePath.substring(someDataFilePath.indexOf(File.separator));
                         particlesType = particlesType.substring(particlesType.indexOf("_"), particlesType.lastIndexOf("."));
 
@@ -175,81 +174,37 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                         else if (particlesType.contains("stop_r")) sort = "D";
                         else if (particlesType.contains("tran")) sort = "T";
 
-
-
                         //was disabled as we need to get some summary, so we should analyze all files
                         String sorts = "";
                         for (Distribution someDistr : distributions) sorts += someDistr.getSort();
 
                         if (sorts.contains(sort) || getSummary) {
 
+                            //FIXME read several lines, not one
                             while (br.ready()) {
                                 line = br.readLine();
+                               // System.out.println(line.getBytes().length);
                                 if (!line.contains("end")) {
 
-                                  /*  line.replaceAll("\\&#32"," ");
-                                      line.replaceAll("\\\\u0020'", " ");
-                                     line.replaceAll("\\\\u0020\\\\u0020"," ");
-                                      line.replaceAll("[^\\u0009\\u000a\\u000d\\u0020-\\uD7FF\\uE000-\\uFFFD]", "");
-                                    line.replaceAll("\\s+"," ");
-                                    line.replaceAll("\\u0020'", " ");
-                                    line.replaceAll("\\u0020\\\\u0020"," ");
-                                    line.replaceAll("[^\\u0009\\u000a\\u000d\\u0020-\\uD7FF\\uE000-\\uFFFD]", "");
+                                    line = line.replaceAll("\\h+"," ");
+                                    datas = line.split(" ");
 
-                                   */
-                                    datas = line.split("\\h");
-
-
-                                    int column = 0;
-                                    double value = 0;
-
-                                    for (int i = 0; i < datas.length; i++) {
-
-                                        try {
-                                            value = Float.parseFloat(datas[i]);
-                                            column++;
-                                        } catch (Exception e) {
-                                            //failed to find correct delimiter
-                                        }
-
-
-                                        switch (column) {
-                                            case 2:
-                                                collisionsAmount = value;
-                                                break;
-                                            case 3:
-                                                fluence = value;
-                                                break;
-                                            case 4:
-                                                en = value;
-                                                break;
-                                            case 8:
-                                                xEnd = value;
-                                                break;
-                                            case 9:
-                                                yEnd = value;
-                                                break;
-                                            case 10:
-                                                zEnd = value;
-                                                break;
-                                            case 14:
-                                                cosP = value;
-                                                break;
-                                            case 15:
-                                                cosA = value;
-                                                break;
-                                            case 16:
-                                                path = value;
-                                                break;
-                                        }
-
+                                    try {
+                                        collisionsAmount = Double.parseDouble(datas[2]);
+                                        fluence = Double.parseDouble(datas[3]);
+                                        en = Double.parseDouble(datas[4]);
+                                        xEnd = Double.parseDouble(datas[8]);
+                                        yEnd = Double.parseDouble(datas[9]);
+                                        zEnd = Double.parseDouble(datas[10]);
+                                        cosP = Double.parseDouble(datas[14]);
+                                        cosA = Double.parseDouble(datas[15]);
+                                        path = Double.parseDouble(datas[16]);
                                     }
+                                    catch (Exception ignored){}
 
                                     //Here is several spectra calculators
 
                                     PolarAngles angles = new PolarAngles(cosP, cosA, xEnd, yEnd);
-
-                                    //  if (!someDataFilePath.contains("stop")) System.out.println(angles.getPolar()+" "+angles.getAzimuth());
 
                                     for (Distribution distr : distributions) {
                                         switch (distr.getType()) {
