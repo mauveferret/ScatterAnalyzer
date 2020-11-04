@@ -170,15 +170,15 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
 
                         DataInputStream br = new DataInputStream(new FileInputStream(someDataFilePath));
-                        byte[] bufLarge = new byte[stringCountPerCycle*273];
-                        byte[] bufSmall = new byte[273];
+                        byte[] bufLarge = new byte[stringCountPerCycle*275];
+                        byte[] bufSmall = new byte[275];
 
                         //rubbish lines
                         br.read(new byte[36]);
                         br.read(new byte[80]);
                         br.read(new byte[55]);
                         br.read(new byte[32]);
-                        br.read(new byte[273]);
+                        br.read(new byte[283]);
 
                         //now lets sort
 
@@ -201,16 +201,15 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                         if (sorts.contains(sort) || getSummary) {
 
 
-                            //FIXME read several lines, not one
-
-                            while (br.available()>=273) {
-                                if (br.available()>=stringCountPerCycle*273){
+                            System.out.println(stringCountPerCycle);
+                            while (br.available()>=275) {
+                                if (br.available()>=stringCountPerCycle*275){
                                     br.read(bufLarge);
                                     String line = new String( bufLarge, StandardCharsets.UTF_8 );
+
                                     for (int i=0; i<stringCountPerCycle; i++){
-                                        //System.out.println("*"+line.substring(i*275,(i+1)*275)+"*");
-                                        //System.out.println(line.substring(i*273,(i+1)*273-1));
-                                        analyse(line.substring(i*273,(i+1)*273-1), distributions, sort);
+                                        //System.out.println("+"+line.substring(i*275+1,((i+1)*275))+"*");
+                                        analyse(line.substring(i*275+1,(i+1)*275), distributions, sort);
                                     }
 
                                 }
@@ -266,13 +265,10 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
     private void analyse(String line, ArrayList<Distribution> distributions, String sort){
 
-        //System.out.println("*"+line+"*");
 
         double en = 0, collisionsAmount = 0, fluence = 0, xEnd = 0, yEnd = 0, zEnd = 0, cosP = 0, cosA = 0, path = 0;
-        //System.out.println(line.getBytes().length);
         if (!line.contains("end")) {
 
-            //System.out.println("*1*"+line+"*2*");
 
             line = line.replaceAll("\\h+"," ");
             line = line.replaceAll("\\n", "");
