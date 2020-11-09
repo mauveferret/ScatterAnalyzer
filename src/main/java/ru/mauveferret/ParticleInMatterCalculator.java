@@ -112,7 +112,8 @@ public abstract class ParticleInMatterCalculator{
 
     private boolean logAdditionalData(){
 
-        String pathToLog = directoryPath + File.separator+ "ISInCa"+File.separator+modelingID+"_summary.txt";
+        String pathToLog = directoryPath + File.separator+ "ISInCa"+File.separator+
+                modelingID.toUpperCase()+File.separator+modelingID+"_summary.txt";
         try {
             FileOutputStream summary = new FileOutputStream(pathToLog);
             summary.write((createHeader()+"\n").getBytes());

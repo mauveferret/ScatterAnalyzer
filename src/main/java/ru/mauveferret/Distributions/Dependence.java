@@ -52,8 +52,18 @@ public abstract class Dependence {
         pathsToLog = new HashMap<>();
         headerComments = new HashMap<>();
 
-        String pathToLog = calculator.directoryPath+fileSep+"ISInCa"+fileSep+calculator.modelingID+"_"+
-                this.getClass().getSimpleName().toUpperCase()+"_DEP_"+sort+"_";
+        //make folder for dep
+        try{
+            new File(calculator.directoryPath+fileSep+"ISInCa"+fileSep+calculator.modelingID.toUpperCase()).mkdir();
+        }catch (Exception ignored){}
+        try{
+            new File(calculator.directoryPath+fileSep+"ISInCa"+fileSep+calculator.modelingID.toUpperCase()+
+                    fileSep+depName.toUpperCase()).mkdir();
+        }catch (Exception ignored){}
+
+        String pathToLog = calculator.directoryPath+fileSep+"ISInCa"+fileSep+calculator.modelingID.toUpperCase()+
+                fileSep+depName.toUpperCase()+fileSep+
+                calculator.modelingID+"_"+depName.toUpperCase()+"_DEP_"+sort+"_";
         switch (depType){
             case "distribution": distributionArray = new HashMap<>();
             break;
