@@ -11,12 +11,12 @@ import java.util.Arrays;
 
 public class SDTrimSP extends ParticleInMatterCalculator{
 
-    ArrayList<String> dataPath;
+    ArrayList<String> particDataPath;
 
     SDTrimSP(String directoryPath, boolean doVizualization, boolean getSummary) {
         super(directoryPath, doVizualization);
         this.getSummary = getSummary;
-        dataPath = new ArrayList<>();
+        particDataPath = new ArrayList<>();
         projectileIncidentAzimuthAngle = 0;
         projectileIncidentPolarAngle = -1;
         projectileAmount = -1;
@@ -38,7 +38,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                         tscConfig = file.getAbsolutePath();
                     }
                     if (file.getName().contains("partic")){
-                        dataPath.add(file.getAbsolutePath());
+                        particDataPath.add(file.getAbsolutePath());
                     }
                 }
                 BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tscConfig)));
@@ -139,7 +139,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             //check whether the *.dat file exist
 
             try {
-                for (String someDataFilePath: dataPath ) {
+                for (String someDataFilePath: particDataPath) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(someDataFilePath)));
                     reader.close();
                 }
@@ -162,11 +162,12 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
         //load elements in dependencies
 
-        int LINE_LENGTH = 274;
+        int LINE_BYTES_AMOUNT = 274;
 
+        this.dependencies = dependencies;
         for (Dependence dep: dependencies) dep.initializeArrays(elementsList);
 
-        time = System.currentTimeMillis();
+        calcTime = System.currentTimeMillis();
 
         //find all TRIM-related dependencies
 
@@ -174,7 +175,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
             ArrayList<Thread> fileThreads = new ArrayList<>();
 
-            for (String someDataFilePath: dataPath) {
+            for (String someDataFilePath: particDataPath) {
 
                 Thread newFile = new Thread(()->{
 
@@ -182,15 +183,15 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
 
                         DataInputStream br = new DataInputStream(new FileInputStream(someDataFilePath));
-                        byte[] bufLarge = new byte[stringCountPerCycle*LINE_LENGTH];
-                        byte[] bufSmall = new byte[LINE_LENGTH];
+                        byte[] bufLarge = new byte[STRING_COUNT_PER_CYCLE *LINE_BYTES_AMOUNT];
+                        byte[] bufSmall = new byte[LINE_BYTES_AMOUNT];
 
                         //rubbish lines
                         byte[] bufSmall12 = new byte[486];
 
                         br.read(bufSmall12);
 
-                        System.out.println(new String( bufSmall12, StandardCharsets.UTF_8 ));
+                        //System.out.println(new String( bufSmall12, StandardCharsets.UTF_8 ));
 
                        /* byte[] bufSmall1 = new byte[274];
                         br.read(bufSmall1);
@@ -210,8 +211,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
 
                         */
-
-
 
                         //now lets sort
 
@@ -233,16 +232,16 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                         if (sorts.contains(sort) || getSummary) {
 
-
-                            //System.out.println(stringCountPerCycle);
-                            while (br.available()>=LINE_LENGTH) {
-                                if (br.available()>=stringCountPerCycle*LINE_LENGTH){
+                            while (br.available()>=LINE_BYTES_AMOUNT) {
+                                if (br.available()>= STRING_COUNT_PER_CYCLE *LINE_BYTES_AMOUNT){
                                     br.read(bufLarge);
                                     String line = new String( bufLarge, StandardCharsets.UTF_8 );
 
-                                    for (int i=0; i<stringCountPerCycle; i++){
-                                        //System.out.println("+"+line.substring(i*LINE_LENGTH+1,((i+1)*LINE_LENGTH))+"*");
-                                        analyse(line.substring(i*LINE_LENGTH+1,(i+1)*LINE_LENGTH), dependencies, sort);
+                                    for (int i = 0; i< STRING_COUNT_PER_CYCLE; i++){
+                                        //System.out.println("+"+
+                                        // line.substring(i*LINE_BYTES_AMOUNT+1,((i+1)*LINE_BYTES_AMOUNT))+"*");
+                                        analyse(line.substring(i*LINE_BYTES_AMOUNT+1,(i+1)*LINE_BYTES_AMOUNT),
+                                                dependencies, sort);
                                     }
 
                                 }
@@ -283,17 +282,9 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 System.out.println("   ++++++++++++++++++++++++++++++");
             }
 
-            for (String element: elementsList) {
-                scattered.put(element, scattered.get(element) / projectileAmount);
-                sputtered.put(element, sputtered.get(element) / projectileAmount);
-                implanted.put(element, implanted.get(element) / projectileAmount);
-                transmitted.put(element, transmitted.get(element) / projectileAmount);
-                displaced.put(element, displaced.get(element) / projectileAmount);
-                energyRecoil.put(element,energyRecoil.get(element) / (projectileMaxEnergy * projectileAmount));
-            }
+            finishCalcVariables();
 
-            time=System.currentTimeMillis()-time;
-            time=time/((double) 60000);
+
         } catch (Exception e){
             e.printStackTrace();
         }

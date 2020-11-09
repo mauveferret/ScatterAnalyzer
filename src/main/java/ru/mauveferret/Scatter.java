@@ -86,7 +86,7 @@ public class Scatter extends ParticleInMatterCalculator {
 
         //FIXME initializeArrays of dependencies
 
-        time = System.currentTimeMillis();
+        calcTime = System.currentTimeMillis();
 
         //find all SCATTER-related distributions
 
@@ -95,16 +95,16 @@ public class Scatter extends ParticleInMatterCalculator {
 
         try {
             DataInputStream reader = new DataInputStream(new FileInputStream(dataPath));
-            byte[] buf = new byte[stringCountPerCycle*18];
+            byte[] buf = new byte[STRING_COUNT_PER_CYCLE *18];
 
             //TODO +17
-            while (reader.available() >  stringCountPerCycle*18) {
+            while (reader.available() >  STRING_COUNT_PER_CYCLE *18) {
 
                 reader.read(buf);
                 int shift = 0;
 
                  // movement through buf for 'stringCountPerCycle' times
-                for (int j = 1; j <= stringCountPerCycle; j++) {
+                for (int j = 1; j <= STRING_COUNT_PER_CYCLE; j++) {
 
                     floatSort = buf[shift];
 
@@ -154,17 +154,8 @@ public class Scatter extends ParticleInMatterCalculator {
             }
             reader.close();
 
-            for (String element: elementsList) {
-                scattered.put(element, scattered.get(element) / projectileAmount);
-                sputtered.put(element, sputtered.get(element) / projectileAmount);
-                implanted.put(element, implanted.get(element) / projectileAmount);
-                transmitted.put(element, transmitted.get(element) / projectileAmount);
-                displaced.put(element, displaced.get(element) / projectileAmount);
-                energyRecoil.put(element,energyRecoil.get(element) / (projectileMaxEnergy * projectileAmount));
-            }
+            finishCalcVariables();
 
-            time=System.currentTimeMillis()-time;
-            time=time/1000;
         }
         catch (Exception e)
         {

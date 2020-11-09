@@ -14,6 +14,7 @@ public class CalculationSummator extends ParticleInMatterCalculator {
 
     public CalculationSummator( String directoryPath, ArrayList<ParticleInMatterCalculator> calculators) {
         super(directoryPath, false);
+
     }
 
     @Override

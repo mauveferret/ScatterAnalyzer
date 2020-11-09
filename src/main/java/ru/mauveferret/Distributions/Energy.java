@@ -32,7 +32,7 @@ public class Energy extends Dependence {
         endOfPath="_theta "+theta+"_phi "+phi+"_dE"+dE+"_time "+ ((int ) (Math.random()*100))+".txt";
         String addheaderComment = " delta E "+dE+" eV theta "+theta+" deg dTheta "+dTheta+" deg phi "+
                 phi+" deg dPhi "+dPhi+" deg";
-        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
+        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.LINE_LENGTH)+"\n";
         headerComment= "Energy particles "+"\n"+"eV  count \n\n"+headerComment+"\n";
 
     }

@@ -422,7 +422,7 @@ public class RootFxmlController {
                 E0.setText(E+"");
                 count.setText(
                         new BigDecimal(yourCalcuator.particleCount).setScale(5, RoundingMode.UP).doubleValue()+"");
-                time.setText(yourCalcuator.time+"");
+                time.setText(yourCalcuator.calcTime +"");
 
                 scattered.setText(new BigDecimal( yourCalcuator.scattered.get("all")).setScale(4, RoundingMode.UP).doubleValue()
                         +"");

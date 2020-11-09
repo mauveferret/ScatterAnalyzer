@@ -30,7 +30,7 @@ public class CartesianMap extends Dependence {
         mapArrayXsize = (int) Math.ceil(size/delta)+10;
         mapArrayYsize = (int) Math.ceil(size/delta)+10;
         String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+ depName;
-        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
+        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.LINE_LENGTH)+"\n";
     }
 
     public CartesianMap(double delta, int size, String mapType, String sort, ParticleInMatterCalculator calculator) {
@@ -48,7 +48,7 @@ public class CartesianMap extends Dependence {
         mapArrayXsize = (int) Math.ceil(size/delta)+10;
         mapArrayYsize = (int) Math.ceil(size/delta)+10;
         String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+ depName;
-        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
+        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.LINE_LENGTH)+"\n";
     }
 
 

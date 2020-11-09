@@ -87,7 +87,7 @@ public class TRIM extends ParticleInMatterCalculator{
         //FIXME initializeArrays of dependencies
 
 
-        time = System.currentTimeMillis();
+        calcTime = System.currentTimeMillis();
 
         //find all TRIM-related distributions
 
@@ -160,16 +160,8 @@ public class TRIM extends ParticleInMatterCalculator{
 
             }
             br.close();
-            for (String element: elementsList) {
-                scattered.put(element, scattered.get(element) / projectileAmount);
-                sputtered.put(element, sputtered.get(element) / projectileAmount);
-                implanted.put(element, implanted.get(element) / projectileAmount);
-                transmitted.put(element, transmitted.get(element) / projectileAmount);
-                displaced.put(element, displaced.get(element) / projectileAmount);
-                energyRecoil.put(element,energyRecoil.get(element) / (projectileMaxEnergy * projectileAmount));
-            }
-            time=System.currentTimeMillis()-time;
-            time=time/1000;
+            finishCalcVariables();
+
         } catch (Exception e){
             e.printStackTrace();
         }

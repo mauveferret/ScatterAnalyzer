@@ -20,7 +20,7 @@ public class AngleMap extends Dependence {
         mapArrayYsize = (int) Math.ceil(90/dTheta)+1;
         endOfPath="_dphi "+dPhi+"_dTheta"+dTheta+".txt";
         String addheaderComment = " dPhi "+dPhi+" degrees dTheta "+dTheta+" degrees ";
-        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
+        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.LINE_LENGTH)+"\n";
     }
 
     public  void check (PolarAngles angles, String someSort, String element)

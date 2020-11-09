@@ -13,21 +13,22 @@ import java.util.HashMap;
 
 public abstract class ParticleInMatterCalculator{
 
-    public String directoryPath;
+    //how mich lines per FileRead can be processed
+    final int STRING_COUNT_PER_CYCLE = 1000;
+    public final int LINE_LENGTH = 90;
 
-    //for console mode we don't need it
+    public final String directoryPath;
+
+    //flags
     public boolean doVizualization, getSummary;
-    public int lineLength;
 
     //like SC100432, H_W and etc.
     public String modelingID;
 
     //like SCATTER, TRIM, SDTrimSP
     public String calculatorType;
-
-    //how mich lines per FileRead can be processed
-    public int stringCountPerCycle = 1000;
-    double time;
+    ArrayList<Dependence> dependencies;
+    double calcTime;
 
     //primary beam
 
@@ -51,8 +52,6 @@ public abstract class ParticleInMatterCalculator{
     ParticleInMatterCalculator(String directoryPath, boolean doVizualization) {
         this.doVizualization = doVizualization;
 
-        lineLength = 90;
-
         targetElements = "no elements";
         projectileElements = "no elements";
         modelingID = "no ID";
@@ -65,7 +64,7 @@ public abstract class ParticleInMatterCalculator{
     abstract String initializeModelParameters();
 
 
-    protected void initializeCalcVariables(){
+    void initializeCalcVariables(){
         particleCount = 0;
         scattered = new HashMap<>();
         sputtered = new HashMap<>();
@@ -82,6 +81,20 @@ public abstract class ParticleInMatterCalculator{
             displaced.put(element, 0.0);
             energyRecoil.put(element,0.0);
         }
+    }
+
+    void finishCalcVariables(){
+        for (String element: elementsList) {
+            scattered.put(element, scattered.get(element) / projectileAmount);
+            sputtered.put(element, sputtered.get(element) / projectileAmount);
+            implanted.put(element, implanted.get(element) / projectileAmount);
+            transmitted.put(element, transmitted.get(element) / projectileAmount);
+            displaced.put(element, displaced.get(element) / projectileAmount);
+            energyRecoil.put(element,energyRecoil.get(element) / (projectileMaxEnergy * projectileAmount));
+        }
+
+        calcTime =System.currentTimeMillis()- calcTime;
+        calcTime = calcTime /((double) 60000);
     }
 
     abstract void postProcessCalculatedFiles(ArrayList<Dependence> distributions);
@@ -107,7 +120,7 @@ public abstract class ParticleInMatterCalculator{
             summary.write(("modeling ID: "+modelingID+"\n").getBytes());
             summary.write(("Projectile particles counted: "+particleCount+"\n").getBytes());
             for (String element: elementsList) {
-                summary.write(("*".repeat(lineLength)+"\n").getBytes());
+                summary.write(("*".repeat(LINE_LENGTH)+"\n").getBytes());
                 summary.write(("For "+element+" elements: \n\n").getBytes());
                 summary.write(("backscattered: " + new BigDecimal(scattered.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
                 summary.write(("sputtered: " + new BigDecimal(sputtered.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
@@ -116,9 +129,9 @@ public abstract class ParticleInMatterCalculator{
                 summary.write(("displaced: " + new BigDecimal(displaced.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
                 summary.write(("energy recoil: " + new BigDecimal(energyRecoil.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
             }
-            summary.write(("*".repeat(lineLength)+"\n").getBytes());
+            summary.write(("*".repeat(LINE_LENGTH)+"\n").getBytes());
             summary.write(("ISInCa version: "+Main.getVersion()+"\n").getBytes());
-            summary.write(("ISInCa calculation time, min: "+new BigDecimal(time).setScale(4, RoundingMode.UP)).getBytes());
+            summary.write(("ISInCa calculation time, min: "+new BigDecimal(calcTime).setScale(4, RoundingMode.UP)).getBytes());
             summary.close();
         }
         catch (Exception e){
@@ -131,7 +144,7 @@ public abstract class ParticleInMatterCalculator{
     public String createHeader(){
         String headerComment;
         String  name = " ISInCa - Ion Surface Interaction Calculator "+ Main.getVersion()+" ";
-        name = "*".repeat((lineLength-name.length())/2)+name+"*".repeat((lineLength-name.length())/2)+"\n";
+        name = "*".repeat((LINE_LENGTH -name.length())/2)+name+"*".repeat((LINE_LENGTH -name.length())/2)+"\n";
 
         //headerComment = "---------------"+" PARTICLE IN MATTER ANALYZER 2020 "+"---------------"+"\n";
         String author = " by mauveferret@gmail.com from \"Plasma physics\" dep., MEPhI ";
@@ -146,14 +159,14 @@ public abstract class ParticleInMatterCalculator{
         else beam+="at polar angle "+projectileIncidentPolarAngle+" degrees from normal";
         String beam2 = "azimuth angle "+projectileIncidentAzimuthAngle+" degrees with doze "+projectileAmount+" particles";
         String target = "target of "+targetElements;
-        headerComment=name+createLine(author)+"*".repeat(lineLength)+"\n"+createLine(calc)+createLine(calc2);
-        headerComment+=createLine(beam)+createLine(beam2)+createLine(target)+"*".repeat(lineLength)+"\n";
+        headerComment=name+createLine(author)+"*".repeat(LINE_LENGTH)+"\n"+createLine(calc)+createLine(calc2);
+        headerComment+=createLine(beam)+createLine(beam2)+createLine(target)+"*".repeat(LINE_LENGTH)+"\n";
         return headerComment;
     }
 
     public String createLine(String line){
-        int spaces = (lineLength-line.length())/2;
-        return "*"+" ".repeat(spaces-1)+line+" ".repeat(spaces-1)+((((lineLength-line.length())%2)==0) ? "" : " ")+"*\n";
+        int spaces = (LINE_LENGTH -line.length())/2;
+        return "*"+" ".repeat(spaces-1)+line+" ".repeat(spaces-1)+((((LINE_LENGTH -line.length())%2)==0) ? "" : " ")+"*\n";
     }
 
 }

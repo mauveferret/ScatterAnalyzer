@@ -26,7 +26,7 @@ public class Polar extends Dependence {
         distributionSize = (int) Math.ceil(180/dTheta)+1;
         endOfPath="_phi "+phi+"_dphi "+dPhi+"_dTheta"+dTheta+".txt";
         String addheaderComment = " phi "+phi+"  degrees dPhi "+dPhi+" degrees dTheta "+dTheta+" degrees ";
-        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
+        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.LINE_LENGTH)+"\n";
         headerComment= "Angle dN/dOmega "+"\n"+"degrees  particles \n\n"+headerComment+"\n";
     }
 
