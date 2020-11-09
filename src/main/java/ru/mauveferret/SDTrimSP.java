@@ -5,10 +5,9 @@ import ru.mauveferret.Distributions.*;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SDTrimSP extends ParticleInMatterCalculator{
 
@@ -45,64 +44,84 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tscConfig)));
                 String line;
                 String someParameter = "";
-
+                int projAmount = 0;
 
                 // if nr_pproj was written than projectileAmount = nr_pproj* nh else projectileAmount = nh*10
                 // because default for nr_pproj is 10
                 boolean nr_pprojWasWritten = false;
 
 
+                try {
 
-                while (reader.ready()){
-                    line = reader.readLine();
 
-                    if (line.contains("=")) {
-                        someParameter = line.substring(line.indexOf("=")+1).trim();
-                    }
+                    while (reader.ready()) {
+                        line = reader.readLine();
 
-                    if (line.contains("symbol")) {
-                        projectileElements = someParameter;
-                        targetElements = "";
-                    }
-
-                    if (line.contains("e0")&& !line.contains("case"))
-                    {
-                        if (someParameter.contains(",")) {
-                            projectileMaxEnergy = Double.parseDouble(someParameter.substring(0, someParameter.indexOf(",")).trim());
+                        if (line.contains("=")) {
+                            someParameter = line.substring(line.indexOf("=") + 1).trim();
                         }
-                        else projectileMaxEnergy = Double.parseDouble(someParameter.trim());
-                    }
 
-                    if (line.contains("alpha0")) {
-                        projectileIncidentPolarAngle = Double.parseDouble(someParameter);
-                        projectileIncidentAzimuthAngle = 0;
-                    }
+                        if (line.contains("symbol")) {
+                            projectileElements = someParameter;
+                            targetElements = "";
 
-                    if (line.contains("nh")) {
-                        projectileAmount = Integer.parseInt(someParameter);
+                            //all elements are in projectileElements variable, in form "H","W"
+                            String[] elements = projectileElements.split(",");
+
+                            try {
+                                //i just can't remove " by replace so i made it in this barbaric manner
+                                for (int i = 0; i < elements.length; i++)
+                                    elements[i] = elements[i].substring(1, elements[i].length() - 1);
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                        }
+
+                        if (line.contains("e0") && !line.contains("case")) {
+                            if (someParameter.contains(",")) {
+                                projectileMaxEnergy = Double.parseDouble(someParameter.substring(0, someParameter.indexOf(",")).trim());
+                            } else projectileMaxEnergy = Double.parseDouble(someParameter.trim());
+                        }
+
+                        if (line.contains("alpha0")) {
+                            String[] alphas = someParameter.split(",");
+                            projectileIncidentPolarAngle = Double.parseDouble(alphas[0]);
+                            projectileIncidentAzimuthAngle = 0;
+                        }
+
+                        if (line.contains("nh")) {
+                            projectileAmount = Integer.parseInt(someParameter);
+                        }
+                        if (line.contains("nr_pproj")) {
+                            nr_pprojWasWritten = true;
+                            projectileAmount = projectileAmount * Integer.parseInt(someParameter);
+                        }
+                        if (line.contains("qu")) {
+                            String[] qu = someParameter.split(",");
+                            for (int i = 0; i < qu.length; i++) {
+                                try {
+                                    if (Double.parseDouble(qu[i]) == 0) projAmount++;
+                                    else
+                                        break;
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    break;
+                                }
+                            }
+                        }
                     }
-                    if (line.contains("nr_pproj")) {
-                        nr_pprojWasWritten = true;
-                        projectileAmount = projectileAmount* Integer.parseInt(someParameter);
-                    }
+                    reader.close();
                 }
+                catch (Exception e) {e.printStackTrace();}
+
 
                 if (!nr_pprojWasWritten) projectileAmount = projectileAmount*10;
 
-                reader.close();
+                projectileElements = elements[0];
+                for (int i=1; i<projAmount; i++) projectileElements+=elements[i];
 
-                //all elements are in projectileElements variable, in form "H","W"
-                String[] elements = projectileElements.split(",");
-                try {
-                    //i just can't remove " by replace so i made it in this barbaric manner
-                    for (int i=0; i <elements.length; i++) elements[i] = elements[i].substring(1,elements[i].length()-1);
-                }
-                catch (Exception e){
-                    System.out.println(e.getMessage());
-                }
-                projectileElements = elements[0]; //FIXME LIE IN CASE OF SEVERAL PROJECTILES
                 //projectileElements.replaceAll("\\W", "");
-                for (int i=1; i<elements.length; i++) targetElements+=elements[i];
+                for (int i=projAmount; i<elements.length; i++) targetElements+=elements[i];
                 //targetElements.replaceAll("\\W","");
             }
             catch (FileNotFoundException ex){
@@ -136,11 +155,15 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
 
     @Override
-    void postProcessCalculatedFiles(ArrayList<Distribution> distributions) {
+    void postProcessCalculatedFiles(ArrayList<Dependence> dependencies) {
+
+        ArrayList<String> selements = new ArrayList<>(Arrays.asList(elements));
+        selements.add("all");
+        for (Dependence dep: dependencies) dep.initializeArrays(selements);
 
         time = System.currentTimeMillis();
 
-        //find all TRIM-related distributions
+        //find all TRIM-related dependencies
 
         try {
 
@@ -151,22 +174,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 Thread newFile = new Thread(()->{
 
                     try {
-
-
-
-                     /*   BufferedReader br2 = new BufferedReader(new FileReader(someDataFilePath));
-
-                        String hui = br2.readLine();
-                        System.out.println("*1*"+hui+" "+hui.getBytes().length+"*2*");
-                        hui = br2.readLine();
-                        System.out.println("*1*"+hui+" "+hui.getBytes().length+"*2*");
-                        hui = br2.readLine();
-                        System.out.println("*1*"+hui+" "+hui.getBytes().length+"*2*");
-                        hui = br2.readLine();
-                        System.out.println("*1*"+hui+" "+hui.getBytes().length+"*2*");
-
-
-                      */
 
 
                         DataInputStream br = new DataInputStream(new FileInputStream(someDataFilePath));
@@ -196,7 +203,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                         //was disabled as we need to get some summary, so we should analyze all files
                         String sorts = "";
-                        for (Distribution someDistr : distributions) sorts += someDistr.getSort();
+                        for (Dependence someDistr : dependencies) sorts += someDistr.getSort();
 
                         if (sorts.contains(sort) || getSummary) {
 
@@ -209,13 +216,13 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
                                     for (int i=0; i<stringCountPerCycle; i++){
                                         //System.out.println("+"+line.substring(i*275+1,((i+1)*275))+"*");
-                                        analyse(line.substring(i*275+1,(i+1)*275), distributions, sort);
+                                        analyse(line.substring(i*275+1,(i+1)*275), dependencies, sort);
                                     }
 
                                 }
                                 else {
                                     br.read(bufSmall);
-                                    analyse(new String( bufSmall, StandardCharsets.UTF_8 ),distributions,sort);
+                                    analyse(new String( bufSmall, StandardCharsets.UTF_8 ),dependencies,sort);
                                 }
 
                             }
@@ -263,10 +270,11 @@ public class SDTrimSP extends ParticleInMatterCalculator{
         }
     }
 
-    private void analyse(String line, ArrayList<Distribution> distributions, String sort){
+    private void analyse(String line, ArrayList<Dependence> distributions, String sort){
 
 
         double en = 0, collisionsAmount = 0, fluence = 0, xEnd = 0, yEnd = 0, zEnd = 0, cosP = 0, cosA = 0, path = 0;
+        String element = "";
         if (!line.contains("end")) {
 
 
@@ -277,6 +285,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
 
             try {
+                element = elements[Integer.parseInt(datas[1])-1];
                 //collisionsAmount = Double.parseDouble(datas[2]);
                 //fluence = Double.parseDouble(datas[3]);
                 en = Double.parseDouble(datas[4]);
@@ -287,7 +296,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 cosA = Double.parseDouble(datas[15]);
                // path = Double.parseDouble(datas[16]);
             }
-            catch (Exception ignored){}
+            catch (Exception ex){ex.printStackTrace();}
 
             //Here is several spectra calculators
 
@@ -295,22 +304,22 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
            //System.out.println(cosP+" "+cosA );
 
-            for (Distribution distr : distributions) {
-                switch (distr.getType()) {
+            for (Dependence distr : distributions) {
+                switch (distr.getDepName()) {
                     case "energy":
-                        ((Energy) distr).check(angles, sort, en);
+                        ((Energy) distr).check(angles, sort, en, element);
                         break;
                     case "polar":
-                        ((Polar) distr).check(angles, sort);
+                        ((Polar) distr).check(angles, sort, element);
                         break;
                     case "anglemap":
-                        ((AngleMap) distr).check(angles, sort);
+                        ((AngleMap) distr).check(angles, sort, element);
                         break;
                     case "gettxt":
                         ((getTXT) distr).check(angles, sort, en);
                         break;
                     case "cartesianmap":
-                        ((CartesianMap) distr).check(zEnd, yEnd, sort);
+                        ((CartesianMap) distr).check(zEnd, yEnd, sort, element);
                 }
             }
 

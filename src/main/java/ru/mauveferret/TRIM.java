@@ -82,7 +82,10 @@ public class TRIM extends ParticleInMatterCalculator{
     }
 
     @Override
-    void postProcessCalculatedFiles(ArrayList<Distribution> distributions) {
+    void postProcessCalculatedFiles(ArrayList<Dependence> distributions) {
+
+        //FIXME initializeArrays of dependencies
+
 
         time = System.currentTimeMillis();
 
@@ -132,14 +135,14 @@ public class TRIM extends ParticleInMatterCalculator{
 
                 PolarAngles angles = new PolarAngles(cosx,cosy,cosz);
 
-                for (Distribution distr: distributions){
-                    switch (distr.getType())
+                for (Dependence distr: distributions){
+                    switch (distr.getDepName())
                     {
-                        case "energy": ((Energy) distr).check(angles,sort,en);
+                        case "energy": ((Energy) distr).check(angles,sort,en, projectileElements);
                         break;
-                        case "polar": ((Polar) distr).check(angles,sort);
+                        case "polar": ((Polar) distr).check(angles,sort, projectileElements);
                         break;
-                        case "anglemap": ((AngleMap) distr).check(angles,sort);
+                        case "anglemap": ((AngleMap) distr).check(angles,sort, projectileElements);
                         break;
                         case "gettxt": ((getTXT) distr).check(angles,sort,en);
                     }

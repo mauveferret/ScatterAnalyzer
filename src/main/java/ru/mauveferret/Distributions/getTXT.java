@@ -2,28 +2,26 @@ package ru.mauveferret.Distributions;
 
 import ru.mauveferret.ParticleInMatterCalculator;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-public class getTXT extends Distribution {
+public class getTXT extends Dependence {
 
     FileOutputStream energyWriter;
 
     public getTXT(ParticleInMatterCalculator calculator, String sort) {
         super(calculator, sort);
         sort = "null";
-        pathToLog+=".txt";
+        String pathToLog = calculator.directoryPath+fileSep+"ISInCa"+fileSep+calculator.modelingID+"_"+
+                this.getClass().getSimpleName().toUpperCase()+"_DEP_"+sort+".txt";
         try {
           energyWriter = new FileOutputStream(pathToLog);
         }
         catch (Exception e){e.printStackTrace();}
     }
 
-    @Override
-    double[] getSpectrum() { return null;}
 
     @Override
-    public boolean logDistribution() { return true; }
+    public boolean logDependencies() { return true; }
 
     @Override
     public boolean visualize() {

@@ -1,6 +1,5 @@
 package ru.mauveferret;
 
-import com.sun.javafx.application.HostServicesDelegate;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 
@@ -9,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import ru.mauveferret.Distributions.*;
 
 import java.awt.*;
@@ -19,7 +17,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class RootFxmlController {
@@ -376,7 +373,7 @@ public class RootFxmlController {
 
                 //basicDistributions
 
-                ArrayList<Distribution> distributions = new ArrayList<>();
+                ArrayList<Dependence> distributions = new ArrayList<>();
 
                 String sort = (NEB.isSelected()) ? "B" : "";
                 sort += (NES.isSelected()) ? "S" : "";

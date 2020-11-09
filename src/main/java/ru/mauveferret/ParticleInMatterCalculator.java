@@ -1,6 +1,6 @@
 package ru.mauveferret;
 
-import ru.mauveferret.Distributions.Distribution;
+import ru.mauveferret.Distributions.Dependence;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public abstract class ParticleInMatterCalculator{
@@ -37,6 +36,7 @@ public abstract class ParticleInMatterCalculator{
 
     public int projectileAmount;
     public String projectileElements;
+    public String[] elements;
 
     // target
 
@@ -57,7 +57,7 @@ public abstract class ParticleInMatterCalculator{
         displaced = 0;
         energyRecoil = 0;
 
-        lineLength = 80;
+        lineLength = 90;
 
         targetElements = "no elements";
         projectileElements = "no elements";
@@ -70,14 +70,14 @@ public abstract class ParticleInMatterCalculator{
 
     abstract String  initializeVariables();
 
-    abstract void postProcessCalculatedFiles(ArrayList<Distribution> distributions);
+    abstract void postProcessCalculatedFiles(ArrayList<Dependence> distributions);
 
-    public void printAndVisualizeData(ArrayList<Distribution> distributions){
-        for (Distribution distr: distributions){
-            if (!distr.logDistribution())  System.out.println("ERROR during logging "+distr.getType());
+    public void printAndVisualizeData(ArrayList<Dependence> distributions){
+        for (Dependence distr: distributions){
+            if (!distr.logDependencies())  System.out.println("ERROR during logging "+distr.getDepName());
             if (!logAdditionalData()) System.out.println("ERROR during logging summary");
             if (doVizualization) {
-              if (!distr.visualize())  System.out.println("ERROR during plotting "+distr.getType());
+              if (!distr.visualize())  System.out.println("ERROR during plotting "+distr.getDepName());
           }
 
         }

@@ -3,12 +3,9 @@ package ru.mauveferret.Distributions;
 import ru.mauveferret.ParticleInMatterCalculator;
 
 import java.io.FileOutputStream;
-import java.util.Map;
 
-public class CartesianMap extends Distribution{
+public class CartesianMap extends Dependence {
 
-
-    private double cartesianMap[][];
     String mapType;
     String typeOfX, typeOfY;
     private final double delta;
@@ -27,10 +24,12 @@ public class CartesianMap extends Distribution{
         this.delta = delta;
         center = (int) (size/(2*delta));
         max = delta;
-        pathToLog+="MAP OF "+mapType+" for "+sort+" delta "+delta+".txt";
-        cartesianMap = new double[(int) Math.ceil(size/delta)+10][(int) Math.ceil(size/delta)+10];
 
-        String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+type;
+        depType = "map";
+        endOfPath="MAP OF "+mapType+" for "+sort+" delta "+delta+".txt";
+        mapArrayXsize = (int) Math.ceil(size/delta)+10;
+        mapArrayYsize = (int) Math.ceil(size/delta)+10;
+        String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+ depName;
         headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
     }
 
@@ -43,27 +42,30 @@ public class CartesianMap extends Distribution{
         this.size = size;
         center = (int) (size/(2*delta));
         max = delta;
-        pathToLog+="MAP OF "+mapType+" for "+sort+" delta "+delta+".txt";
-        String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+type;
+
+        depType = "map";
+        endOfPath="MAP OF "+mapType+" for "+sort+" delta "+delta+".txt";
+        mapArrayXsize = (int) Math.ceil(size/delta)+10;
+        mapArrayYsize = (int) Math.ceil(size/delta)+10;
+        String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+ depName;
         headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
-        cartesianMap = new double[(int) Math.ceil(size/delta)+10][(int) Math.ceil(size/delta)+10];
     }
 
 
     //not real X,Y but some two Axis, specified in mapType variable
-    public  void check (double X, double Y, String someSort)
+    public  void check (double X, double Y, String someSort, String element)
     {
         //only for backscattered and sputtered!
         if (sort.contains(someSort)){
             if (X<size*delta/2 & Y<size*delta/2) {
                 if (X > 0 && Y > 0)
-                    cartesianMap[center + (int) (Math.round(X / delta))][center + (int) (Math.round(Y / delta))]++;
+                    mapArray.get(element)[center + (int) (Math.round(X / delta))][center + (int) (Math.round(Y / delta))]++;
                 else if (X > 0 && Y < 0)
-                    cartesianMap[center + (int) (Math.round(X / delta))][center - (int) (Math.round(Y / delta))]++;
+                    mapArray.get(element)[center + (int) (Math.round(X / delta))][center - (int) (Math.round(Y / delta))]++;
                 else if (X < 0 && Y > 0)
-                    cartesianMap[center - (int) (Math.round(X / delta))][center + (int) (Math.round(Y / delta))]++;
+                    mapArray.get(element)[center - (int) (Math.round(X / delta))][center + (int) (Math.round(Y / delta))]++;
                 else
-                    cartesianMap[center - (int) (Math.round(X / delta))][center - (int) (Math.round(Y / delta))]++;
+                    mapArray.get(element)[center - (int) (Math.round(X / delta))][center - (int) (Math.round(Y / delta))]++;
 
                 X = Math.abs(X);
                 Y = Math.abs(Y);
@@ -86,19 +88,17 @@ public class CartesianMap extends Distribution{
     }
 
     @Override
-    double[] getSpectrum() {
-        return new double[0];
-    }
+    public boolean logDependencies() {
 
-    @Override
-    public boolean logDistribution() {
-        try {
-            FileOutputStream surfaceWriter = new FileOutputStream(pathToLog);
-            String stroka =typeOfX+": ";
-            surfaceWriter.write(headerComment.getBytes());
+        for (String element: elements) {
 
-            int leftEdge = center-((int) (max/delta))-2;
-            int rightEdge = center+ ((int) (max/delta))+2;
+            try {
+                FileOutputStream surfaceWriter = new FileOutputStream(pathsToLog.get(element));
+                String stroka = typeOfX + ": ";
+                surfaceWriter.write(headerComment.getBytes());
+
+                int leftEdge = center - ((int) (max / delta)) - 2;
+                int rightEdge = center + ((int) (max / delta)) + 2;
 
 
             /*check whether is possible to mak edge less
@@ -120,28 +120,27 @@ public class CartesianMap extends Distribution{
              */
 
 
-            for (int i = leftEdge ; i <=rightEdge; i++)
-            {
-                stroka=stroka+columnSeparatorInLog+(int) ((i-center)*delta);
-            }
-            stroka=stroka+"\n";
-            surfaceWriter.write(stroka.getBytes());
-
-            for (int i = leftEdge; i <=rightEdge; i++) {
-                stroka=(int) ((i-center)*delta)+columnSeparatorInLog;
-                for (int j = leftEdge; j <= rightEdge; j++) {
-                    stroka=stroka+cartesianMap[i][j] +columnSeparatorInLog;
+                for (int i = leftEdge; i <= rightEdge; i++) {
+                    stroka = stroka + columnSeparatorInLog + (int) ((i - center) * delta);
                 }
                 stroka = stroka + "\n";
                 surfaceWriter.write(stroka.getBytes());
+
+                for (int i = leftEdge; i <= rightEdge; i++) {
+                    stroka = (int) ((i - center) * delta) + columnSeparatorInLog;
+                    for (int j = leftEdge; j <= rightEdge; j++) {
+                        stroka = stroka + mapArray.get(element)[i][j] + columnSeparatorInLog;
+                    }
+                    stroka = stroka + "\n";
+                    surfaceWriter.write(stroka.getBytes());
+                }
+                surfaceWriter.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return false;
             }
-            surfaceWriter.close();
-            return  true;
         }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-            return  false;
-        }
+        return  true;
     }
 
     @Override

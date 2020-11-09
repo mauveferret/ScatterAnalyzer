@@ -46,7 +46,7 @@ public class PolarChart extends ApplicationFrame {
         this.dTheta = dTheta;
         this.Theta = Theta;
 
-        JFrame f = new JFrame("ISInCa: Polar Distribution");
+        JFrame f = new JFrame("ISInCa: Polar Dependence");
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("pics/CrocoLogo.png")));
         f.setLayout(new BorderLayout(0, 5));

@@ -1,7 +1,6 @@
 package ru.mauveferret;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import ru.mauveferret.Distributions.*;
@@ -11,12 +10,9 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.concurrent.ExecutorService;
 
 public class Console {
 
@@ -246,7 +242,7 @@ public class Console {
         System.out.println("Thread: "+calc.getChildNodes().item(0).getTextContent()+" calc type "+calcType);
         System.out.println("***********************************************************");
 
-        ArrayList<Distribution> distributions = new ArrayList<>();
+        ArrayList<Dependence> distributions = new ArrayList<>();
 
 
         NodeList distrs = (calc.getChildNodes().getLength()>1) ? calc.getChildNodes() : zeroCalc.getChildNodes();
