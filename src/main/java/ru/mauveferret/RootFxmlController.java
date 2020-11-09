@@ -175,15 +175,15 @@ public class RootFxmlController {
             path = file.getAbsolutePath();
 
             yourCalcuator = new Scatter(path,true);
-            String initialize = yourCalcuator.initializeVariables();
+            String initialize = yourCalcuator.initializeModelParameters();
             if (!initialize.equals("OK")) {
                 System.out.println(initialize);
                 yourCalcuator = new TRIM(path,true);
-                initialize = yourCalcuator.initializeVariables();
+                initialize = yourCalcuator.initializeModelParameters();
                 if (!initialize.equals("OK")) {
                     System.out.println(initialize);
                     yourCalcuator = new SDTrimSP(path, visualize.isSelected(), getSummary.isSelected());
-                    initialize = yourCalcuator.initializeVariables();
+                    initialize = yourCalcuator.initializeModelParameters();
                     if (!initialize.equals("OK")) {
                         System.out.println(initialize);
                         new GUI().showNotification("ERROR: "+initialize);
@@ -424,23 +424,29 @@ public class RootFxmlController {
                         new BigDecimal(yourCalcuator.particleCount).setScale(5, RoundingMode.UP).doubleValue()+"");
                 time.setText(yourCalcuator.time+"");
 
-                scattered.setText(new BigDecimal( yourCalcuator.scattered).setScale(4, RoundingMode.UP).doubleValue()
+                scattered.setText(new BigDecimal( yourCalcuator.scattered.get("all")).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
-                sputtered.setText(new BigDecimal(yourCalcuator.sputtered).setScale(4, RoundingMode.UP).doubleValue()
+                sputtered.setText(new BigDecimal(yourCalcuator.sputtered.get("all")).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
-                implanted.setText(new BigDecimal(yourCalcuator.implanted).setScale(4, RoundingMode.UP).doubleValue()
+                implanted.setText(new BigDecimal(yourCalcuator.implanted.get("all")).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
-                displaced.setText(new BigDecimal(yourCalcuator.displaced).setScale(4, RoundingMode.UP).doubleValue()
+                displaced.setText(new BigDecimal(yourCalcuator.displaced.get("all")).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
-                transmitted.setText(new BigDecimal(yourCalcuator.transmitted).setScale(4, RoundingMode.UP).doubleValue()
+                transmitted.setText(new BigDecimal(yourCalcuator.transmitted.get("all")).setScale(4, RoundingMode.UP).doubleValue()
                         +"");
-                energyScattering.setText(new BigDecimal(yourCalcuator.energyRecoil).setScale(3, RoundingMode.UP).doubleValue()
+                energyScattering.setText(new BigDecimal(yourCalcuator.energyRecoil.get("all")).setScale(3, RoundingMode.UP).doubleValue()
                         +"");
 
-                yourCalcuator.scattered = 0;
-                yourCalcuator.sputtered = 0;
-                yourCalcuator.implanted = 0;
-                yourCalcuator.energyRecoil = 0;
+                //FIXME to remove: every launch we create new calculator?!
+                for (String element: yourCalcuator.elementsList) {
+                    yourCalcuator.scattered.put(element,0.0);
+                    yourCalcuator.sputtered.put(element, 0.0);
+                    yourCalcuator.implanted.put(element, 0.0);
+                    yourCalcuator.transmitted.put(element, 0.0);
+                    yourCalcuator.displaced.put(element, 0.0);
+                    yourCalcuator.energyRecoil.put(element,0.0);
+                }
+
                 yourCalcuator.particleCount = 0;
 
             }).start();

@@ -22,9 +22,9 @@ public abstract class Dependence {
     // for different elements
     //FIXME Why HashMap?
     HashMap<String, String> pathsToLog;
+    String headerComment;
     HashMap<String, String> headerComments;
     String endOfPath;
-    String headerComment;
 
 
     //array for different dependencies types (distribution, function, map, 2variables function)
@@ -49,6 +49,8 @@ public abstract class Dependence {
 
     public void initializeArrays(ArrayList<String> elements){
         this.elements = elements;
+        pathsToLog = new HashMap<>();
+        headerComments = new HashMap<>();
 
         String pathToLog = calculator.directoryPath+fileSep+"ISInCa"+fileSep+calculator.modelingID+"_"+
                 this.getClass().getSimpleName().toUpperCase()+"_DEP_"+sort+"_";
@@ -62,8 +64,7 @@ public abstract class Dependence {
         for (String element: elements){
             pathsToLog.put(element, pathToLog+element+"_"+ endOfPath);
             String addheaderComment = " calculated  for "+element+" target elements ";
-            headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n";
-            headerComments.put(element, headerComment);
+            headerComments.put(element, headerComment+calculator.createLine(addheaderComment)+"*".repeat(calculator.lineLength)+"\n");
             switch (depType){
                 case "distribution": distributionArray.put(element, new double[distributionSize]);
                 break;

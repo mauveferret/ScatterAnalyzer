@@ -95,7 +95,7 @@ public class CartesianMap extends Dependence {
             try {
                 FileOutputStream surfaceWriter = new FileOutputStream(pathsToLog.get(element));
                 String stroka = typeOfX + ": ";
-                surfaceWriter.write(headerComment.getBytes());
+                surfaceWriter.write(headerComments.get(element).getBytes());
 
                 int leftEdge = center - ((int) (max / delta)) - 2;
                 int rightEdge = center + ((int) (max / delta)) + 2;

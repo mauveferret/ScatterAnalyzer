@@ -224,13 +224,13 @@ public class Console {
         }
 
         ParticleInMatterCalculator yourCalculator = new Scatter(dir, visualize);
-        String initialize = yourCalculator.initializeVariables();
+        String initialize = yourCalculator.initializeModelParameters();
         if (!initialize.equals("OK")) {
             yourCalculator = new TRIM(dir, visualize);
-            initialize = yourCalculator.initializeVariables();
+            initialize = yourCalculator.initializeModelParameters();
             if (!initialize.equals("OK")) {
                 yourCalculator = new SDTrimSP(dir, visualize,getSummary);
-                initialize = yourCalculator.initializeVariables();
+                initialize = yourCalculator.initializeModelParameters();
                 if (!initialize.equals("OK")) {
                     System.out.println("ERROR: for id"+calc.getAttributes().item(0).getTextContent()+" get wrong path: " + dir);
                 } else calcType = "SDTrimSP";

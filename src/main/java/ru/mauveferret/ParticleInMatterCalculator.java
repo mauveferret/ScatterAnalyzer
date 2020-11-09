@@ -9,6 +9,7 @@ import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public abstract class ParticleInMatterCalculator{
 
@@ -36,26 +37,19 @@ public abstract class ParticleInMatterCalculator{
 
     public int projectileAmount;
     public String projectileElements;
-    public String[] elements;
+    public String[] elements; //without "all"
+    ArrayList<String> elementsList; //with "all"
 
     // target
 
     public String targetElements;
 
     //some scattering variables
-
-    double particleCount, scattered, sputtered, implanted, transmitted, displaced;
-    double energyRecoil;
+    HashMap<String, Double>  scattered, sputtered, implanted, transmitted, displaced, energyRecoil;
+    double particleCount;
 
     ParticleInMatterCalculator(String directoryPath, boolean doVizualization) {
         this.doVizualization = doVizualization;
-        particleCount = 0;
-        scattered = 0;
-        sputtered = 0;
-        implanted = 0;
-        transmitted = 0;
-        displaced = 0;
-        energyRecoil = 0;
 
         lineLength = 90;
 
@@ -68,7 +62,27 @@ public abstract class ParticleInMatterCalculator{
         }catch (Exception ignored){}
     }
 
-    abstract String  initializeVariables();
+    abstract String initializeModelParameters();
+
+
+    protected void initializeCalcVariables(){
+        particleCount = 0;
+        scattered = new HashMap<>();
+        sputtered = new HashMap<>();
+        implanted = new HashMap<>();
+        transmitted = new HashMap<>();
+        displaced = new HashMap<>();
+        energyRecoil = new HashMap<>();
+
+        for (String element: elementsList) {
+            scattered.put(element,0.0);
+            sputtered.put(element, 0.0);
+            implanted.put(element, 0.0);
+            transmitted.put(element, 0.0);
+            displaced.put(element, 0.0);
+            energyRecoil.put(element,0.0);
+        }
+    }
 
     abstract void postProcessCalculatedFiles(ArrayList<Dependence> distributions);
 
@@ -91,13 +105,18 @@ public abstract class ParticleInMatterCalculator{
             summary.write((createHeader()+"\n").getBytes());
             summary.write(("Monte-Carlo model: "+calculatorType+"\n").getBytes());
             summary.write(("modeling ID: "+modelingID+"\n").getBytes());
-            summary.write(("Particles count: "+particleCount+"\n").getBytes());
-            summary.write(("backscattered: "+ new BigDecimal(scattered).setScale(4, RoundingMode.UP)+"\n").getBytes());
-            summary.write(("sputtered: "+ new BigDecimal(sputtered).setScale(4, RoundingMode.UP)+"\n").getBytes());
-            summary.write(("implanted: "+new BigDecimal(implanted).setScale(4, RoundingMode.UP)+"\n").getBytes());
-            summary.write(("transmitted: "+ new BigDecimal( transmitted).setScale(4, RoundingMode.UP)+"\n").getBytes());
-            summary.write(("displaced: "+ new BigDecimal( displaced).setScale(4, RoundingMode.UP)+"\n").getBytes());
-            summary.write(("energy recoil: "+new BigDecimal(energyRecoil).setScale(4, RoundingMode.UP)+"\n").getBytes());
+            summary.write(("Projectile particles counted: "+particleCount+"\n").getBytes());
+            for (String element: elementsList) {
+                summary.write(("*".repeat(lineLength)+"\n").getBytes());
+                summary.write(("For "+element+" elements: \n\n").getBytes());
+                summary.write(("backscattered: " + new BigDecimal(scattered.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
+                summary.write(("sputtered: " + new BigDecimal(sputtered.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
+                summary.write(("implanted: " + new BigDecimal(implanted.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
+                summary.write(("transmitted: " + new BigDecimal(transmitted.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
+                summary.write(("displaced: " + new BigDecimal(displaced.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
+                summary.write(("energy recoil: " + new BigDecimal(energyRecoil.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
+            }
+            summary.write(("*".repeat(lineLength)+"\n").getBytes());
             summary.write(("ISInCa version: "+Main.getVersion()+"\n").getBytes());
             summary.write(("ISInCa calculation time, min: "+new BigDecimal(time).setScale(4, RoundingMode.UP)).getBytes());
             summary.close();

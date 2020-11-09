@@ -17,7 +17,7 @@ public class Scatter extends ParticleInMatterCalculator {
     }
 
     @Override
-    String initializeVariables() {
+    String initializeModelParameters() {
         calculatorType = "SCATTER";
         File dataDirectory = new File(directoryPath);
         if (dataDirectory.isDirectory()){
@@ -142,21 +142,27 @@ public class Scatter extends ParticleInMatterCalculator {
                     if (!sort.contains("S")) particleCount++;
 
                     if (sort.equals("B")) {
-                        scattered++;
-                        energyRecoil+=en;
+                        scattered.put("all", scattered.get("all") + 1);
+                        energyRecoil.put("all", energyRecoil.get("all") + en);
                     }
-                    else if (sort.equals("S")) sputtered++;
-                    else if (sort.equals("I")) implanted++;
+                    else if (sort.equals("S"))  sputtered.put("all", sputtered.get("all") + 1);
+
+                    else if (sort.equals("I")) implanted.put("all", implanted.get("all") + 1);
 
                     shift += 18;
                 }
             }
             reader.close();
-            scattered = scattered / projectileAmount;
-            sputtered = sputtered /projectileAmount;
-            implanted = implanted / projectileAmount;
-            transmitted = transmitted / projectileAmount;
-            energyRecoil = energyRecoil/projectileMaxEnergy;
+
+            for (String element: elementsList) {
+                scattered.put(element, scattered.get(element) / projectileAmount);
+                sputtered.put(element, sputtered.get(element) / projectileAmount);
+                implanted.put(element, implanted.get(element) / projectileAmount);
+                transmitted.put(element, transmitted.get(element) / projectileAmount);
+                displaced.put(element, displaced.get(element) / projectileAmount);
+                energyRecoil.put(element,energyRecoil.get(element) / (projectileMaxEnergy * projectileAmount));
+            }
+
             time=System.currentTimeMillis()-time;
             time=time/1000;
         }

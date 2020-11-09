@@ -23,7 +23,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
     }
 
     @Override
-    String initializeVariables() {
+    String initializeModelParameters() {
         calculatorType = "SDTrimSP";
         File dataDirectory = new File(directoryPath);
         if (dataDirectory.isDirectory()){
@@ -66,7 +66,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                             targetElements = "";
 
                             //all elements are in projectileElements variable, in form "H","W"
-                            String[] elements = projectileElements.split(",");
+                             elements = projectileElements.split(",");
 
                             try {
                                 //i just can't remove " by replace so i made it in this barbaric manner
@@ -123,12 +123,15 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 //projectileElements.replaceAll("\\W", "");
                 for (int i=projAmount; i<elements.length; i++) targetElements+=elements[i];
                 //targetElements.replaceAll("\\W","");
+                elementsList = new ArrayList<>(Arrays.asList(elements));
+                elementsList.add("all");
+                initializeCalcVariables();
             }
             catch (FileNotFoundException ex){
                 ex.printStackTrace();
                 return "\"tri.inp\" config is not found";
             }
-            catch (IOException ex){
+            catch (Exception ex){
                 ex.printStackTrace();
                 return "File "+tscConfig+" is damaged";
             }
@@ -157,9 +160,11 @@ public class SDTrimSP extends ParticleInMatterCalculator{
     @Override
     void postProcessCalculatedFiles(ArrayList<Dependence> dependencies) {
 
-        ArrayList<String> selements = new ArrayList<>(Arrays.asList(elements));
-        selements.add("all");
-        for (Dependence dep: dependencies) dep.initializeArrays(selements);
+        //load elements in dependencies
+
+        int LINE_LENGTH = 274;
+
+        for (Dependence dep: dependencies) dep.initializeArrays(elementsList);
 
         time = System.currentTimeMillis();
 
@@ -177,15 +182,36 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
 
                         DataInputStream br = new DataInputStream(new FileInputStream(someDataFilePath));
-                        byte[] bufLarge = new byte[stringCountPerCycle*275];
-                        byte[] bufSmall = new byte[275];
+                        byte[] bufLarge = new byte[stringCountPerCycle*LINE_LENGTH];
+                        byte[] bufSmall = new byte[LINE_LENGTH];
 
                         //rubbish lines
-                        br.read(new byte[36]);
-                        br.read(new byte[80]);
-                        br.read(new byte[55]);
-                        br.read(new byte[32]);
-                        br.read(new byte[283]);
+                        byte[] bufSmall12 = new byte[486];
+
+                        br.read(bufSmall12);
+
+                        System.out.println(new String( bufSmall12, StandardCharsets.UTF_8 ));
+
+                       /* byte[] bufSmall1 = new byte[274];
+                        br.read(bufSmall1);
+                        System.out.println("23fvwe");
+                        String p = new String( bufSmall1, StandardCharsets.UTF_8 );
+                        System.out.println("$"+p+"$");
+                        //System.out.println("*1  897*-"+p+"!1");
+                        br.read(bufSmall1);
+                        System.out.println("*2"+new String( bufSmall1, StandardCharsets.UTF_8 )+"!2");
+                        br.read(bufSmall1);
+                        System.out.println("*3"+new String( bufSmall1, StandardCharsets.UTF_8 )+"!3");
+                        br.read(bufSmall1);
+                        System.out.println("*4"+new String( bufSmall1, StandardCharsets.UTF_8 )+"!4");
+                        br.read(bufSmall1);
+                        System.out.println("*5"+new String( bufSmall1, StandardCharsets.UTF_8 )+"!5");
+                        System.exit(0);
+
+
+                        */
+
+
 
                         //now lets sort
 
@@ -208,15 +234,15 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                         if (sorts.contains(sort) || getSummary) {
 
 
-                            System.out.println(stringCountPerCycle);
-                            while (br.available()>=275) {
-                                if (br.available()>=stringCountPerCycle*275){
+                            //System.out.println(stringCountPerCycle);
+                            while (br.available()>=LINE_LENGTH) {
+                                if (br.available()>=stringCountPerCycle*LINE_LENGTH){
                                     br.read(bufLarge);
                                     String line = new String( bufLarge, StandardCharsets.UTF_8 );
 
                                     for (int i=0; i<stringCountPerCycle; i++){
-                                        //System.out.println("+"+line.substring(i*275+1,((i+1)*275))+"*");
-                                        analyse(line.substring(i*275+1,(i+1)*275), dependencies, sort);
+                                        //System.out.println("+"+line.substring(i*LINE_LENGTH+1,((i+1)*LINE_LENGTH))+"*");
+                                        analyse(line.substring(i*LINE_LENGTH+1,(i+1)*LINE_LENGTH), dependencies, sort);
                                     }
 
                                 }
@@ -257,12 +283,15 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 System.out.println("   ++++++++++++++++++++++++++++++");
             }
 
-            scattered = scattered / projectileAmount;
-            sputtered = sputtered / projectileAmount;
-            implanted = implanted / projectileAmount;
-            transmitted = transmitted / projectileAmount;
-            displaced = displaced / projectileAmount;
-            energyRecoil = energyRecoil/(projectileMaxEnergy*projectileAmount);
+            for (String element: elementsList) {
+                scattered.put(element, scattered.get(element) / projectileAmount);
+                sputtered.put(element, sputtered.get(element) / projectileAmount);
+                implanted.put(element, implanted.get(element) / projectileAmount);
+                transmitted.put(element, transmitted.get(element) / projectileAmount);
+                displaced.put(element, displaced.get(element) / projectileAmount);
+                energyRecoil.put(element,energyRecoil.get(element) / (projectileMaxEnergy * projectileAmount));
+            }
+
             time=System.currentTimeMillis()-time;
             time=time/((double) 60000);
         } catch (Exception e){
@@ -281,6 +310,8 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             line = line.replaceAll("\\h+"," ");
             line = line.replaceAll("\\n", "");
 
+           // System.out.println("*"+line+"+");
+
             String[] datas = line.split(" ");
 
 
@@ -296,7 +327,9 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 cosA = Double.parseDouble(datas[15]);
                // path = Double.parseDouble(datas[16]);
             }
-            catch (Exception ex){ex.printStackTrace();}
+            catch (Exception ex) {//ex.printStackTrace();}
+            }
+            //System.out.println(en +"   "+cosA+"   "+cosP+"   "+element);
 
             //Here is several spectra calculators
 
@@ -326,13 +359,30 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             //calculate some scattering constants
             if (!sort.contains("S") && !sort.contains("D")) particleCount++;
 
-            if (sort.equals("B")) {
-                scattered++;
-                energyRecoil += en;
-            } else if (sort.equals("S")) sputtered++;
-            else if (sort.equals("I")) implanted++;
-            else if (sort.equals("T")) transmitted++;
-            else if (sort.equals("D")) displaced++;
+            switch (sort) {
+                case "B":
+                    scattered.put(element, scattered.get(element) + 1);
+                    energyRecoil.put(element, energyRecoil.get(element) + en);
+                    scattered.put("all", scattered.get("all") + 1);
+                    energyRecoil.put("all", energyRecoil.get("all") + en);
+                    break;
+                case "S":
+                    sputtered.put(element, sputtered.get(element) + 1);
+                    sputtered.put("all", sputtered.get("all") + 1);
+                    break;
+                case "I":
+                    implanted.put(element, implanted.get(element) + 1);
+                    implanted.put("all", implanted.get("all") + 1);
+                    break;
+                case "T":
+                    transmitted.put(element, transmitted.get(element) + 1);
+                    transmitted.put("all", transmitted.get("all") + 1);
+                    break;
+                case "D":
+                    displaced.put(element, displaced.get(element) + 1);
+                    displaced.put("all", displaced.get("all") + 1);
+                    break;
+            }
         }
     }
 

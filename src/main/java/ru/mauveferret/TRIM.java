@@ -19,7 +19,7 @@ public class TRIM extends ParticleInMatterCalculator{
     }
 
     @Override
-    String initializeVariables() {
+    String initializeModelParameters() {
         calculatorType = "TRIM";
         File dataDirectory = new File(directoryPath);
         if (dataDirectory.isDirectory()){
@@ -152,19 +152,22 @@ public class TRIM extends ParticleInMatterCalculator{
                 if (!sort.contains("S") && !sort.contains("D")) particleCount++;
 
                 if (sort.equals("B")) {
-                    scattered++;
-                    energyRecoil+=en;
+                    scattered.put("all", scattered.get("all") + 1);
+                    energyRecoil.put("all", energyRecoil.get("all") + en);
                 }
-                else if (sort.equals("S")) sputtered++;
-                else if (sort.equals("I")) implanted++;
+                else if (sort.equals("S")) sputtered.put("all", sputtered.get("all") + 1);
+                else if (sort.equals("I")) implanted.put("all", implanted.get("all") + 1);
 
             }
             br.close();
-            scattered = scattered / particleCount;
-            sputtered = sputtered / particleCount;
-            implanted = implanted / particleCount;
-            transmitted = transmitted / particleCount;
-            energyRecoil = energyRecoil / projectileMaxEnergy;
+            for (String element: elementsList) {
+                scattered.put(element, scattered.get(element) / projectileAmount);
+                sputtered.put(element, sputtered.get(element) / projectileAmount);
+                implanted.put(element, implanted.get(element) / projectileAmount);
+                transmitted.put(element, transmitted.get(element) / projectileAmount);
+                displaced.put(element, displaced.get(element) / projectileAmount);
+                energyRecoil.put(element,energyRecoil.get(element) / (projectileMaxEnergy * projectileAmount));
+            }
             time=System.currentTimeMillis()-time;
             time=time/1000;
         } catch (Exception e){

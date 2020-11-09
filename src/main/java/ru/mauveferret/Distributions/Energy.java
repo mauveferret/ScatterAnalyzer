@@ -62,7 +62,7 @@ public class Energy extends Dependence {
             try {
                 FileOutputStream energyWriter = new FileOutputStream(pathsToLog.get(element));
                 String stroka;
-                energyWriter.write(headerComment.getBytes());
+                energyWriter.write(headerComments.get(element).getBytes());
                 for (int i = 0; i <= (int) Math.round(E0 / dE); i++) {
                     stroka = i * dE + columnSeparatorInLog
                             + new BigDecimal(distributionArray.get(element)[i] / dE).

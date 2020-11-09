@@ -53,7 +53,7 @@ public class Polar extends Dependence {
             try {
                 FileOutputStream polarWriter = new FileOutputStream(pathsToLog.get(element));
                 String stroka;
-                polarWriter.write(headerComment.getBytes());
+               polarWriter.write(headerComments.get(element).getBytes());
                 for (int i = 0; i <= (int) Math.round(180 / dTheta); i++) {
                     //FIXME Omega angle ?!
                     if (i * dTheta != 90) {

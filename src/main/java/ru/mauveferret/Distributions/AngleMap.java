@@ -61,7 +61,7 @@ public class AngleMap extends Dependence {
             try {
                 FileOutputStream surfaceWriter = new FileOutputStream(pathsToLog.get(element));
                 String stroka = "Phi";
-                surfaceWriter.write(headerComment.getBytes());
+                surfaceWriter.write(headerComments.get(element).getBytes());
                 for (int i = 0; i <= (int) Math.round(90 / dTheta); i++) {
                     stroka = stroka + columnSeparatorInLog + (int) (i * dTheta);
                 }
