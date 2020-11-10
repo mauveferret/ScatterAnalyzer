@@ -6,6 +6,7 @@ import ru.mauveferret.ParticleInMatterCalculator;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 
 
 public class Energy extends Dependence {
@@ -30,11 +31,17 @@ public class Energy extends Dependence {
         depType = "distribution";
         distributionSize = (int) Math.ceil(E0/dE)+1;
         endOfPath="_theta "+theta+"_phi "+phi+"_dE"+dE+"_time "+ ((int ) (Math.random()*100))+".txt";
+
+    }
+
+    @Override
+    public void initializeArrays(ArrayList<String> elements) {
+        headerComment = calculator.createHeader();
         String addheaderComment = " delta E "+dE+" eV theta "+theta+" deg dTheta "+dTheta+" deg phi "+
                 phi+" deg dPhi "+dPhi+" deg";
         headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.LINE_LENGTH)+"\n";
         headerComment= "Energy particles "+"\n"+"eV  count \n\n"+headerComment+"\n";
-
+        super.initializeArrays(elements);
     }
 
     public void check(PolarAngles angles, String someSort, double E, String element){

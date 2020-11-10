@@ -24,24 +24,21 @@ public class Console {
     //Preferences
     private boolean getTXT, getSummary, visualize;
     //local
-    private final int lineLength = 80;
+    private final int LINE_LENGTH = 80;
 
-    private String createLine1(String line){
-        int spaces = (lineLength-line.length())/2;
-        return "*"+" ".repeat(spaces-1)+line+" ".repeat(spaces-1)+((((lineLength-line.length())%2)==0) ? "" : " ")+"*"+"\n";
-    }
+
 
     public Console(String args[]) {
         try {
 
-            String headerComment = "\n"+"*".repeat(lineLength)+"\n"+createLine1("  ");
+            String headerComment = "\n"+"*".repeat(LINE_LENGTH)+"\n"+createLine1("  ");
             headerComment+=createLine1(" ISInCa - Ion Surface Interaction Calculator "+
                     Main.getVersion()+" ")+createLine1("  ");
-            headerComment+="*".repeat(lineLength)+"\n";
+            headerComment+="*".repeat(LINE_LENGTH)+"\n";
             headerComment+=createLine1(" Created by mauveferret@gmail.com at the MEPhI University ");
-            headerComment+="*".repeat(lineLength)+"\n";
+            headerComment+="*".repeat(LINE_LENGTH)+"\n";
             headerComment+= createLine1(" Check updates at https://github.com/mauveferret/ISInCa ");
-            headerComment+="*".repeat(lineLength)+"\n\n";
+            headerComment+="*".repeat(LINE_LENGTH)+"\n\n";
             System.out.println(headerComment);
 
             //Basic values for all parameters
@@ -348,5 +345,9 @@ public class Console {
         return newCalculation;
     }
 
+    private String createLine1(String line){
+        int spaces = (LINE_LENGTH -line.length())/2;
+        return "*"+" ".repeat(spaces-1)+line+" ".repeat(spaces-1)+((((LINE_LENGTH -line.length())%2)==0) ? "" : " ")+"*"+"\n";
+    }
 
 }

@@ -7,6 +7,7 @@ import ru.mauveferret.PolarChart;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 
 public class Polar extends Dependence {
 
@@ -25,11 +26,16 @@ public class Polar extends Dependence {
         depType = "distribution";
         distributionSize = (int) Math.ceil(180/dTheta)+1;
         endOfPath="_phi "+phi+"_dphi "+dPhi+"_dTheta"+dTheta+".txt";
+    }
+
+    @Override
+    public void initializeArrays(ArrayList<String> elements) {
+        headerComment = calculator.createHeader();
         String addheaderComment = " phi "+phi+"  degrees dPhi "+dPhi+" degrees dTheta "+dTheta+" degrees ";
         headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.LINE_LENGTH)+"\n";
         headerComment= "Angle dN/dOmega "+"\n"+"degrees  particles \n\n"+headerComment+"\n";
+        super.initializeArrays(elements);
     }
-
 
     public void check(PolarAngles angles, String someSort, String element){
        // System.out.println(57.2958*Math.acos(cosa));

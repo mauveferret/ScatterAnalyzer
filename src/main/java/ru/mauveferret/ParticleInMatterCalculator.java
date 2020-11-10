@@ -15,7 +15,7 @@ public abstract class ParticleInMatterCalculator{
 
     //how mich lines per FileRead can be processed
     final int STRING_COUNT_PER_CYCLE = 1000;
-    public final int LINE_LENGTH = 90;
+    public int LINE_LENGTH = 90;
 
     public final String directoryPath;
 
@@ -55,6 +55,7 @@ public abstract class ParticleInMatterCalculator{
         targetElements = "no elements";
         projectileElements = "no elements";
         modelingID = "no ID";
+        calculatorType = "";
         this.directoryPath = directoryPath;
         try{
             new File(directoryPath+File.separator+"ISInCa").mkdir();

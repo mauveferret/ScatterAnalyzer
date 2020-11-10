@@ -4,6 +4,7 @@ import ru.mauveferret.ParticleInMatterCalculator;
 import ru.mauveferret.ScatterColorMap;
 import java.awt.*;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 public class AngleMap extends Dependence {
 
@@ -19,8 +20,15 @@ public class AngleMap extends Dependence {
         mapArrayXsize = (int) Math.ceil(360/dPhi)+1;
         mapArrayYsize = (int) Math.ceil(90/dTheta)+1;
         endOfPath="_dphi "+dPhi+"_dTheta"+dTheta+".txt";
+    }
+
+    @Override
+    public void initializeArrays(ArrayList<String> elements) {
+        headerComment = calculator.createHeader();
         String addheaderComment = " dPhi "+dPhi+" degrees dTheta "+dTheta+" degrees ";
         headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.LINE_LENGTH)+"\n";
+        headerComment= "Angle dN/dOmega "+"\n"+"degrees  particles \n\n"+headerComment+"\n";
+        super.initializeArrays(elements);
     }
 
     public  void check (PolarAngles angles, String someSort, String element)

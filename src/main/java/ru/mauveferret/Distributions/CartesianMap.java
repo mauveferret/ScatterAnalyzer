@@ -3,6 +3,7 @@ package ru.mauveferret.Distributions;
 import ru.mauveferret.ParticleInMatterCalculator;
 
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 public class CartesianMap extends Dependence {
 
@@ -29,9 +30,7 @@ public class CartesianMap extends Dependence {
         endOfPath="MAP OF "+mapType+" for "+sort+" delta "+delta+".txt";
         mapArrayXsize = (int) Math.ceil(size/delta)+10;
         mapArrayYsize = (int) Math.ceil(size/delta)+10;
-        String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+ depName;
-        headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.LINE_LENGTH)+"\n";
-    }
+          }
 
     public CartesianMap(double delta, int size, String mapType, String sort, ParticleInMatterCalculator calculator) {
         super(calculator, sort);
@@ -47,8 +46,15 @@ public class CartesianMap extends Dependence {
         endOfPath="MAP OF "+mapType+" for "+sort+" delta "+delta+".txt";
         mapArrayXsize = (int) Math.ceil(size/delta)+10;
         mapArrayYsize = (int) Math.ceil(size/delta)+10;
+    }
+
+    @Override
+    public void initializeArrays(ArrayList<String> elements) {
+        headerComment = calculator.createHeader();
         String addheaderComment = " delta "+delta+" Angstrom sort "+sort+" type "+ depName;
         headerComment +=calculator.createLine(addheaderComment)+"*".repeat(calculator.LINE_LENGTH)+"\n";
+        headerComment= "Angle dN/dOmega "+"\n"+"degrees  particles \n\n"+headerComment+"\n";
+        super.initializeArrays(elements);
     }
 
 

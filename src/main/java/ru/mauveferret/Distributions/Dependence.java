@@ -13,8 +13,8 @@ public abstract class Dependence {
     protected final String fileSep = File.separator;
     //FIXME move to calculator -> to xml
     final String columnSeparatorInLog = " ";
-    final ParticleInMatterCalculator calculator;
-    final String depName;
+     public ParticleInMatterCalculator calculator;
+    public String depName;
 
     //flags
     boolean doVisualisation;
@@ -28,14 +28,14 @@ public abstract class Dependence {
 
 
     //array for different dependencies types (distribution, function, map, 2variables function)
-    String depType;
+    public String depType;
     ArrayList<String> elements;
-    HashMap<String, double[]> distributionArray;
-    protected int distributionSize;
+    public HashMap<String, double[]> distributionArray;
+    public int distributionSize;
 
-    HashMap<String, double[][]> mapArray;
-    protected int mapArrayXsize;
-    protected int mapArrayYsize;
+    public HashMap<String, double[][]> mapArray;
+    public int mapArrayXsize;
+    public int mapArrayYsize;
 
 
     public Dependence(ParticleInMatterCalculator calculator, String sort) {
@@ -44,7 +44,6 @@ public abstract class Dependence {
         this.sort = sort;
         this.doVisualisation = calculator.doVizualization;
         depName = this.getClass().getSimpleName().toLowerCase();
-        headerComment = calculator.createHeader();
     }
 
     public void initializeArrays(ArrayList<String> elements){
