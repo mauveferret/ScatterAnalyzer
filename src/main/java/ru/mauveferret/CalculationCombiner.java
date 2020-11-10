@@ -19,14 +19,18 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
         super(directoryPath, false);
         this.calculators = calculators;
         elementsList = new ArrayList<>();
-        LINE_LENGTH = 170;
+        LINE_LENGTH = 150;
     }
 
     public boolean combine(){
         try{
             combineCalculatorsVariables();
+            initializeCalcVariables();
             generateDependencies();
             combineDependencies();
+            combineCalcConstants();
+            finishCalcVariables();
+            printAndVisualizeData(dependencies);
             return  true;
         }
         catch (Exception e){
@@ -37,12 +41,11 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
 
     private void combineCalculatorsVariables (){
         projectileElements = "";
-        String sProjectileMaxEnergy = "";
-        String sProjectileIncidentPolarAngle = "";
-        String sProjectileIncidentAzimuthAngle = "";
+
         projectileAmount = 0;
         targetElements = "";
         calcTime = 0;
+        modelingID = "COMBO"+((int) (Math.random()*10000));
         for (ParticleInMatterCalculator calculator: calculators){
             if (!calculatorType.contains(calculator.calculatorType)) calculatorType+=calculator.calculatorType+";";
             projectileElements+=calculator.projectileElements+";";
@@ -55,7 +58,11 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
                 if (!elementsList.contains(element)) elementsList.add(element);
             }
             calcTime+=calculator.calcTime;
-            System.out.println("        [COMBINER] found new calc: "+calculator.modelingID);
+            System.out.println("        [COMBINER] "+modelingID+" found new calc: "+calculator.modelingID);
+        }
+        for (ParticleInMatterCalculator calculator: calculators){
+            //FIXME maybe you calculate incorrect energy recoil for summ!!!!!
+            projectileMaxEnergy=calculator.projectileMaxEnergy*calculator.projectileAmount/projectileAmount;
         }
         //to remove "," from the end
         calculatorType = calculatorType.substring(0, calculatorType.length()-1);
@@ -66,7 +73,6 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
         sProjectileIncidentAzimuthAngle = sProjectileIncidentAzimuthAngle.
                 substring(0,sProjectileIncidentAzimuthAngle.length()-1);
         if (targetElements.contains(";")) targetElements = targetElements.substring(0, targetElements.length()-1);
-        initializeCalcVariables();
     }
 
     private void generateDependencies (){
@@ -127,6 +133,25 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private void combineCalcConstants(){
+        for (ParticleInMatterCalculator calculator: calculators){
+            for (String element: elementsList){
+                try {
+                    particleCount+=calculator.particleCount;
+                    scattered.put(element, scattered.get(element) + calculator.scattered.get(element) * calculator.projectileAmount);
+                    sputtered.put(element, sputtered.get(element) + calculator.sputtered.get(element) * calculator.projectileAmount);
+                    implanted.put(element, implanted.get(element) + calculator.implanted.get(element) * calculator.projectileAmount);
+                    transmitted.put(element, transmitted.get(element) + calculator.transmitted.get(element) * calculator.projectileAmount);
+                    displaced.put(element, displaced.get(element) + calculator.displaced.get(element) * calculator.projectileAmount);
+                    energyRecoil.put(element, energyRecoil.get(element)+calculator.energyRecoil.get(element)*
+                            calculator.projectileMaxEnergy*calculator.projectileAmount);
+                }
+                catch (Exception ignored){} //FIXME some scattered of one calc dont have scattered of another
+
             }
         }
     }

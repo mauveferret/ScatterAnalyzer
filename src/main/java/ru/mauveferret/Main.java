@@ -21,6 +21,10 @@ public class Main  {
                     break;
                     case "-g": GUI.main(args);
                     break;
+                    case "-h":
+                        System.out.println("-g - GUI mode;\n-c - console mode, needs second argument - path to xml " +
+                                "config file; \n -v - print version of JVM and this code; \n -h - this message");
+                    break;
                 }
             }
             catch (Exception e){
@@ -31,7 +35,7 @@ public class Main  {
     }
 
     public static String getVersion(){
-        String version = "2020.3.6";
+        String version = "2020.4.0";
         return  version;
     }
 

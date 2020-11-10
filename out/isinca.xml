@@ -4,6 +4,7 @@
 	    <getTXT>false</getTXT>
         <getSummary>true</getSummary>
         <visualize>false</visualize>
+        <combine>true</combine>
     </pref>
     <calcs>
         <!-- First "calc" params can be used for other
@@ -18,7 +19,21 @@
           for <calc> 2, you have to rewrite it in <calc> 3 -->
 
         <calc id="0">
-            <dir>Ne_Fe</dir>
+            <!-- In <calc> section several <dir> are allowed. All
+            of them will be calculated with common parameters
+            discribed in this <calc> section (or default  of there
+            are no parameters). In Addition, if the <combine> is set "true"
+            or if it is not presented in <pref> section, then calcs for
+            all dirs in one <calc> will be additionally combined in parent
+            dir to the first <dir> in <calc>. It can be usefull if your
+            model (like SCATTER) doesn't support multicomponent beams or
+            beams with some energy/angle distribution. In this way you provide
+            separate calcs and then combine them with <combine> flag in ISInCa
+            -->
+            <dir>D,T_FeCrNiTi10keV0deg4750k</dir>
+            <dir>D,T_FeCrNiTi20keV0deg500k</dir>
+            <dir>D_FeCrNiTi8keV0deg2375k</dir>
+            <dir>H,D_FeCrNiTi20keV45deg2,5M</dir>
             <N_E>
                 <!-- params <delta> and <theta> have default values
                 for <N_E>. delta = (incident particles energy)/100,
@@ -49,5 +64,14 @@
 		<calc id="1">
 			<dir>Cs_Ni</dir>
 		</calc>
+        <calc>
+            <dir>Cs_Ge</dir>
+            <N_Theta>
+                <sort>BS</sort>
+                <phi>0</phi>
+                <deltaPhi>5</deltaPhi>
+                <deltaTheta>5</deltaTheta>
+            </N_Theta>
+        </calc>
     </calcs>
 </ISInCa>

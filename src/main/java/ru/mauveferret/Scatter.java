@@ -155,6 +155,7 @@ public class Scatter extends ParticleInMatterCalculator {
             reader.close();
 
             finishCalcVariables();
+            finishTime();
 
         }
         catch (Exception e)

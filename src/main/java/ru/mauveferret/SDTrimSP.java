@@ -283,6 +283,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             }
 
             finishCalcVariables();
+            finishTime();
 
 
         } catch (Exception e){

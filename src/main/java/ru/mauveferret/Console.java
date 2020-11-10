@@ -1,6 +1,7 @@
 package ru.mauveferret;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import ru.mauveferret.Distributions.*;
@@ -22,9 +23,12 @@ public class Console {
     private double thetaNE, phiNE, phiNTheta, deltaNE, deltaPhiNE, deltaThetaNE, deltaPhiNTheta, deltaThetaNTheta, deltaPolarMap, deltaCartesianMap, MapSize;
     private String  sortNE, sortNTheta, sortPolarMap, sortCartesianMap, cartesianMapType;
     //Preferences
-    private boolean getTXT, getSummary, visualize;
+    private boolean getTXT, getSummary, visualize, combine;
     //local
     private final int LINE_LENGTH = 80;
+
+    ArrayList<Thread> calculationThreads;
+    ArrayList<CalculationCombiner> combiners;
 
 
 
@@ -46,6 +50,7 @@ public class Console {
             getTXT = false;
             getSummary = true;
             visualize = false;
+            combine = true;
             // N_E
             sortNE = "B";
             deltaNE = 100;
@@ -95,34 +100,34 @@ public class Console {
             NodeList calcs = root.item(1).getChildNodes();
 
             System.out.println("[ISInCa] Started postprocessing files...");
-            ArrayList<Thread> threads = new ArrayList<>();
 
-
+            calculationThreads = new ArrayList<>();
+            combiners = new ArrayList<>();
 
             //create threads
             for (int i = 0; i < calcs.getLength(); i++) {
                 try {
-                    threads.add(runCalc(calcs.item(i), calcs.item(0)));
+                    loadCalc(calcs.item(i), calcs.item(0));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
             //run threads
-            for (Thread thread : threads) {
+            for (Thread thread : calculationThreads) {
                 thread.start();
                 System.out.println("[ISInCa] Thread " + thread.getName() + " is STARTED");
             }
 
             int i = 1;
             double start = System.currentTimeMillis();
-            for (Thread thread : threads) {
+            for (Thread thread : calculationThreads) {
                try {
                    thread.join();
                }
                catch (Exception e){}
                 System.out.println("___________________");
-                System.out.println("PROGRESS: " + i * 100 / threads.size() + "%");
+                System.out.println("PROGRESS: " + i * 100 / calculationThreads.size() + "%");
                 System.out.println("-------------------");
                 double newTime = (((double) System.currentTimeMillis()) - start) / ((double) 60000);
                 System.out.println("time for " + thread.getName() + " : " +
@@ -131,14 +136,18 @@ public class Console {
                 i++;
             }
 
+            //do combine section
+            if (combine) for (CalculationCombiner combiner: combiners) {
+                if (combiner.combine()) System.out.println("        [COMBINER] "+combiner.modelingID+" succeed!");
+            }
+
             System.out.println();
-            System.out.println("Finished! Good bye, my lord :)");
+            System.out.println("[ISInCa] Finished! Good bye, my lord :)");
 
         }
         catch (Exception e){
             //System.out.println("[ISInCa] file not found exception: "+e.getLocalizedMessage());
         }
-
 
     }
 
@@ -199,6 +208,8 @@ public class Console {
                 case "getsummary": getSummary = prefs.item(i).getTextContent().equals("true");
                 break;
                 case "visualize": visualize = prefs.item(i).getTextContent().equals("true");
+                break;
+                case "combine": combine =  prefs.item(i).getTextContent().equals("true");
             }
         }
     }
@@ -206,143 +217,163 @@ public class Console {
 
 
 
-    private Thread runCalc(Node calc, Node zeroCalc) {
+    private void loadCalc(Node calc, Node zeroCalc) {
 
-        String dir = "";
-        String calcType = "not found";
-        dir = calc.getChildNodes().item(0).getTextContent()+"";
-        if (!dir.startsWith(File.separator)) dir = File.separator+dir;
-        dir = fullpath + dir;
 
-        File file = new File(dir);
-        if (!file.exists() || !file.isDirectory()) {
-            System.out.println("[ISInCa] wrong path: "+dir);
-            return null;
-        }
+        NodeList dirs = ((Element) calc).getElementsByTagName("dir");
+        String combinerDir = "";
+        boolean isCombinerModeEnabled = dirs.getLength()>1;
+        ArrayList<ParticleInMatterCalculator> calculatorsForCombiner = new ArrayList<>();
 
-        ParticleInMatterCalculator yourCalculator = new Scatter(dir, visualize);
-        String initialize = yourCalculator.initializeModelParameters();
-        if (!initialize.equals("OK")) {
-            yourCalculator = new TRIM(dir, visualize);
-            initialize = yourCalculator.initializeModelParameters();
-            if (!initialize.equals("OK")) {
-                yourCalculator = new SDTrimSP(dir, visualize,getSummary);
-                initialize = yourCalculator.initializeModelParameters();
+        for (int someDir=0; someDir<dirs.getLength(); someDir++){
+
+            try {
+
+                String calcType = "not found";
+                String dir = dirs.item(someDir).getTextContent();
+                if (!dir.startsWith(File.separator)) dir = File.separator + dir;
+                File file = new File(dir);
+                if (!file.exists() || !file.isDirectory())  dir = fullpath + dir;
+                file = new File(dir);
+                if (!file.exists() || !file.isDirectory()) {
+                    System.out.println("[ISInCa] wrong path: " + dir);
+                    throw new Exception();
+                }
+                combinerDir = file.getParent();
+
+                ParticleInMatterCalculator yourCalculator = new Scatter(dir, visualize);
+                String initialize = yourCalculator.initializeModelParameters();
                 if (!initialize.equals("OK")) {
-                    System.out.println("ERROR: for id"+calc.getAttributes().item(0).getTextContent()+" get wrong path: " + dir);
-                } else calcType = "SDTrimSP";
-            } else calcType = "TRIM";
-        } else calcType = "SCATTER";
-
-        System.out.println("**********************************************************");
-        System.out.println(dir);
-        System.out.println("Thread: "+calc.getChildNodes().item(0).getTextContent()+" calc type "+calcType);
-        System.out.println("***********************************************************");
-
-        ArrayList<Dependence> distributions = new ArrayList<>();
-
-
-        NodeList distrs = (calc.getChildNodes().getLength()>1) ? calc.getChildNodes() : zeroCalc.getChildNodes();
-
-            for (int i = 0; i < distrs.getLength(); i++) {
-
-                NodeList distrPars = distrs.item(i).getChildNodes();
-
-                switch (distrs.item(i).getNodeName()) {
-
-                    case "N_E": {
-                        deltaNE = yourCalculator.projectileMaxEnergy / 100;
-                        thetaNE = yourCalculator.projectileIncidentPolarAngle;
-
-                        for (int j = 0; j < distrPars.getLength(); j++) {
-                            switch (distrPars.item(j).getNodeName().toLowerCase()) {
-                                case "sort":
-                                    sortNE = distrPars.item(j).getTextContent();
-                                    break;
-                                case "theta":
-                                    thetaNE = Double.parseDouble(distrPars.item(j).getTextContent());
-                                    break;
-                                case "phi":
-                                    phiNE = Double.parseDouble(distrPars.item(j).getTextContent());
-                                    break;
-                                case "delta":
-                                    deltaNE = Double.parseDouble(distrPars.item(j).getTextContent());
-                                    break;
-                                case "deltatheta":
-                                    deltaThetaNE = Double.parseDouble(distrPars.item(j).getTextContent());
-                                    break;
-                                case "deltaphi":
-                                    deltaPhiNE = Double.parseDouble(distrPars.item(j).getTextContent());
-                                    break;
+                    yourCalculator = new TRIM(dir, visualize);
+                    initialize = yourCalculator.initializeModelParameters();
+                    if (!initialize.equals("OK")) {
+                        yourCalculator = new SDTrimSP(dir, visualize, getSummary);
+                        initialize = yourCalculator.initializeModelParameters();
+                        if (!initialize.equals("OK")) {
+                            {
+                                System.out.println("ERROR: for id" + calc.getAttributes().item(0).getTextContent() + " get wrong path: " + dir);
+                                throw new Exception();
                             }
-                        }
-                        distributions.add(new Energy(deltaNE, phiNE, deltaPhiNE, thetaNE, deltaThetaNE, sortNE, yourCalculator));
-                    }
-                    break;
-                    case "N_Theta": {
-                        for (int j = 0; j < distrPars.getLength(); j++) {
-                            switch (distrPars.item(j).getNodeName().toLowerCase()) {
-                                case "sort":
-                                    sortNTheta = distrPars.item(j).getTextContent();
-                                    break;
-                                case "deltatheta":
-                                    deltaThetaNTheta = Double.parseDouble(distrPars.item(j).getTextContent());
-                                    break;
-                                case "phi":
-                                    phiNTheta = Double.parseDouble(distrPars.item(j).getTextContent());
-                                    break;
-                                case "deltaphi":
-                                    deltaPhiNTheta = Double.parseDouble(distrPars.item(j).getTextContent());
+                        } else calcType = "SDTrimSP";
+                    } else calcType = "TRIM";
+                } else calcType = "SCATTER";
+
+                System.out.println("**********************************************************");
+                System.out.println(dir);
+                System.out.println("Thread: " + calc.getChildNodes().item(0).getTextContent() + " calc type " + calcType);
+                System.out.println("***********************************************************");
+
+                ArrayList<Dependence> distributions = new ArrayList<>();
+
+                NodeList distrs = (calc.getChildNodes().getLength() > 1) ? calc.getChildNodes() : zeroCalc.getChildNodes();
+
+                for (int i = 0; i < distrs.getLength(); i++) {
+
+                    NodeList distrPars = distrs.item(i).getChildNodes();
+
+                    switch (distrs.item(i).getNodeName()) {
+
+                        case "N_E": {
+                            deltaNE = yourCalculator.projectileMaxEnergy / 100;
+                            thetaNE = yourCalculator.projectileIncidentPolarAngle;
+
+                            for (int j = 0; j < distrPars.getLength(); j++) {
+                                switch (distrPars.item(j).getNodeName().toLowerCase()) {
+                                    case "sort":
+                                        sortNE = distrPars.item(j).getTextContent();
+                                        break;
+                                    case "theta":
+                                        thetaNE = Double.parseDouble(distrPars.item(j).getTextContent());
+                                        break;
+                                    case "phi":
+                                        phiNE = Double.parseDouble(distrPars.item(j).getTextContent());
+                                        break;
+                                    case "delta":
+                                        deltaNE = Double.parseDouble(distrPars.item(j).getTextContent());
+                                        break;
+                                    case "deltatheta":
+                                        deltaThetaNE = Double.parseDouble(distrPars.item(j).getTextContent());
+                                        break;
+                                    case "deltaphi":
+                                        deltaPhiNE = Double.parseDouble(distrPars.item(j).getTextContent());
+                                        break;
+                                }
                             }
+                            distributions.add(new Energy(deltaNE, phiNE, deltaPhiNE, thetaNE, deltaThetaNE, sortNE, yourCalculator));
                         }
-                        distributions.add(new Polar(phiNTheta, deltaPhiNTheta, deltaThetaNTheta, sortNTheta, yourCalculator));
-                    }
-                    break;
-                    case "polar_Map": {
-                        for (int j = 0; j < distrPars.getLength(); j++) {
-                            switch (distrPars.item(j).getNodeName().toLowerCase()) {
-                                case "sort":
-                                    sortPolarMap = distrPars.item(j).getTextContent();
-                                    break;
-                                case "delta":
-                                    deltaPolarMap = Double.parseDouble(distrPars.item(j).getTextContent());
-                                    break;
+                        break;
+                        case "N_Theta": {
+                            for (int j = 0; j < distrPars.getLength(); j++) {
+                                switch (distrPars.item(j).getNodeName().toLowerCase()) {
+                                    case "sort":
+                                        sortNTheta = distrPars.item(j).getTextContent();
+                                        break;
+                                    case "deltatheta":
+                                        deltaThetaNTheta = Double.parseDouble(distrPars.item(j).getTextContent());
+                                        break;
+                                    case "phi":
+                                        phiNTheta = Double.parseDouble(distrPars.item(j).getTextContent());
+                                        break;
+                                    case "deltaphi":
+                                        deltaPhiNTheta = Double.parseDouble(distrPars.item(j).getTextContent());
+                                }
                             }
+                            distributions.add(new Polar(phiNTheta, deltaPhiNTheta, deltaThetaNTheta, sortNTheta, yourCalculator));
                         }
-                        distributions.add(new AngleMap(deltaPolarMap, deltaPolarMap, sortPolarMap, yourCalculator));
-                    }
-                    break;
-                    case "cartesianmap": {
-                        for (int j = 0; j < distrPars.getLength(); j++) {
-                            switch (distrPars.item(j).getNodeName().toLowerCase()) {
-                                case "sort":
-                                    sortCartesianMap = distrPars.item(j).getTextContent();
-                                    break;
-                                case "mapsize":
-                                    MapSize = Double.parseDouble(distrPars.item(j).getTextContent());
-                                    break;
-                                case "delta":
-                                    deltaCartesianMap = Double.parseDouble(distrPars.item(j).getTextContent());
-                                    break;
-                                case "cartesianmaptype":
-                                    cartesianMapType = distrPars.item(j).getTextContent();
+                        break;
+                        case "polar_Map": {
+                            for (int j = 0; j < distrPars.getLength(); j++) {
+                                switch (distrPars.item(j).getNodeName().toLowerCase()) {
+                                    case "sort":
+                                        sortPolarMap = distrPars.item(j).getTextContent();
+                                        break;
+                                    case "delta":
+                                        deltaPolarMap = Double.parseDouble(distrPars.item(j).getTextContent());
+                                        break;
+                                }
                             }
+                            distributions.add(new AngleMap(deltaPolarMap, deltaPolarMap, sortPolarMap, yourCalculator));
                         }
-                        distributions.add(new CartesianMap(deltaCartesianMap, cartesianMapType, sortCartesianMap, yourCalculator));
+                        break;
+                        case "cartesianmap": {
+                            for (int j = 0; j < distrPars.getLength(); j++) {
+                                switch (distrPars.item(j).getNodeName().toLowerCase()) {
+                                    case "sort":
+                                        sortCartesianMap = distrPars.item(j).getTextContent();
+                                        break;
+                                    case "mapsize":
+                                        MapSize = Double.parseDouble(distrPars.item(j).getTextContent());
+                                        break;
+                                    case "delta":
+                                        deltaCartesianMap = Double.parseDouble(distrPars.item(j).getTextContent());
+                                        break;
+                                    case "cartesianmaptype":
+                                        cartesianMapType = distrPars.item(j).getTextContent();
+                                }
+                            }
+                            distributions.add(new CartesianMap(deltaCartesianMap, cartesianMapType, sortCartesianMap, yourCalculator));
+                        }
+                        break;
                     }
-                    break;
+
+                    if (getTXT) distributions.add(new getTXT(yourCalculator, ""));
                 }
 
-                if (getTXT) distributions.add(new getTXT(yourCalculator, ""));
+                final ParticleInMatterCalculator calculator = yourCalculator;
+                Thread newCalculation = new Thread(() -> {
+                    calculator.postProcessCalculatedFiles(distributions);
+                    calculator.printAndVisualizeData(distributions);
+                });
+                newCalculation.setName(calc.getChildNodes().item(0).getTextContent());
+                calculationThreads.add(newCalculation);
+                calculatorsForCombiner.add(calculator);
             }
+            catch (Exception ignored){}
+        }
 
-        final ParticleInMatterCalculator calculator = yourCalculator;
-        Thread newCalculation = new Thread(() -> {
-            calculator.postProcessCalculatedFiles(distributions);
-            calculator.printAndVisualizeData(distributions);
-        });
-        newCalculation.setName(calc.getChildNodes().item(0).getTextContent());
-        return newCalculation;
+        if (isCombinerModeEnabled) combiners.add(new CalculationCombiner(combinerDir, calculatorsForCombiner));
+
+        //return newCalculation;
     }
 
     private String createLine1(String line){

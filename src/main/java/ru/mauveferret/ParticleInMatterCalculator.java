@@ -36,6 +36,11 @@ public abstract class ParticleInMatterCalculator{
     public double projectileIncidentPolarAngle;
     public double projectileIncidentAzimuthAngle;
 
+    //specially for header in logs, for Combiner calculator mostly, where you need to print several energies and angles
+    String sProjectileMaxEnergy = "";
+    String sProjectileIncidentPolarAngle = "";
+    String sProjectileIncidentAzimuthAngle = "";
+
     public int projectileAmount;
     public String projectileElements;
     public String[] elements; //without "all"
@@ -93,7 +98,9 @@ public abstract class ParticleInMatterCalculator{
             displaced.put(element, displaced.get(element) / projectileAmount);
             energyRecoil.put(element,energyRecoil.get(element) / (projectileMaxEnergy * projectileAmount));
         }
+    }
 
+    void finishTime(){
         calcTime =System.currentTimeMillis()- calcTime;
         calcTime = calcTime /((double) 60000);
     }
@@ -156,10 +163,16 @@ public abstract class ParticleInMatterCalculator{
         String calc = "Calculated with "+calculatorType+". ISInCa postprocessing id "+modelingID;
         String  calc2 = "Postprocessing started at "+formatter.format(date)+ ". Main input parameters:";
 
-        String beam =projectileElements+" beam with E0 = "+projectileMaxEnergy+" eV ";
+        if (sProjectileMaxEnergy.equals("") && sProjectileIncidentPolarAngle.equals("")){
+            sProjectileMaxEnergy = projectileMaxEnergy+"";
+            sProjectileIncidentPolarAngle = projectileIncidentPolarAngle+"";
+            sProjectileIncidentAzimuthAngle = projectileIncidentAzimuthAngle+"";
+        }
+
+        String beam =projectileElements+" beam with E0 = "+sProjectileMaxEnergy+" eV ";
         if (projectileIncidentPolarAngle<0) beam+="with some polar angles distribution";
-        else beam+="at polar angle "+projectileIncidentPolarAngle+" degrees from normal";
-        String beam2 = "azimuth angle "+projectileIncidentAzimuthAngle+" degrees with doze "+projectileAmount+" particles";
+        else beam+="at polar angle "+sProjectileIncidentPolarAngle+" degrees from normal";
+        String beam2 = "azimuth angle "+sProjectileIncidentAzimuthAngle+" degrees with doze "+projectileAmount+" particles";
         String target = "target of "+targetElements;
         headerComment=name+createLine(author)+"*".repeat(LINE_LENGTH)+"\n"+createLine(calc)+createLine(calc2);
         headerComment+=createLine(beam)+createLine(beam2)+createLine(target)+"*".repeat(LINE_LENGTH)+"\n";

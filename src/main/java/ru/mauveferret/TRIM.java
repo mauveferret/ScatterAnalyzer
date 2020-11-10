@@ -161,6 +161,7 @@ public class TRIM extends ParticleInMatterCalculator{
             }
             br.close();
             finishCalcVariables();
+            finishTime();
 
         } catch (Exception e){
             e.printStackTrace();
