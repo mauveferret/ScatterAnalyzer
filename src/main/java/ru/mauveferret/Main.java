@@ -35,7 +35,7 @@ public class Main  {
     }
 
     public static String getVersion(){
-        String version = "2020.4.0";
+        String version = "2020.4.1";
         return  version;
     }
 
