@@ -181,6 +181,8 @@ public abstract class ParticleInMatterCalculator{
     }
 
     public String createLine(String line){
+        //in order not to get "Illegal argument exception"
+        if (LINE_LENGTH-line.length()<0) LINE_LENGTH=line.length()+2;
         int spaces = (LINE_LENGTH -line.length())/2;
         return "*"+" ".repeat(spaces-1)+line+" ".repeat(spaces-1)+((((LINE_LENGTH -line.length())%2)==0) ? "" : " ")+"*\n";
     }
