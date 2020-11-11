@@ -10,8 +10,10 @@ public class Main  {
         {
             try {
                 switch (args[0]){
+                    case "-config":
                     case "-c": new Console(args);
                     break;
+                    case "-version":
                     case "-v": {
                         System.out.println("[ISInCa] Java Virtual Machine current version: "+
                                 System.getProperty("java.version"));
@@ -19,8 +21,9 @@ public class Main  {
                         System.out.println("[ISInCa] check updates at https://github.com/mauveferret/ISInCa ");
                     }
                     break;
-                    case "-g": GUI.main(args);
+                    case "-gui": GUI.main(args);
                     break;
+                    case "-help":
                     case "-h":
                         System.out.println("-g - GUI mode;\n-c - console mode, needs second argument - path to xml " +
                                 "config file; \n -v - print version of JVM and this code; \n -h - this message");
@@ -35,7 +38,7 @@ public class Main  {
     }
 
     public static String getVersion(){
-        String version = "2020.4.1";
+        String version = "2020.4.2";
         return  version;
     }
 

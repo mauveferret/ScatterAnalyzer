@@ -1,6 +1,6 @@
-package ru.mauveferret;
+package ru.mauveferret.Calcuators;
 
-import ru.mauveferret.Distributions.*;
+import ru.mauveferret.Dependencies.*;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -11,13 +11,13 @@ public class Scatter extends ParticleInMatterCalculator {
 
     String dataPath;
 
-    Scatter(String directoryPath, boolean doVizualization) {
+    public Scatter(String directoryPath, boolean doVizualization) {
         super(directoryPath, doVizualization);
         dataPath = "";
     }
 
     @Override
-    String initializeModelParameters() {
+    public String initializeModelParameters() {
         calculatorType = "SCATTER";
         File dataDirectory = new File(directoryPath);
         if (dataDirectory.isDirectory()){
@@ -82,7 +82,7 @@ public class Scatter extends ParticleInMatterCalculator {
     }
 
     @Override
-    void postProcessCalculatedFiles(ArrayList<Dependence> distributions) {
+    public void postProcessCalculatedFiles(ArrayList<Dependence> distributions) {
 
         //FIXME initializeArrays of dependencies
 

@@ -1,11 +1,9 @@
 # ISInCa - Ion Surface Interaction Calculator
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 
 ISInCA - is a small JAVA tool dedicated to postprocess *[`SCATTER`](https://www.sciencedirect.com/science/article/pii/S0042207X00001366)*, *[`TRIM`](http://www.srim.org/)*, *[`SDTrimSP`](http://www2.ipp.mpg.de/~stel/SDTrimSP.html)* calculations. It is planned to gradually widen the list of the supported codes (like TRYDIN, MARLOWE and so on).
-[![N|Solid](https://i.ibb.co/0cQrTDm/Croco-Logo.png)](https://dobrynja.livejournal.com/38140.html). 
+
+[![N|Solid](https://i.ibb.co/0cQrTDm/Croco-Logo.png)](https://dobrynja.livejournal.com/38140.html).
+ 
 # Basic outputs
 
 Listed codes are created for investigation of particles with surface analysis. Usually you can set some beam parameters (like mass/angle/energy distribution, doze) and the target composition (and a relief for some exotic codes). Usually such codes generate single or several files, containing tables with scattered, sputtered, transmitted, displaced particles with data on their position, motion direction, sort, energy, pathlength etc. ISInCa code can transform this huge (up to hundreds of GB) data files to familiar and easy for analysis distributions. In this way, it can calculate:

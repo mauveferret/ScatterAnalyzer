@@ -1,4 +1,4 @@
-package ru.mauveferret.Distributions;
+package ru.mauveferret.Dependencies;
 
 public class PolarAngles {
 

@@ -1,9 +1,8 @@
-package ru.mauveferret;
+package ru.mauveferret.Calcuators;
 
-import ru.mauveferret.Distributions.Dependence;
+import ru.mauveferret.Dependencies.Dependence;
 
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
 
 public class CalculationCombiner extends ParticleInMatterCalculator {
 
@@ -157,12 +156,12 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
     }
 
     @Override
-    String initializeModelParameters() {
+    public String initializeModelParameters() {
         return null;
     }
 
     @Override
-    void postProcessCalculatedFiles(ArrayList<Dependence> distributions) {
+    public void postProcessCalculatedFiles(ArrayList<Dependence> distributions) {
 
     }
 }

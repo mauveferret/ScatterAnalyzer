@@ -8,7 +8,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import ru.mauveferret.Distributions.*;
+import ru.mauveferret.Calcuators.ParticleInMatterCalculator;
+import ru.mauveferret.Calcuators.SDTrimSP;
+import ru.mauveferret.Calcuators.Scatter;
+import ru.mauveferret.Calcuators.TRIM;
+import ru.mauveferret.Dependencies.*;
 
 import java.awt.*;
 import java.io.File;

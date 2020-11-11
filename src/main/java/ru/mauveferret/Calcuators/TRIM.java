@@ -1,6 +1,6 @@
-package ru.mauveferret;
+package ru.mauveferret.Calcuators;
 
-import ru.mauveferret.Distributions.*;
+import ru.mauveferret.Dependencies.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ public class TRIM extends ParticleInMatterCalculator{
 
     String dataPath;
 
-    TRIM(String directoryPath, boolean doVizualization) {
+    public TRIM(String directoryPath, boolean doVizualization) {
         super(directoryPath, doVizualization);
         dataPath = "";
 
@@ -19,7 +19,7 @@ public class TRIM extends ParticleInMatterCalculator{
     }
 
     @Override
-    String initializeModelParameters() {
+    public String initializeModelParameters() {
         calculatorType = "TRIM";
         File dataDirectory = new File(directoryPath);
         if (dataDirectory.isDirectory()){
@@ -82,7 +82,7 @@ public class TRIM extends ParticleInMatterCalculator{
     }
 
     @Override
-    void postProcessCalculatedFiles(ArrayList<Dependence> distributions) {
+    public void postProcessCalculatedFiles(ArrayList<Dependence> distributions) {
 
         //FIXME initializeArrays of dependencies
 

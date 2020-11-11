@@ -1,8 +1,8 @@
-package ru.mauveferret.Distributions;
+package ru.mauveferret.Dependencies;
 
 import javafx.application.Platform;
 import ru.mauveferret.GUI;
-import ru.mauveferret.ParticleInMatterCalculator;
+import ru.mauveferret.Calcuators.ParticleInMatterCalculator;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;

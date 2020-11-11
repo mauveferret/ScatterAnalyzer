@@ -1,7 +1,7 @@
-package ru.mauveferret.Distributions;
+package ru.mauveferret.Dependencies;
 
 import javafx.application.Platform;
-import ru.mauveferret.ParticleInMatterCalculator;
+import ru.mauveferret.Calcuators.ParticleInMatterCalculator;
 import ru.mauveferret.PolarChart;
 
 import java.io.FileOutputStream;

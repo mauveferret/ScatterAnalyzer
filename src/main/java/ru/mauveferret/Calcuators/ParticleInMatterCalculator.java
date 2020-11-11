@@ -1,6 +1,7 @@
-package ru.mauveferret;
+package ru.mauveferret.Calcuators;
 
-import ru.mauveferret.Distributions.Dependence;
+import ru.mauveferret.Dependencies.Dependence;
+import ru.mauveferret.Main;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,7 +29,7 @@ public abstract class ParticleInMatterCalculator{
     //like SCATTER, TRIM, SDTrimSP
     public String calculatorType;
     ArrayList<Dependence> dependencies;
-    double calcTime;
+    public double calcTime;
 
     //primary beam
 
@@ -44,17 +45,17 @@ public abstract class ParticleInMatterCalculator{
     public int projectileAmount;
     public String projectileElements;
     public String[] elements; //without "all"
-    ArrayList<String> elementsList; //with "all"
+    public ArrayList<String> elementsList; //with "all"
 
     // target
 
     public String targetElements;
 
     //some scattering variables
-    HashMap<String, Double>  scattered, sputtered, implanted, transmitted, displaced, energyRecoil;
-    double particleCount;
+    public HashMap<String, Double>  scattered, sputtered, implanted, transmitted, displaced, energyRecoil;
+    public double particleCount;
 
-    ParticleInMatterCalculator(String directoryPath, boolean doVizualization) {
+    public ParticleInMatterCalculator(String directoryPath, boolean doVizualization) {
         this.doVizualization = doVizualization;
 
         targetElements = "no elements";
@@ -67,10 +68,10 @@ public abstract class ParticleInMatterCalculator{
         }catch (Exception ignored){}
     }
 
-    abstract String initializeModelParameters();
+    public abstract String initializeModelParameters();
 
 
-    void initializeCalcVariables(){
+    public void initializeCalcVariables(){
         particleCount = 0;
         scattered = new HashMap<>();
         sputtered = new HashMap<>();
@@ -89,7 +90,7 @@ public abstract class ParticleInMatterCalculator{
         }
     }
 
-    void finishCalcVariables(){
+    public void finishCalcVariables(){
         for (String element: elementsList) {
             scattered.put(element, scattered.get(element) / projectileAmount);
             sputtered.put(element, sputtered.get(element) / projectileAmount);
@@ -100,12 +101,12 @@ public abstract class ParticleInMatterCalculator{
         }
     }
 
-    void finishTime(){
+    public void finishTime(){
         calcTime =System.currentTimeMillis()- calcTime;
         calcTime = calcTime /((double) 60000);
     }
 
-    abstract void postProcessCalculatedFiles(ArrayList<Dependence> distributions);
+    public abstract void postProcessCalculatedFiles(ArrayList<Dependence> distributions);
 
     public void printAndVisualizeData(ArrayList<Dependence> distributions){
         for (Dependence distr: distributions){
@@ -139,7 +140,7 @@ public abstract class ParticleInMatterCalculator{
                 summary.write(("energy recoil: " + new BigDecimal(energyRecoil.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
             }
             summary.write(("*".repeat(LINE_LENGTH)+"\n").getBytes());
-            summary.write(("ISInCa version: "+Main.getVersion()+"\n").getBytes());
+            summary.write(("ISInCa version: "+ Main.getVersion()+"\n").getBytes());
             summary.write(("ISInCa calculation time, min: "+new BigDecimal(calcTime).setScale(4, RoundingMode.UP)).getBytes());
             summary.close();
         }

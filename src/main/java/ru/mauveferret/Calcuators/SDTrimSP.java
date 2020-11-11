@@ -1,6 +1,6 @@
-package ru.mauveferret;
+package ru.mauveferret.Calcuators;
 
-import ru.mauveferret.Distributions.*;
+import ru.mauveferret.Dependencies.*;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
     ArrayList<String> particDataPath;
 
-    SDTrimSP(String directoryPath, boolean doVizualization, boolean getSummary) {
+    public SDTrimSP(String directoryPath, boolean doVizualization, boolean getSummary) {
         super(directoryPath, doVizualization);
         this.getSummary = getSummary;
         particDataPath = new ArrayList<>();
@@ -23,7 +23,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
     }
 
     @Override
-    String initializeModelParameters() {
+    public String initializeModelParameters() {
         calculatorType = "SDTrimSP";
         File dataDirectory = new File(directoryPath);
         if (dataDirectory.isDirectory()){
@@ -158,7 +158,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
 
     @Override
-    void postProcessCalculatedFiles(ArrayList<Dependence> dependencies) {
+    public void postProcessCalculatedFiles(ArrayList<Dependence> dependencies) {
 
         //load elements in dependencies
 
