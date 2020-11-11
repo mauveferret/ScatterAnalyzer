@@ -1,5 +1,7 @@
 package ru.mauveferret;
 
+import ru.mauveferret.Generators.SDTrimSPCombineTaskGenerator;
+
 public class Main  {
 
     public static void main(String[] args) {
@@ -28,6 +30,8 @@ public class Main  {
                         System.out.println("-g - GUI mode;\n-c - console mode, needs second argument - path to xml " +
                                 "config file; \n -v - print version of JVM and this code; \n -h - this message");
                     break;
+                    case "-generate":
+                    case "-g": new SDTrimSPCombineTaskGenerator();
                 }
             }
             catch (Exception e){
@@ -38,7 +42,7 @@ public class Main  {
     }
 
     public static String getVersion(){
-        String version = "2020.4.2";
+        String version = "2020.4.3";
         return  version;
     }
 
