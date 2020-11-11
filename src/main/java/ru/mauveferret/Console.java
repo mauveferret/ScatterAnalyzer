@@ -365,7 +365,7 @@ public class Console {
                     calculator.postProcessCalculatedFiles(distributions);
                     calculator.printAndVisualizeData(distributions);
                 });
-                newCalculation.setName(calc.getChildNodes().item(0).getTextContent());
+                newCalculation.setName(dirs.item(someDir).getTextContent());
                 calculationThreads.add(newCalculation);
                 calculatorsForCombiner.add(calculator);
             }
