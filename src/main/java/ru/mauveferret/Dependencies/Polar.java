@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class Polar extends Dependence {
 
-    private final double phi;
-    private final double dPhi;
-    private final double dTheta;
+    public final double phi;
+    public final double dPhi;
+    public final double dTheta;
 
     public Polar(double phi, double dPhi, double dTheta, String sort, ParticleInMatterCalculator calculator) {
         super(calculator, sort);
@@ -58,21 +58,26 @@ public class Polar extends Dependence {
         for (String element: elements) {
             try {
                 FileOutputStream polarWriter = new FileOutputStream(pathsToLog.get(element));
+                //System.out.println(pathsToLog.get(element));
                 String stroka;
                polarWriter.write(headerComments.get(element).getBytes());
+
+               double[] newArray = new double[distributionArray.get(element).length];
+               for (int j=0; j<newArray.length; j++) newArray[j] = distributionArray.get(element)[j];
+
                 for (int i = 0; i <= (int) Math.round(180 / dTheta); i++) {
                     //FIXME Omega angle ?!
                     if (i * dTheta != 90) {
-                        distributionArray.get(element)[i] = distributionArray.get(element)[i] / (Math.toRadians(dPhi) *
+                        newArray[i] = newArray[i] / (Math.toRadians(dPhi) *
                                 Math.sin(Math.toRadians(Math.abs(i * dTheta - 90))));
                     } //we can't divide by zero
                     else {
                         //TODO
-                        distributionArray.get(element)[i] = distributionArray.get(element)[i] / (Math.toRadians(dPhi) *
+                        newArray[i] = newArray[i] / (Math.toRadians(dPhi) *
                                 Math.sin(Math.toRadians(dTheta)));
                     }
                     stroka = ((i * dTheta - 90)) + columnSeparatorInLog
-                            + new BigDecimal(distributionArray.get(element)[i]).setScale(4, RoundingMode.UP) + "\n";
+                            + new BigDecimal(newArray[i]).setScale(4, RoundingMode.UP) + "\n";
                     //FIXME maybe you shoud write it as it is?!
                     if (i * dTheta != 90) polarWriter.write(stroka.getBytes());
                 }

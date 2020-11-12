@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class Dependence {
+public abstract class Dependence implements Cloneable{
 
     final String sort;
     protected final String fileSep = File.separator;
@@ -84,6 +84,10 @@ public abstract class Dependence {
 
     }
 
+    public Dependence clone() throws CloneNotSupportedException{
+
+        return (Dependence) super.clone();
+    }
 
     public void check(){};
     //abstract double[] getSpectrum();

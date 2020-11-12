@@ -22,6 +22,7 @@ public abstract class ParticleInMatterCalculator{
 
     //flags
     public boolean doVizualization, getSummary;
+    String dirSubname = "";
 
     //like SC100432, H_W and etc.
     public String modelingID;
@@ -69,6 +70,18 @@ public abstract class ParticleInMatterCalculator{
     }
 
     public abstract String initializeModelParameters();
+
+    public void setDirSubname(String dirSubname){
+        this.dirSubname = dirSubname;
+    }
+
+    public String getDirSubname(){
+        switch (dirSubname){
+            case "angle": return projectileIncidentPolarAngle+"";
+            case "energy": return projectileMaxEnergy+"";
+        }
+        return "";
+    }
 
 
     public void initializeCalcVariables(){
@@ -128,20 +141,26 @@ public abstract class ParticleInMatterCalculator{
             summary.write((createHeader()+"\n").getBytes());
             summary.write(("Monte-Carlo model: "+calculatorType+"\n").getBytes());
             summary.write(("modeling ID: "+modelingID+"\n").getBytes());
-            summary.write(("Projectile particles counted: "+particleCount+"\n").getBytes());
-            for (String element: elementsList) {
-                summary.write(("*".repeat(LINE_LENGTH)+"\n").getBytes());
-                summary.write(("For "+element+" elements: \n\n").getBytes());
-                summary.write(("backscattered: " + new BigDecimal(scattered.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
-                summary.write(("sputtered: " + new BigDecimal(sputtered.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
-                summary.write(("implanted: " + new BigDecimal(implanted.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
-                summary.write(("transmitted: " + new BigDecimal(transmitted.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
-                summary.write(("displaced: " + new BigDecimal(displaced.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
-                summary.write(("energy recoil: " + new BigDecimal(energyRecoil.get(element)).setScale(4, RoundingMode.UP) + "\n").getBytes());
-            }
-            summary.write(("*".repeat(LINE_LENGTH)+"\n").getBytes());
             summary.write(("ISInCa version: "+ Main.getVersion()+"\n").getBytes());
-            summary.write(("ISInCa calculation time, min: "+new BigDecimal(calcTime).setScale(4, RoundingMode.UP)).getBytes());
+            summary.write(("ISInCa calculation time, min: "+new BigDecimal(calcTime).setScale(4, RoundingMode.UP)+"\n").getBytes());
+            summary.write(("Projectile particles counted: "+particleCount+"\n\n").getBytes());
+            summary.write(("*".repeat(LINE_LENGTH)+"\n").getBytes());
+
+            summary.write((cl("element")+cl("backscattered")+cl("sputtered")+cl("implanted")+
+                            cl("transmitted")+cl("displaced")+cl("energy recoil")+"\n").getBytes());
+            for (String element: elementsList) {
+                //"%-10s %-10s %-10s\n", "osne", "two", "thredsfe"
+
+                summary.write((cl(element)+
+                        cl(new BigDecimal(scattered.get(element)).setScale(4, RoundingMode.UP)+"")+
+                        cl(new BigDecimal(sputtered.get(element)).setScale(4, RoundingMode.UP)+"")+
+                        cl(new BigDecimal(implanted.get(element)).setScale(4, RoundingMode.UP)+"")+
+                        cl(new BigDecimal(transmitted.get(element)).setScale(4, RoundingMode.UP)+"")+
+                        cl(new BigDecimal(displaced.get(element)).setScale(4, RoundingMode.UP)+"")+
+                        cl(new BigDecimal(energyRecoil.get(element)).setScale(4, RoundingMode.UP)+"")+"\n"
+                ).getBytes());
+            }
+
             summary.close();
         }
         catch (Exception e){
@@ -149,6 +168,16 @@ public abstract class ParticleInMatterCalculator{
             return  false;
         }
         return true;
+    }
+
+    int LENGTH = 15;
+    private String cl(String line){
+        line = line.trim();
+        if (line.length()<15) return line+" ".repeat(15-line.length());
+        else {
+            LENGTH = line.length()+5;
+            return cl(line);
+        }
     }
 
     public String createHeader(){

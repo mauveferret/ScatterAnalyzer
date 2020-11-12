@@ -23,6 +23,7 @@ public class Console {
     //params
     private double thetaNE, phiNE, phiNTheta, deltaNE, deltaPhiNE, deltaThetaNE, deltaPhiNTheta, deltaThetaNTheta, deltaPolarMap, deltaCartesianMap, MapSize;
     private String  sortNE, sortNTheta, sortPolarMap, sortCartesianMap, cartesianMapType;
+    private String dirSubname;
     //Preferences
     private boolean getTXT, getSummary, visualize, combine;
     //local
@@ -141,10 +142,6 @@ public class Console {
                 i++;
             }
 
-            //do combine section
-            if (combine) for (CalculationCombiner combiner: combiners) {
-                if (combiner.combine()) System.out.println("        [COMBINER] "+combiner.modelingID+" succeed!");
-            }
 
             //print ANd vizualise data
 
@@ -157,9 +154,19 @@ public class Console {
             for (Thread thread : printandvisualize) {
                 try {
                     thread.join();
+                    System.out.println("[ISInCa] Thread " + thread.getName() + " is logged");
                 }
                 catch (Exception ignored){}
             }
+
+            //do combine section
+            if (combine) for (CalculationCombiner combiner: combiners) {
+                combiner.setDirSubname(dirSubname);
+                if (combiner.combine()) System.out.println("        [COMBINER] "+combiner.modelingID+" succeed!");
+            }
+
+
+
 
             System.out.println();
             System.out.println("[ISInCa] Finished! Good bye, my lord :)");
@@ -230,12 +237,12 @@ public class Console {
                 case "visualize": visualize = prefs.item(i).getTextContent().equals("true");
                 break;
                 case "combine": combine =  prefs.item(i).getTextContent().equals("true");
+                break;
+                case "dirsubname": dirSubname = prefs.item(i).getTextContent();
+                break;
             }
         }
     }
-
-
-
 
     private void loadCalc(Node calc, Node zeroCalc) {
 
@@ -268,6 +275,7 @@ public class Console {
                     initialize = yourCalculator.initializeModelParameters();
                     if (!initialize.equals("OK")) {
                         yourCalculator = new SDTrimSP(dir, visualize, getSummary);
+                        yourCalculator.setDirSubname(dirSubname);
                         initialize = yourCalculator.initializeModelParameters();
                         if (!initialize.equals("OK")) {
                             {
@@ -383,10 +391,13 @@ public class Console {
                 Thread newCalculation = new Thread(() -> {
                     calculator.postProcessCalculatedFiles(distributions);
                 });
+
                 Thread printAndVizualiseThread = new Thread(() -> {
                     calculator.printAndVisualizeData(distributions);
                 });
+
                 newCalculation.setName(dirs.item(someDir).getTextContent());
+                printAndVizualiseThread.setName(dirs.item(someDir).getTextContent());
                 calculationThreads.add(newCalculation);
                 printandvisualize.add(printAndVizualiseThread);
                 calculatorsForCombiner.add(calculator);
@@ -394,7 +405,7 @@ public class Console {
             catch (Exception ignored){}
         }
 
-        if (isCombinerModeEnabled) combiners.add(new CalculationCombiner(combinerDir, calculatorsForCombiner));
+        if (isCombinerModeEnabled && combine) combiners.add(new CalculationCombiner(combinerDir, calculatorsForCombiner));
 
         //return newCalculation;
     }

@@ -1,8 +1,11 @@
 package ru.mauveferret.Calcuators;
 
 import ru.mauveferret.Dependencies.Dependence;
+import ru.mauveferret.Dependencies.Energy;
+import ru.mauveferret.Dependencies.Polar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CalculationCombiner extends ParticleInMatterCalculator {
 
@@ -25,6 +28,11 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
         try{
             combineCalculatorsVariables();
             initializeCalcVariables();
+            modelingID = "COMBO_"+getDirSubname()+"_"+((int) (Math.random()*10000));
+            for (ParticleInMatterCalculator calculator: calculators) {
+
+                System.out.println("        [COMBINER] " + modelingID + " found new calc: " + calculator.modelingID);
+            }
             generateDependencies();
             combineDependencies();
             combineCalcConstants();
@@ -44,11 +52,11 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
         projectileAmount = 0;
         targetElements = "";
         calcTime = 0;
-        modelingID = "COMBO"+((int) (Math.random()*10000));
         for (ParticleInMatterCalculator calculator: calculators){
             if (!calculatorType.contains(calculator.calculatorType)) calculatorType+=calculator.calculatorType+";";
             projectileElements+=calculator.projectileElements+";";
             sProjectileMaxEnergy+=calculator.projectileMaxEnergy+";";
+            projectileIncidentPolarAngle = calculator.projectileIncidentPolarAngle;
             sProjectileIncidentPolarAngle+=calculator.projectileIncidentPolarAngle+";";
             sProjectileIncidentAzimuthAngle+=calculator.projectileIncidentAzimuthAngle+";";
             projectileAmount+=calculator.projectileAmount;
@@ -57,7 +65,7 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
                 if (!elementsList.contains(element)) elementsList.add(element);
             }
             calcTime+=calculator.calcTime;
-            System.out.println("        [COMBINER] "+modelingID+" found new calc: "+calculator.modelingID);
+            //System.out.println("        [COMBINER] "+modelingID+" found new calc: "+calculator.modelingID);
         }
         for (ParticleInMatterCalculator calculator: calculators){
             //FIXME maybe you calculate incorrect energy recoil for summ!!!!!
@@ -76,32 +84,54 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
 
     private void generateDependencies (){
         //random calculator, because they all should have the same deps parameters
-        dependencies = calculators.get(0).dependencies;
-        for (Dependence dep: dependencies){
-            dep.calculator = this;
-            //find the largest arrays
-            for (ParticleInMatterCalculator calculator: calculators){
-                for (Dependence dependence: calculator.dependencies){
-                    if (dep.depName.equals(dependence.depName)){
-                        switch (dep.depType){
-                            case "distribution":
-                                if (dependence.distributionSize>dep.distributionSize){
-                                    dep.distributionSize = dependence.distributionSize;
-                                }
-                                break;
-                            case "map":
-                                if (dependence.mapArrayXsize>dep.mapArrayXsize){
-                                    dep.mapArrayXsize =dependence.mapArrayXsize;
-                                }
-                                if (dependence.mapArrayYsize>dep.mapArrayYsize){
-                                    dep.mapArrayYsize =dependence.mapArrayYsize;
-                                }
-                                break;
+        //dependencies = calculators.get(0).dependencies;
+        dependencies = new ArrayList<>();
+
+        for (Dependence remoteDep: calculators.get(0).dependencies){
+            //FIXME remove this public dPhi, its not secure, try to copy dependencties
+            switch (remoteDep.getDepName()){
+                case "polar":
+                    dependencies.add(new Polar(((Polar) remoteDep).phi, ((Polar) remoteDep).dPhi*2,
+                            ((Polar) remoteDep).dTheta, remoteDep.getSort(), this));
+                    //Никита, это умножение dPhi на 2 уже пиздец какой-то ненормальный
+                break;
+                case "energy": dependencies.add(new Energy(((Energy) remoteDep).dE, ((Energy) remoteDep).phi,
+                        ((Energy) remoteDep).dPhi*2, ((Energy) remoteDep).theta, ((Energy) remoteDep).dTheta*2,
+                        ((Energy) remoteDep).getSort(), this));
+                break;
+            }
+            //FIXME add another
+        }
+
+        for (Dependence dep: dependencies) {
+            try {
+                //find the largest arrays
+                for (ParticleInMatterCalculator calculator : calculators) {
+                    for (Dependence dependence : calculator.dependencies) {
+                        if (dep.depName.equals(dependence.depName)) {
+                            switch (dep.depType) {
+                                case "distribution":
+                                    if (dependence.distributionSize > dep.distributionSize) {
+                                        dep.distributionSize = dependence.distributionSize;
+                                    }
+                                    break;
+                                case "map":
+                                    if (dependence.mapArrayXsize > dep.mapArrayXsize) {
+                                        dep.mapArrayXsize = dependence.mapArrayXsize;
+                                    }
+                                    if (dependence.mapArrayYsize > dep.mapArrayYsize) {
+                                        dep.mapArrayYsize = dependence.mapArrayYsize;
+                                    }
+                                    break;
+                            }
                         }
                     }
                 }
+
+                dep.initializeArrays(elementsList);
+
             }
-            dep.initializeArrays(elementsList);
+            catch (Exception e){e.printStackTrace();}
         }
     }
 

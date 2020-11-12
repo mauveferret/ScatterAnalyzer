@@ -6,6 +6,7 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Scatter extends ParticleInMatterCalculator {
 
@@ -19,6 +20,8 @@ public class Scatter extends ParticleInMatterCalculator {
     @Override
     public String initializeModelParameters() {
         calculatorType = "SCATTER";
+        elementsList = new ArrayList<>(Arrays.asList(elements));
+        elementsList.add("all");
         File dataDirectory = new File(directoryPath);
         if (dataDirectory.isDirectory()){
             String tscConfig = "";

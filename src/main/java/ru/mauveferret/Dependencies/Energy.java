@@ -11,12 +11,12 @@ import java.util.ArrayList;
 
 public class Energy extends Dependence {
 
-    private final double E0;
-    private final double theta;
-    private final double dTheta;
-    private final double phi;
-    private final double dPhi;
-    private final double dE;
+    public final double E0;
+    public final double theta;
+    public final double dTheta;
+    public final double phi;
+    public final double dPhi;
+    public final double dE;
 
     public Energy(double dE, double phi, double dPhi, double theta, double dTheta, String sort, ParticleInMatterCalculator calculator) {
         super(calculator, sort);
@@ -62,8 +62,11 @@ public class Energy extends Dependence {
 
         for (String element: elements) {
 
-            for (int i = 0; i < distributionArray.get(element).length; i++) {
-                distributionArray.get(element)[i] = distributionArray.get(element)[i] / dE;
+            double[] newArray = new double[distributionArray.get(element).length];
+            for (int j=0; j<newArray.length; j++) newArray[j] = distributionArray.get(element)[j];
+
+            for (int i = 0; i < newArray.length; i++) {
+                newArray[i] = newArray[i] / dE;
             }
 
             try {
@@ -72,7 +75,7 @@ public class Energy extends Dependence {
                 energyWriter.write(headerComments.get(element).getBytes());
                 for (int i = 0; i <= (int) Math.round(E0 / dE); i++) {
                     stroka = i * dE + columnSeparatorInLog
-                            + new BigDecimal(distributionArray.get(element)[i] / dE).
+                            + new BigDecimal(newArray[i] / dE).
                             setScale(4, RoundingMode.UP) + "\n";
                     energyWriter.write(stroka.getBytes());
                 }

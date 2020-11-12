@@ -34,7 +34,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             try {
                 for (File file:  dataDirectory.listFiles()){
                     if (file.getName().contains("tri.inp")){
-                        modelingID = "SDTrimSP"+((int) (Math.random()*10000));
                         tscConfig = file.getAbsolutePath();
                     }
                     if (file.getName().contains("partic")){
@@ -150,6 +149,8 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
         }
         else return dataDirectory.getName()+" is not a directory";
+
+        modelingID = "SDTrimSP_"+getDirSubname()+"_"+((int) (Math.random()*10000));
 
         return "OK";
     }
