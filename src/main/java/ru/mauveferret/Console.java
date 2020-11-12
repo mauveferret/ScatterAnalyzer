@@ -15,6 +15,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Console {
 
@@ -32,6 +33,10 @@ public class Console {
     ArrayList<Thread> calculationThreads;
     ArrayList<Thread> printandvisualize;
     ArrayList<CalculationCombiner> combiners;
+
+    //for cpmbSum
+    ArrayList<String> combElements;
+    boolean combSum = false;
 
 
 
@@ -131,7 +136,7 @@ public class Console {
                try {
                    thread.join();
                }
-               catch (Exception e){}
+               catch (Exception e){e.printStackTrace();}
                 System.out.println("___________________");
                 System.out.println("PROGRESS: " + i * 100 / calculationThreads.size() + "%");
                 System.out.println("-------------------");
@@ -156,8 +161,10 @@ public class Console {
                     thread.join();
                     System.out.println("[ISInCa] Thread " + thread.getName() + " is logged");
                 }
-                catch (Exception ignored){}
+                catch (Exception ignored){ignored.printStackTrace();}
             }
+
+
 
             //do combine section
             if (combine) for (CalculationCombiner combiner: combiners) {
@@ -165,14 +172,16 @@ public class Console {
                 if (combiner.combine()) System.out.println("        [COMBINER] "+combiner.modelingID+" succeed!");
             }
 
-
-
+            if (combSum){
+                new CombSum(combiners, combElements);
+            }
 
             System.out.println();
             System.out.println("[ISInCa] Finished! Good bye, my lord :)");
 
         }
         catch (Exception e){
+            e.printStackTrace();
             //System.out.println("[ISInCa] file not found exception: "+e.getLocalizedMessage());
         }
 
@@ -240,12 +249,19 @@ public class Console {
                 break;
                 case "dirsubname": dirSubname = prefs.item(i).getTextContent();
                 break;
+                case "combsum":
+                    combSum = true;
+                    combElements = new ArrayList<>();
+                   try {
+                       combElements.addAll(Arrays.asList(prefs.item(i).getTextContent().split(",")));
+                   }
+                   catch (Exception e){e.printStackTrace();}
+                break;
             }
         }
     }
 
     private void loadCalc(Node calc, Node zeroCalc) {
-
 
         NodeList dirs = ((Element) calc).getElementsByTagName("dir");
         String combinerDir = "";
@@ -253,7 +269,6 @@ public class Console {
         ArrayList<ParticleInMatterCalculator> calculatorsForCombiner = new ArrayList<>();
 
         for (int someDir=0; someDir<dirs.getLength(); someDir++){
-
             try {
 
                 String calcType = "not found";
@@ -402,7 +417,7 @@ public class Console {
                 printandvisualize.add(printAndVizualiseThread);
                 calculatorsForCombiner.add(calculator);
             }
-            catch (Exception ignored){}
+            catch (Exception ignored){ignored.printStackTrace();}
         }
 
         if (isCombinerModeEnabled && combine) combiners.add(new CalculationCombiner(combinerDir, calculatorsForCombiner));

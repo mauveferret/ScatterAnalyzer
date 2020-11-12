@@ -20,7 +20,8 @@ public class Scatter extends ParticleInMatterCalculator {
     @Override
     public String initializeModelParameters() {
         calculatorType = "SCATTER";
-        elementsList = new ArrayList<>(Arrays.asList(elements));
+        //Arrays.asList(elements)
+        elementsList = new ArrayList<>();
         elementsList.add("all");
         File dataDirectory = new File(directoryPath);
         if (dataDirectory.isDirectory()){

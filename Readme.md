@@ -75,13 +75,14 @@ An template for ISInCa posprocessing can be found *[`here`](https://github.com/m
 ```
 Then you have the root tag `<ISInCa>` which shouldn't be changed. You have several tags groups inside of ISInCa. The first one - `<pref>` sets some flags:
 
-flag             |   values           | brief description
-:---------------:|:------------------:|:----------
-`<getTXT>`       | *true, false*      | sets whether to transform calculation source files in **.txt* format with **UTF-8** encoding
-`<getSummary>`   | *true, false*      |sets whether to process **ALL** calculation source files or only those, which are used to generate distributions
-`<visualize>`    | *true, false*      |sets whether to show and save plots
-`<combine>`     | *true, false*      |sets whether to combine files from one `<calc>` section (look for "Combine mode" further)
-
+flag             |   values             | brief description
+:---------------:|:--------------------:|:----------
+`<getTXT>`       | *true, false*        | sets whether to transform calculation source files in **.txt* format with **UTF-8** encoding
+`<getSummary>`   | *true, false*        |sets whether to process **ALL** calculation source files or only those, which are used to generate distributions
+`<visualize>`    | *true, false*        |sets whether to show and save plots
+`<combine>`      | *true, false*        |sets whether to combine files from one `<calc>` section (look for "Combine mode" further)
+`<dirSubname>`   | *angle, energy, ...* | adds an incident angle/energy... of calcs. to combine's mode dir
+`<combSum>`      | *W,Au,Fe,Cl,U,...*   | list of elements for **combSum** mode: summarizes combines
 The flags need some clarification. Monte-Carlo Codes like Scatter generate outputs which can't be opened with a plain text editors. So if you want to posptprocess this files by yourself, you need to transform the outputs to some readable format. For this `<getTXT>` was made. It doesn't provide any calculation, just transform ouputs of the codes to **txt* file with common **UTF-8** encoding. Then, some codes like SDTrimSP generate several outputs files, which corresponds to different particle sort. In this way, if you only want to calculate energy spectrum of scattered, you don't have to process files with sputtered or displaced particles. So `<getSummary>` helps you to economy time for posprocessing, which can be very usefull for case of huge outputs. But you should understand that in this case no calculation of some constants would be provided, because not all of particles were postprocessed. For our example, you would't get sputter and displace coefficient. So if integral coefficients are important for you - leave the `<getSummary>` to be **true**, else - make it **false**.
 ```xml
 <pref>

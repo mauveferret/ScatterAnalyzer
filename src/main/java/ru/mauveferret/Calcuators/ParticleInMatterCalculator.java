@@ -171,11 +171,11 @@ public abstract class ParticleInMatterCalculator{
     }
 
     int LENGTH = 15;
-    private String cl(String line){
+    public String cl(String line){
         line = line.trim();
-        if (line.length()<15) return line+" ".repeat(15-line.length());
+        if (line.length()<LENGTH) return line+" ".repeat(LENGTH-line.length());
         else {
-            LENGTH = line.length()+5;
+            LENGTH = line.length()+1;
             return cl(line);
         }
     }

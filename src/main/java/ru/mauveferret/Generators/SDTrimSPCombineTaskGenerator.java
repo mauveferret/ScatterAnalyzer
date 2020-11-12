@@ -23,7 +23,7 @@ public class SDTrimSPCombineTaskGenerator {
         //String currentJar = Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
         //String currentDir = new File(currentJar).getParent();
 
-        final String pathToWorkDir ="C:\\Users\\dgbulgadaryan.2133-20115\\Desktop\\cluster";
+        final String pathToWorkDir ="C:\\Users\\mauve\\Desktop\\test";
         final File workDir = new File( pathToWorkDir);
 
 
@@ -104,6 +104,7 @@ public class SDTrimSPCombineTaskGenerator {
             for (String calc: calcs) calcFile.write("<dir>"+calc+"</dir>\n");
             calcFile.close();
         }
+
         catch (Exception e){e.printStackTrace();}
 
         //log sbatch file
@@ -124,6 +125,31 @@ public class SDTrimSPCombineTaskGenerator {
             bashFile.write("cd ..\n");
             bashFile.write("java -jar ISInCa.jar -c launches/H_Fe/isinca.xml\n");
             bashFile.close();
+
+            /*
+            for Win10 ubuntu
+
+            #!/bin/bash
+                exec 3>&1 4>&2
+                trap 'exec 2>&4 1>&3' 0 1 2 3
+                exec 1> >( tee -ia log.out) 2>&1
+
+
+                cd ../../D,T_FeCrNiTi10keV10deg4750k
+                mpirun -np 4  --oversubscribe  ../../bin/linux.PRO/SDTrimSP.exe
+                cd ../D,T_FeCrNiTi10keV0deg4750k
+                mpirun -np 4  --oversubscribe  ../../bin/linux.PRO/SDTrimSP.exe
+                cd ../D,T_FeCrNiTi10keV20deg4750k
+                mpirun -np 4  --oversubscribe  ../../bin/linux.PRO/SDTrimSP.exe
+                cd ../D,T_FeCrNiTi10keV30deg4750k
+                mpirun -np 4  --oversubscribe  ../../bin/linux.PRO/SDTrimSP.exe
+                cd ../D,T_FeCrNiTi10keV45deg4750k
+                mpirun -np 4  --oversubscribe  ../../bin/linux.PRO/SDTrimSP.exe
+                cd ../D,T_FeCrNiTi10keV50deg4750k
+                mpirun -np 4  --oversubscribe  ../../bin/linux.PRO/SDTrimSP.exe
+                cd ../D,T_FeCrNiTi10keV60deg4750k
+             */
+
         }
         catch (Exception e){e.printStackTrace();}
 

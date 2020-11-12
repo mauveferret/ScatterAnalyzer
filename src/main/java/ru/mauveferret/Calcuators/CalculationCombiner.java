@@ -14,6 +14,9 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
      */
 
 
+    //говно
+    double dTheta1 = 3;
+    double dPhi1 = 3;
 
     private final ArrayList<ParticleInMatterCalculator> calculators;
 
@@ -94,6 +97,8 @@ public class CalculationCombiner extends ParticleInMatterCalculator {
                     dependencies.add(new Polar(((Polar) remoteDep).phi, ((Polar) remoteDep).dPhi*2,
                             ((Polar) remoteDep).dTheta, remoteDep.getSort(), this));
                     //Никита, это умножение dPhi на 2 уже пиздец какой-то ненормальный
+               dTheta1 =   ((Polar) remoteDep).dTheta;
+                    dPhi1 = ((Polar) remoteDep).dPhi;
                 break;
                 case "energy": dependencies.add(new Energy(((Energy) remoteDep).dE, ((Energy) remoteDep).phi,
                         ((Energy) remoteDep).dPhi*2, ((Energy) remoteDep).theta, ((Energy) remoteDep).dTheta*2,
