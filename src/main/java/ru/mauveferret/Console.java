@@ -29,6 +29,7 @@ public class Console {
     private final int LINE_LENGTH = 80;
 
     ArrayList<Thread> calculationThreads;
+    ArrayList<Thread> printandvisualize;
     ArrayList<CalculationCombiner> combiners;
 
 
@@ -103,6 +104,7 @@ public class Console {
             System.out.println("[ISInCa] Started postprocessing files...");
 
             calculationThreads = new ArrayList<>();
+            printandvisualize = new ArrayList<>();
             combiners = new ArrayList<>();
 
             //create threads
@@ -122,6 +124,8 @@ public class Console {
 
             int i = 1;
             double start = System.currentTimeMillis();
+
+            //wait for end of calculations
             for (Thread thread : calculationThreads) {
                try {
                    thread.join();
@@ -140,6 +144,21 @@ public class Console {
             //do combine section
             if (combine) for (CalculationCombiner combiner: combiners) {
                 if (combiner.combine()) System.out.println("        [COMBINER] "+combiner.modelingID+" succeed!");
+            }
+
+            //print ANd vizualise data
+
+            for (Thread thread : printandvisualize) {
+                try {
+                    thread.start();
+                }
+                catch (Exception ignored){}
+            }
+            for (Thread thread : printandvisualize) {
+                try {
+                    thread.join();
+                }
+                catch (Exception ignored){}
             }
 
             System.out.println();
@@ -363,10 +382,13 @@ public class Console {
                 final ParticleInMatterCalculator calculator = yourCalculator;
                 Thread newCalculation = new Thread(() -> {
                     calculator.postProcessCalculatedFiles(distributions);
+                });
+                Thread printAndVizualiseThread = new Thread(() -> {
                     calculator.printAndVisualizeData(distributions);
                 });
                 newCalculation.setName(dirs.item(someDir).getTextContent());
                 calculationThreads.add(newCalculation);
+                printandvisualize.add(printAndVizualiseThread);
                 calculatorsForCombiner.add(calculator);
             }
             catch (Exception ignored){}

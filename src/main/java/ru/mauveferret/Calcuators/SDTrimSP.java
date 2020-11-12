@@ -349,7 +349,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             }
 
             //calculate some scattering constants
-            if (!sort.contains("S") && !sort.contains("D")) particleCount++;
+            if (!sort.contains("S") && !sort.contains("D") && !sort.contains("T")) particleCount++;
 
             switch (sort) {
                 case "B":
