@@ -284,9 +284,11 @@ public class Console {
                 combinerDir = file.getParent();
 
                 ParticleInMatterCalculator yourCalculator = new Scatter(dir, visualize);
+                yourCalculator.setDirSubname(dirSubname);
                 String initialize = yourCalculator.initializeModelParameters();
                 if (!initialize.equals("OK")) {
                     yourCalculator = new TRIM(dir, visualize);
+                    yourCalculator.setDirSubname(dirSubname);
                     initialize = yourCalculator.initializeModelParameters();
                     if (!initialize.equals("OK")) {
                         yourCalculator = new SDTrimSP(dir, visualize, getSummary);

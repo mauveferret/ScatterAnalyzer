@@ -17,9 +17,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
         super(directoryPath, doVizualization);
         this.getSummary = getSummary;
         particDataPath = new ArrayList<>();
-        projectileIncidentAzimuthAngle = 0;
-        projectileIncidentPolarAngle = -1;
-        projectileAmount = -1;
     }
 
     @Override
@@ -27,20 +24,20 @@ public class SDTrimSP extends ParticleInMatterCalculator{
         calculatorType = "SDTrimSP";
         File dataDirectory = new File(directoryPath);
         if (dataDirectory.isDirectory()){
-            String tscConfig = "";
+            String triConfig = "";
 
             //get info from tri.inp file
 
             try {
                 for (File file:  dataDirectory.listFiles()){
                     if (file.getName().contains("tri.inp")){
-                        tscConfig = file.getAbsolutePath();
+                        triConfig = file.getAbsolutePath();
                     }
                     if (file.getName().contains("partic")){
                         particDataPath.add(file.getAbsolutePath());
                     }
                 }
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tscConfig)));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(triConfig)));
                 String line;
                 String someParameter = "";
                 int projAmount = 0;
@@ -124,7 +121,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                 //targetElements.replaceAll("\\W","");
                 elementsList = new ArrayList<>(Arrays.asList(elements));
                 elementsList.add("all");
-                initializeCalcVariables();
             }
             catch (FileNotFoundException ex){
                 ex.printStackTrace();
@@ -132,7 +128,7 @@ public class SDTrimSP extends ParticleInMatterCalculator{
             }
             catch (Exception ex){
                 ex.printStackTrace();
-                return "File "+tscConfig+" is damaged";
+                return "File "+triConfig+" is damaged";
             }
 
             //check whether the *.dat file exist
@@ -150,6 +146,8 @@ public class SDTrimSP extends ParticleInMatterCalculator{
         }
         else return dataDirectory.getName()+" is not a directory";
 
+        initializeCalcVariables();
+
         modelingID = "SDTrimSP_"+getDirSubname()+"_"+((int) (Math.random()*10000));
 
         return "OK";
@@ -159,13 +157,13 @@ public class SDTrimSP extends ParticleInMatterCalculator{
 
 
     @Override
-    public void postProcessCalculatedFiles(ArrayList<Dependence> dependencies) {
+    public void postProcessCalculatedFiles(ArrayList<Dependence> depr) {
 
         //load elements in dependencies
 
         int LINE_BYTES_AMOUNT = 274;
 
-        this.dependencies = dependencies;
+        dependencies = depr;
         for (Dependence dep: dependencies) dep.initializeArrays(elementsList);
 
         calcTime = System.currentTimeMillis();
@@ -227,7 +225,6 @@ public class SDTrimSP extends ParticleInMatterCalculator{
                         else if (particlesType.contains("stop_r")) sort = "D";
                         else if (particlesType.contains("tran")) sort = "T";
 
-                        //was disabled as we need to get some summary, so we should analyze all files
                         String sorts = "";
                         for (Dependence someDistr : dependencies) sorts += someDistr.getSort();
 

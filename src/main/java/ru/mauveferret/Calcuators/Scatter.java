@@ -6,7 +6,6 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Scatter extends ParticleInMatterCalculator {
 
@@ -21,6 +20,7 @@ public class Scatter extends ParticleInMatterCalculator {
     public String initializeModelParameters() {
         calculatorType = "SCATTER";
         //Arrays.asList(elements)
+        elements = new String[]{"all"};
         elementsList = new ArrayList<>();
         elementsList.add("all");
         File dataDirectory = new File(directoryPath);
@@ -47,20 +47,23 @@ public class Scatter extends ParticleInMatterCalculator {
                 while (reader.ready()){
                     line = reader.readLine();
                     if (line.contains("=")) someParameter = line.substring(line.indexOf("=")+1).trim();
-                    if (line.contains("Atom") && previousLine.contains("Projectile")) projectileElements= someParameter;
+                    if (line.contains("Atom") && previousLine.contains("Projectile")) {
+                        projectileElements= someParameter;
+                        elementsList.add(someParameter);
+                    }
                     if (line.contains("Atom") && !previousLine.contains("Projectile")) {
                         if (targetElements.contains("elements")) targetElements = "";
                         targetElements += someParameter+" ";
+                        elementsList.add(someParameter);
                     }
                     if (line.contains("StartEnergy")) projectileMaxEnergy = Double.parseDouble(someParameter);
                     if (line.contains("StartAngle")) projectileIncidentPolarAngle = Double.parseDouble(someParameter);
                     if (line.contains("StartPhi")) projectileIncidentAzimuthAngle = Double.parseDouble(someParameter);
                     if (line.contains("Number")) projectileAmount = Integer.parseInt(someParameter);
                     previousLine = line;
-
                 }
                 reader.close();
-
+                initializeCalcVariables();
             }
             catch (FileNotFoundException ex){
                 return "\"SC******.tsk\" config is not found";
@@ -68,6 +71,8 @@ public class Scatter extends ParticleInMatterCalculator {
             catch (IOException ex){
                 return "File "+tscConfig+" is damaged";
             }
+
+            modelingID+="_"+getDirSubname()+"_"+((int) (Math.random()*10000));
 
             //check whether the *.dat file exist
 
@@ -86,9 +91,10 @@ public class Scatter extends ParticleInMatterCalculator {
     }
 
     @Override
-    public void postProcessCalculatedFiles(ArrayList<Dependence> distributions) {
+    public void postProcessCalculatedFiles(ArrayList<Dependence> depr) {
 
-        //FIXME initializeArrays of dependencies
+        dependencies = depr;
+        for (Dependence dep: dependencies) dep.initializeArrays(elementsList);
 
         calcTime = System.currentTimeMillis();
 
@@ -122,13 +128,12 @@ public class Scatter extends ParticleInMatterCalculator {
                     cosx = ByteBuffer.wrap(ArraySubPart(buf, 6 + shift, 9 + shift)).order(ByteOrder.LITTLE_ENDIAN).getFloat();
                     cosy = ByteBuffer.wrap(ArraySubPart(buf, 10 + shift, 13 + shift)).order(ByteOrder.LITTLE_ENDIAN).getFloat();
                     cosz = ByteBuffer.wrap(ArraySubPart(buf, 14 + shift, 17 + shift)).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-                    //allParticlesData+=sort+" "+en+" "+cosx+" "+cosy+" "+cosz+"\n";
 
                     //Here is several spectra calculators
 
                     PolarAngles angles = new PolarAngles(cosx,cosy,cosz);
 
-                    for (Dependence distr: distributions){
+                    for (Dependence distr: dependencies){
                         switch (distr.getDepName())
                         {
                             case "energy": ((Energy) distr).check(angles,sort,en,projectileElements);

@@ -44,10 +44,6 @@ public class AngleMap extends Dependence {
         }
     }
 
-    public double[]getSpectrum() {
-        return null;
-    }
-
     @Override
     public boolean logDependencies() {
 

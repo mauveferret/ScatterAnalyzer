@@ -32,7 +32,8 @@ public class PolarAngles {
 
     public boolean doesAzimuthAngleMatch(double phi, double dPhi){
 
-        if ((phi>dPhi && phi<360-dPhi) || (phi>45))
+        //FIXME WTF   if ((phi>dPhi && phi<360-dPhi) || (phi>45))
+        if ((phi>dPhi && phi<360-dPhi) || (dPhi>45))
             return (Math.abs(phi - azimuth)<dPhi);
         else return (azimuth < dPhi || azimuth>360-dPhi);
     }
@@ -45,12 +46,17 @@ public class PolarAngles {
 
 
         // SDTrimSP style Cartesian system ( -x is a normal, projectiles are in ZX plane) TODO
+
+        //now its Scatter style
         if ((cosx>0 & cosy>0) || (cosx<0 & cosy<0)) azimuth = Math.atan(cosy / cosx)*57.2958;
         else if ((cosx<0 && cosy>0) || (cosx>0 && cosy<0)) azimuth = 180-Math.atan(-1*(cosy/cosx))*57.2958;
         if (cosy<0) azimuth=360-azimuth;
-        double absPolar = Math.atan(Math.sqrt(cosx * cosx + cosy * cosy)/Math.abs(cosz))*57.2958;;
+        double absPolar = 90-Math.atan(Math.sqrt(cosx * cosx + cosy * cosy)/Math.abs(cosz))*57.2958;;
 
         polar = absPolar;
+        //FIXME not work forscatter
+        //if (azimuth>90 && azimuth<270) polar+=90;
+        //System.out.println(azimuth);
         //if (azimuth<=90 && cosz>=0) polar = absPolar;
         //else  if (azimuth<=90 && cosz<0) polar=90+absPolar;
         //else  if (azimuth>90 && cosz<0) polar=180+absPolar;

@@ -46,9 +46,12 @@ public class Polar extends Dependence {
                 distributionArray.get("all")[(int) Math.round((90+angles.getPolar()) / dTheta)]++;
             }
             if (angles.doesAzimuthAngleMatch(phi+180,dPhi)) {
+                //System.out.println("erhbrseyhedrtrterh");
                 distributionArray.get(element)[(int) Math.round((90-angles.getPolar()) / dTheta)]++;
                 distributionArray.get("all")[(int) Math.round((90-angles.getPolar()) / dTheta)]++;
             }
+
+
         }
     }
 

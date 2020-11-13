@@ -44,7 +44,7 @@ public abstract class ParticleInMatterCalculator{
     String sProjectileIncidentAzimuthAngle = "";
 
     public int projectileAmount;
-    public String projectileElements;
+    public String projectileElements = "";
     public String[] elements; //without "all"
     public ArrayList<String> elementsList; //with "all"
 
@@ -63,6 +63,10 @@ public abstract class ParticleInMatterCalculator{
         projectileElements = "no elements";
         modelingID = "no ID";
         calculatorType = "";
+        projectileIncidentAzimuthAngle = 0;
+        projectileIncidentPolarAngle = -1;
+        projectileAmount = -1;
+
         this.directoryPath = directoryPath;
         try{
             new File(directoryPath+File.separator+"ISInCa").mkdir();
